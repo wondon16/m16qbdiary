@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Get Password — QB Diary</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css"/>
+  <!-- PayPal JS SDK (PayPal button only) -->
+  <script src="EIW9ORrBRdl4b8Y1fCJBb1oEixgT8RUBPqCR9WIYL_vhgspDX6Iq8hO3jp2cAuPkUvdaRpv8BMoyfq44"></script>
+</head>
+<body class="pay-body">
+  <section class="cover" aria-label="Purchase Access">
+    <div class="cover-card">
+      <img src="logo.png" alt="QB Diary logo" class="cover-logo" />
+      <h1 class="brand-name cover-title">Unlock QB Diary</h1>
+      <p class="cover-desc">One-time payment of <strong>$7</strong> to receive your access password.</p>
+
+      <div id="paypalButtons" class="paypal-wrap"></div>
+      <div id="payMsg" class="pay-msg" aria-live="polite"></div>
+
+      <div id="unlockPanel" class="unlock-panel" hidden>
+        <p class="unlock-note">Payment captured ✅ — your password:</p>
+        <div class="unlock-code" id="unlockCode">M16QB</div>
+        <div class="unlock-cta">
+          <button class="btn btn-primary pill" id="copyPwd">Copy Password</button>
+          <a class="btn btn-outline pill" href="index.html">Return to App</a>
+        </div>
+      </div>
+
+      <small class="cover-foot">Payments are securely processed by PayPal.</small>
+    </div>
+  </section>
+
+  <script>
+    // Render a PayPal-only button
+    paypal.Buttons({
+      fundingSource: paypal.FUNDING.PAYPAL,
+      style: {
+        layout: 'vertical',
+        color:  'gold',
+        shape:  'pill',
+        label:  'paypal'
+      },
+      createOrder: function(data, actions) {
+        return actions.order.create({
+          purchase_units: [{
+            description: 'QB Diary — one-time access fee',
+            amount: { currency_code: 'USD', value: '7.00' }
+          }]
+        });
+      },
+      onApprove: function(data, actions) {
+        return actions.order.capture().then(function(details) {
+          // Show password gate after successful capture
+          document.getElementById('payMsg').textContent =
+            `Thanks, ${details.payer.name.given_name}! Payment ID: ${details.id}`;
+          const panel = document.getElementById('unlockPanel');
+          panel.hidden = false;
+          // Smooth scroll to reveal
+          panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+      },
+      onError: function(err) {
+        console.error(err);
+        document.getElementById('payMsg').textContent =
+          'Payment failed or was canceled. Please try again.';
+      }
+    }).render('#paypalButtons');
+
+    // Copy password helper
+    document.getElementById('copyPwd').addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText('M16QB');
+        const msg = document.getElementById('payMsg');
+        msg.textContent = 'Password copied. Tap "Return to App" and paste it on the lock screen.';
+      } catch {
+        alert('Copy failed. Please copy the code manually: M16QB');
+      }
+    });
+  </script>
+</body>
+</html>
