@@ -3,31 +3,35 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>QB Diary 
-  </title>
+  <title>QB Diary</title>
+
+  <!-- Fonts + Theme -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <!-- ===== COVER / PASSWORD (always shown on load) ===== -->
+  <!-- ===== COVER / PASSWORD (shows every load) ===== -->
   <section id="cover" class="cover" aria-label="QB Diary Access">
     <div class="cover-card">
-      <!-- Your logo -->
       <img src="logo.png" alt="QB Diary logo" class="cover-logo" />
-      <h1 class="brand-name cover-title">M16 QB Diary
-      </h1>
+      <h1 class="brand-name cover-title">QB Diary</h1>
       <p class="cover-desc">
-        Your all-in-one football prep hub — with weekly modules to track progress, healthy pre-game food and hydration tips, film-study guidance, and stretch routines. Built to sharpen your game, and keep your mindset focused through weekly self-reflection.
-        <strong></strong>.
+        A season-long prep system for quarterbacks using focused portals and pull-down tabs—built for
+        <strong>18 game weeks</strong>. Set your intention. Analyze the rival. Prime mobility. Fuel smart. Lock your breath.
+        Throw with rhythm. Reflect and lead.
       </p>
 
+      <div class="gate-actions">
+        <a class="btn btn-primary btn-lg pill" href="pay.html">Get Password — $7 (PayPal)</a>
+      </div>
+
       <form id="gateForm" class="gate" autocomplete="off" novalidate>
-        <label for="gateInput" class="gate-label"> Password Please </label>
-        <input id="gateInput" type="password" class="inp inp-lg" placeholder="Enter password…" inputmode="text" aria-describedby="gateHint" />
+        <label for="gateInput" class="gate-label">Enter Access Password</label>
+        <input id="gateInput" type="password" class="inp inp-lg" placeholder="Enter password…" aria-describedby="gateHint" />
         <button id="gateBtn" type="submit" class="btn btn-primary btn-lg pill">Unlock</button>
-        <p id="gateHint" class="gate-hint" aria-live="polite"></p>
+        <p id="gateHint" class="gate-hint" aria-live="polite">Hint: case sensitive</p>
       </form>
 
       <small class="cover-foot">You’ll be asked each time you open the app. Entries save locally to your device.</small>
@@ -42,6 +46,12 @@
         <h2 class="brand-name">QB Diary</h2>
       </div>
 
+      <!-- App tabs -->
+      <nav class="top-tabs" aria-label="Primary">
+        <a class="tab active" href="index.html" aria-current="page">Portals</a>
+        <a class="tab" href="schedule.html">Schedule</a>
+      </nav>
+
       <div class="toolbar">
         <div class="week-nav" role="group" aria-label="Week navigation">
           <button id="prevWeek" class="nav-arrow" aria-label="Previous week">◀</button>
@@ -49,7 +59,7 @@
           <button id="nextWeek" class="nav-arrow" aria-label="Next week">▶</button>
         </div>
 
-        <div class="cta-group" role="group" aria-label="Save and clear">
+        <div class="cta-group" role="group" aria-label="Actions">
           <button id="saveBtn" class="btn pill btn-primary" type="button" title="Save current week">💾 Save</button>
           <button id="clearBtn" class="btn pill btn-outline" type="button" title="Clear current week">🗑️ Clear</button>
         </div>
@@ -67,8 +77,8 @@
     <!-- Hero -->
     <section class="hero">
       <div class="hero-content">
-        <h3 class="hero-title">Clarity, Soft focus, Steady mind!</h3>
-        <p class="hero-sub">Tap a portal below. Use the pull-downs to complete each section. Fill out each week until the end of the season. Once season is completed use the notebook to reflect on how the year went.</p>
+        <h3 class="hero-title">Own the Week. Dominate Game Day.</h3>
+        <p class="hero-sub">Tap a portal below. Use the pull-downs to complete each section.</p>
       </div>
     </section>
 
@@ -77,10 +87,7 @@
       <article class="portal-card" data-portal="weekly">
         <div class="card-head">
           <h3>Weekly Word + Alter Ego</h3>
-          <div class="status-wrap">
-            <span class="status-pill">Incomplete</span>
-            <span class="portal-dot" aria-hidden="true"></span>
-          </div>
+          <div class="status-wrap"><span class="status-pill">Incomplete</span><span class="portal-dot" aria-hidden="true"></span></div>
         </div>
         <p class="portal-kicker">Set intention. Step into your persona.</p>
         <button class="btn-portal" type="button">Open</button>
@@ -89,10 +96,7 @@
       <article class="portal-card" data-portal="rival-film">
         <div class="card-head">
           <h3>Rival & Film Study</h3>
-          <div class="status-wrap">
-            <span class="status-pill">Incomplete</span>
-            <span class="portal-dot" aria-hidden="true"></span>
-          </div>
+          <div class="status-wrap"><span class="status-pill">Incomplete</span><span class="portal-dot" aria-hidden="true"></span></div>
         </div>
         <p class="portal-kicker">Know the opponent. Exploit tendencies.</p>
         <button class="btn-portal" type="button">Open</button>
@@ -101,10 +105,7 @@
       <article class="portal-card" data-portal="mobility">
         <div class="card-head">
           <h3>Mobility & Warm-Up Flow</h3>
-          <div class="status-wrap">
-            <span class="status-pill">Incomplete</span>
-            <span class="portal-dot" aria-hidden="true"></span>
-          </div>
+          <div class="status-wrap"><span class="status-pill">Incomplete</span><span class="portal-dot" aria-hidden="true"></span></div>
         </div>
         <p class="portal-kicker">Prime shoulders, hips, and speed.</p>
         <button class="btn-portal" type="button">Open</button>
@@ -113,10 +114,7 @@
       <article class="portal-card" data-portal="fuel">
         <div class="card-head">
           <h3>Fuel & Hydration</h3>
-          <div class="status-wrap">
-            <span class="status-pill">Incomplete</span>
-            <span class="portal-dot" aria-hidden="true"></span>
-          </div>
+          <div class="status-wrap"><span class="status-pill">Incomplete</span><span class="portal-dot" aria-hidden="true"></span></div>
         </div>
         <p class="portal-kicker">Clean energy. Smart recovery.</p>
         <button class="btn-portal" type="button">Open</button>
@@ -125,10 +123,7 @@
       <article class="portal-card" data-portal="focus-throw">
         <div class="card-head">
           <h3>Mental Focus & Throwing</h3>
-          <div class="status-wrap">
-            <span class="status-pill">Incomplete</span>
-            <span class="portal-dot" aria-hidden="true"></span>
-          </div>
+          <div class="status-wrap"><span class="status-pill">Incomplete</span><span class="portal-dot" aria-hidden="true"></span></div>
         </div>
         <p class="portal-kicker">Breathe. Visualize. Let it rip.</p>
         <button class="btn-portal" type="button">Open</button>
@@ -137,10 +132,7 @@
       <article class="portal-card" data-portal="post-grade">
         <div class="card-head">
           <h3>Post-Game & Self-Grade</h3>
-          <div class="status-wrap">
-            <span class="status-pill">Incomplete</span>
-            <span class="portal-dot" aria-hidden="true"></span>
-          </div>
+          <div class="status-wrap"><span class="status-pill">Incomplete</span><span class="portal-dot" aria-hidden="true"></span></div>
         </div>
         <p class="portal-kicker">Reflect. Improve. Lead.</p>
         <button class="btn-portal" type="button">Open</button>
@@ -190,10 +182,8 @@
               <summary>3. Rival Page</summary>
               <label class="lbl">Opponent school/team & (position):</label>
               <input class="inp" type="text" name="opponent" placeholder="____________________________" required />
-
               <label class="lbl">What do they do well?</label>
               <textarea class="inp" name="rivalStrengths" rows="2" placeholder="________________________________________________"></textarea>
-
               <label class="lbl">What are their weaknesses?</label>
               <textarea class="inp" name="rivalWeaknesses" rows="2" placeholder="—------------------------------------ - - - - - - - – - - - - - - - - - - - - – - - - -"></textarea>
             </details>
@@ -202,49 +192,12 @@
               <summary>4. Film Study Methods</summary>
               <p>Ways I studied film this week:</p>
               <ul class="bullets">
-                <li>Dont just watch highlights — watch the entire game flow. This helps you pick up on rhythm, fatigue patterns, substitution strategies, and how teams adjust throughout quarters/halves. Pay attention to the “small things” between plays: how players react after mistakes, how the coach signals in plays, or if tempo changes after certain situations (e.g., turnovers, timeouts, foul trouble).</li>
-                <li>Instead of following the ball every time, lock in on your position or the one you’ll be matched against. Notice:
-
-Stance and alignment: Are they balanced? Do they tip off run/pass/shot direction?
-
-Footwork: Is it explosive or lazy at certain points?
-
-Conditioning: Do they gas out after long drives or late in games?
-By isolating positions, you catch tendencies that the broadcast angle misses.</li>
-                <li>Zoom in on the top threats or your likely matchup. Ask:
-
-Do they favor going left or right?
-
-Do they always spin a certain way?
-
-How do they react to pressure vs. space?
-
-What’s their “go-to move” when things break down?
-If you learn a player’s comfort zone, you can force them away from it.</li>
-                <li>Find their weakness!? Everyone has one — it might be physical, technical, or mental.
-
-Physical: slow first step, lack of strength, poor conditioning.
-
-Technical: sloppy ball handling, weak hand/foot, struggles against zone/press.
-
-Mental: frustration after mistakes, slow to adjust, rattled by noise/pressure.
-Spot these cracks early, because good teams exploit them.</li>
-                <li>Formations, alignments, and spacing usually signal intent. Track how often a certain set leads to a type of play. For example:
-
-Trips formation = screen game or quick slant.
-
-5-out = drive-and-kick action.
-
-Wing overloaded = iso or pick-and-roll coming.
-Build a mental chart: “When they line up like this, 70% of the time they run X.”</li>
-                <li>Combine all the above:
-
-Pick plays that force their weak hand/foot.
-
-Target their tired players late in the game.
-
-Design mismatches through switches or screens.
-The key isn’t just knowing their weakness, but knowing how to repeatedly stress it until it breaks.</li>
+                <li>watch the game fully with no interruptions</li>
+                <li>watch specific positions</li>
+                <li>key on certain player tendencies</li>
+                <li>whats their weakness?</li>
+                <li>find out through formations what their tendcies are and what they like to do/ think about plays that can attack those sets</li>
+                <li>figure out how you can attack their weaknesses (what plays migh work against them)</li>
               </ul>
               <label class="lbl">Notes from film study:</label>
               <textarea class="inp" name="filmNotes" rows="5" placeholder="Type your notes here…"></textarea>
@@ -257,37 +210,37 @@ The key isn’t just knowing their weakness, but knowing how to repeatedly stres
               <summary>5. Weekly Mobility Flow — Shoulder Flow</summary>
               <p><strong>Every workout should be 1 set of 10 reps each workout</strong></p>
               <div class="checks">
-                <label><input type="checkbox" name="mobility" value="Arm circles forward" /> Arm circles forward</label>
-                <label><input type="checkbox" name="mobility" value="Arm circles backwards" /> Arm circles backwards</label>
-                <label><input type="checkbox" name="mobility" value="Touch the sky" /> Touch the sky</label>
-                <label><input type="checkbox" name="mobility" value="Corkscrew" /> Corkscrew (like arm circles but you’re twisting a bottle cap off)</label>
-                <label><input type="checkbox" name="mobility" value="Alternate 90 degree bends" /> Alternate 90 degree bends</label>
-                <label><input type="checkbox" name="mobility" value="Chest Flys" /> Chest Flys</label>
-                <label><input type="checkbox" name="mobility" value="Shoulder taps" /> shoulder taps</label>
+                <label><input type="checkbox" name="mobility" value="Arm circles forward"> Arm circles forward</label>
+                <label><input type="checkbox" name="mobility" value="Arm circles backwards"> Arm circles backwards</label>
+                <label><input type="checkbox" name="mobility" value="Touch the sky"> Touch the sky</label>
+                <label><input type="checkbox" name="mobility" value="Corkscrew"> Corkscrew (like arm circles but you’re twisting a bottle cap off)</label>
+                <label><input type="checkbox" name="mobility" value="Alternate 90 degree bends"> Alternate 90 degree bends</label>
+                <label><input type="checkbox" name="mobility" value="Chest Flys"> Chest Flys</label>
+                <label><input type="checkbox" name="mobility" value="Shoulder taps"> shoulder taps</label>
               </div>
             </details>
 
             <details class="pulldown">
               <summary>Hip Mobility / lower back rotation</summary>
               <div class="checks">
-                <label><input type="checkbox" name="mobility" value="Windshield wipers" /> Windshield wipers</label>
-                <label><input type="checkbox" name="mobility" value="spidermans" /> spidermans</label>
-                <label><input type="checkbox" name="mobility" value="Scorpions w/ chest opener" /> Scorpions w/ chest opener</label>
-                <label><input type="checkbox" name="mobility" value="Hip bridge hold 30 seconds" /> Hip bridge hold 30 seconds</label>
-                <label><input type="checkbox" name="mobility" value="Single leg bridge hold 30 sec (both legs)" /> Single leg bridge hold 30 sec (both legs)</label>
-                <label><input type="checkbox" name="mobility" value="Frog stretch" /> Frog stretch</label>
-                <label><input type="checkbox" name="mobility" value="Cobra stretch" /> Cobra stretch</label>
-                <label><input type="checkbox" name="mobility" value="Sumo stretch" /> Sumo stretch</label>
+                <label><input type="checkbox" name="mobility" value="Windshield wipers"> Windshield wipers</label>
+                <label><input type="checkbox" name="mobility" value="spidermans"> spidermans</label>
+                <label><input type="checkbox" name="mobility" value="Scorpions w/ chest opener"> Scorpions w/ chest opener</label>
+                <label><input type="checkbox" name="mobility" value="Hip bridge hold 30 seconds"> Hip bridge hold 30 seconds</label>
+                <label><input type="checkbox" name="mobility" value="Single leg bridge hold 30 sec (both legs)"> Single leg bridge hold 30 sec (both legs)</label>
+                <label><input type="checkbox" name="mobility" value="Frog stretch"> Frog stretch</label>
+                <label><input type="checkbox" name="mobility" value="Cobra stretch"> Cobra stretch</label>
+                <label><input type="checkbox" name="mobility" value="Sumo stretch"> Sumo stretch</label>
               </div>
             </details>
 
             <details class="pulldown">
               <summary>Dynamic warm up (go about 10–15 yards)</summary>
               <div class="checks two">
-                <label><input type="checkbox" name="mobility" value="High knees / butt kicks" /> High knees / butt kicks</label>
-                <label><input type="checkbox" name="mobility" value="Side shuffles / karaoke" /> Side shuffles / karaoke</label>
-                <label><input type="checkbox" name="mobility" value="Hip openers / lunges/ heel scoops" /> Hip openers / lunges/ heel scoops</label>
-                <label><input type="checkbox" name="mobility" value="Quick feet ladder" /> Quick feet ladder</label>
+                <label><input type="checkbox" name="mobility" value="High knees / butt kicks"> High knees / butt kicks</label>
+                <label><input type="checkbox" name="mobility" value="Side shuffles / karaoke"> Side shuffles / karaoke</label>
+                <label><input type="checkbox" name="mobility" value="Hip openers / lunges/ heel scoops"> Hip openers / lunges/ heel scoops</label>
+                <label><input type="checkbox" name="mobility" value="Quick feet ladder"> Quick feet ladder</label>
               </div>
             </details>
           </section>
@@ -298,25 +251,13 @@ The key isn’t just knowing their weakness, but knowing how to repeatedly stres
               <summary>6. Pre-Game Fuel — Night Before Meal</summary>
               <div class="copy">
                 <p><strong>1. Grilled Chicken, Brown Rice &amp; Steamed Broccoli</strong></p>
-                <p><em>Nutrients:</em><br>
-                  Lean protein (chicken) → muscle repair &amp; recovery<br>
-                  Complex carbs (brown rice) → steady energy for game day<br>
-                  Fiber + vitamins (broccoli) → digestion &amp; immune support
-                </p>
+                <p><em>Nutrients:</em><br>Lean protein (chicken) → muscle repair &amp; recovery<br>Complex carbs (brown rice) → steady energy for game day<br>Fiber + vitamins (broccoli) → digestion &amp; immune support</p>
 
                 <p><strong>2. Baked Salmon, Roasted Sweet Potatoes &amp; Spinach Salad</strong></p>
-                <p><em>Nutrients:</em><br>
-                  Omega-3 fats (salmon) → reduce inflammation, improve joint mobility<br>
-                  Complex carbs (sweet potato) → glycogen storage for endurance<br>
-                  Iron &amp; antioxidants (spinach) → oxygen delivery &amp; recovery
-                </p>
+                <p><em>Nutrients:</em><br>Omega-3 fats (salmon) → reduce inflammation, improve joint mobility<br>Complex carbs (sweet potato) → glycogen storage for endurance<br>Iron &amp; antioxidants (spinach) → oxygen delivery &amp; recovery</p>
 
                 <p><strong>3. Turkey Meatballs, Whole Wheat Pasta &amp; Mixed Veggies</strong></p>
-                <p><em>Nutrients:</em><br>
-                  Lean protein (turkey) → supports strength without heaviness<br>
-                  Whole grains (pasta) → long-lasting energy<br>
-                  Mixed vegetables → vitamins &amp; hydration support
-                </p>
+                <p><em>Nutrients:</em><br>Lean protein (turkey) → supports strength without heaviness<br>Whole grains (pasta) → long-lasting energy<br>Mixed vegetables → vitamins &amp; hydration support</p>
 
                 <p class="idea">⚡ The idea: protein to repair, carbs to fuel, veggies to balance. Nothing too heavy, greasy, or sugary — just steady, clean fuel for tomorrow’s game.</p>
               </div>
@@ -326,25 +267,13 @@ The key isn’t just knowing their weakness, but knowing how to repeatedly stres
               <summary>Game-Day Breakfast</summary>
               <div class="copy">
                 <p><strong>Scrambled Eggs, Whole Wheat Toast &amp; Banana</strong></p>
-                <p><em>Nutrients:</em><br>
-                  Protein (eggs) → supports focus &amp; muscle readiness<br>
-                  Whole grains (toast) → steady energy release<br>
-                  Potassium (banana) → prevents cramps, aids hydration
-                </p>
+                <p><em>Nutrients:</em><br>Protein (eggs) → supports focus &amp; muscle readiness<br>Whole grains (toast) → steady energy release<br>Potassium (banana) → prevents cramps, aids hydration</p>
 
                 <p><strong>2. Oatmeal with Berries &amp; Almond Butter</strong></p>
-                <p><em>Nutrients:</em><br>
-                  Complex carbs (oats) → sustained fuel<br>
-                  Antioxidants (berries) → reduce inflammation<br>
-                  Healthy fats + protein (almond butter) → stable blood sugar &amp; satiety
-                </p>
+                <p><em>Nutrients:</em><br>Complex carbs (oats) → sustained fuel<br>Antioxidants (berries) → reduce inflammation<br>Healthy fats + protein (almond butter) → stable blood sugar &amp; satiety</p>
 
                 <p><strong>3. Greek Yogurt Parfait with Granola &amp; Honey</strong></p>
-                <p><em>Nutrients:</em><br>
-                  Protein (Greek yogurt) → builds muscle &amp; aids recovery<br>
-                  Carbs (granola + honey) → quick energy boost<br>
-                  Probiotics (yogurt) → gut health for better digestion
-                </p>
+                <p><em>Nutrients:</em><br>Protein (Greek yogurt) → builds muscle &amp; aids recovery<br>Carbs (granola + honey) → quick energy boost<br>Probiotics (yogurt) → gut health for better digestion</p>
 
                 <p class="idea">⚡ Rule of thumb: light but balanced → carbs for energy, protein for stability, fruit for quick fuel. Nothing too heavy so you stay fast and sharp.</p>
               </div>
@@ -353,36 +282,14 @@ The key isn’t just knowing their weakness, but knowing how to repeatedly stres
             <details class="pulldown">
               <summary>Hydration Plan (before/during game &amp; post-game)</summary>
               <div class="copy">
-                <p><em>Night Before the Game</em><br>
-                  Drink 16–20 oz of water with dinner.<br>
-                  Sip water steadily throughout the evening (don’t chug all at once).<br>
-                  Option: add an electrolyte packet or pinch of sea salt + squeeze of lemon if you’ve been sweating a lot that week.<br>
-                  ⚡ Goal: Go to bed hydrated, not bloated.
-                </p>
-                <p><em>Morning of the Game</em><br>
-                  Drink 16 oz of water right after waking up.<br>
-                  With breakfast, sip another 8–12 oz of water or electrolyte drink.<br>
-                  ⚡ Goal: Replace overnight loss + start fueling cells early.
-                </p>
-                <p><em>2 Hours Before Kickoff</em><br>
-                  Drink 16–20 oz of water.<br>
-                  If it’s hot: include electrolytes to prevent cramping.<br>
-                  ⚡ Goal: Top off hydration tanks without feeling heavy.
-                </p>
-                <p><em>During the Game</em><br>
-                  Every quarter: sip 3–6 oz of water or sports drink.<br>
-                  Rotate: water for thirst, electrolytes for endurance.<br>
-                  ⚡ Goal: Stay consistent, never wait until you feel thirsty.
-                </p>
-                <p><em>Post-Game</em><br>
-                  Drink 16–24 oz of water for every pound lost (weigh before & after if possible).<br>
-                  Add electrolytes if sweating was heavy.<br>
-                  ⚡ Goal: Rehydrate fast to recover faster.
-                </p>
+                <p><em>Night Before the Game</em><br>Drink 16–20 oz of water with dinner.<br>Sip water steadily throughout the evening (don’t chug all at once).<br>Option: add an electrolyte packet or pinch of sea salt + squeeze of lemon if you’ve been sweating a lot that week.<br>⚡ Goal: Go to bed hydrated, not bloated.</p>
+                <p><em>Morning of the Game</em><br>Drink 16 oz of water right after waking up.<br>With breakfast, sip another 8–12 oz of water or electrolyte drink.<br>⚡ Goal: Replace overnight loss + start fueling cells early.</p>
+                <p><em>2 Hours Before Kickoff</em><br>Drink 16–20 oz of water.<br>If it’s hot: include electrolytes to prevent cramping.<br>⚡ Goal: Top off hydration tanks without feeling heavy.</p>
+                <p><em>During the Game</em><br>Every quarter: sip 3–6 oz of water or sports drink.<br>Rotate: water for thirst, electrolytes for endurance.<br>⚡ Goal: Stay consistent, never wait until you feel thirsty.</p>
+                <p><em>Post-Game</em><br>Drink 16–24 oz of water for every pound lost (weigh before & after if possible).<br>Add electrolytes if sweating was heavy.<br>⚡ Goal: Rehydrate fast to recover faster.</p>
               </div>
             </details>
 
-            <!-- Completion confirmations for this portal -->
             <details class="pulldown">
               <summary>Confirm Fuel & Hydration Plan</summary>
               <div class="checks">
@@ -399,9 +306,9 @@ The key isn’t just knowing their weakness, but knowing how to repeatedly stres
               <summary>7. Pre-Game Mental Focus</summary>
               <p>Breathing Technique (describe or choose):</p>
               <div class="checks two">
-                <label><input type="checkbox" name="focus" value="4-4-4 Box Breath" /> 4-4-4 Box Breath — Inhale 4s → Hold 4s → Exhale 4s (Repeat 4–6 cycles)</label>
-                <label><input type="checkbox" name="focus" value="6-2-6 Calm Breath" /> 6-2-6 Calm Breath — Inhale 6s → Hold 2s → Exhale 6s (Repeat until relaxed)</label>
-                <label><input type="checkbox" name="focus" value="Visualization Breath" /> Visualization Breath — Inhale = picture the snap. Exhale = picture completing the throw. Repeat with different plays in your mind.</label>
+                <label><input type="checkbox" name="focus" value="4-4-4 Box Breath"> 4-4-4 Box Breath — Inhale 4s → Hold 4s → Exhale 4s (Repeat 4–6 cycles)</label>
+                <label><input type="checkbox" name="focus" value="6-2-6 Calm Breath"> 6-2-6 Calm Breath — Inhale 6s → Hold 2s → Exhale 6s (Repeat until relaxed)</label>
+                <label><input type="checkbox" name="focus" value="Visualization Breath"> Visualization Breath — Inhale = picture the snap. Exhale = picture completing the throw. Repeat with different plays in your mind.</label>
               </div>
             </details>
 
@@ -470,7 +377,7 @@ The key isn’t just knowing their weakness, but knowing how to repeatedly stres
     <div id="confetti" class="confetti" aria-hidden="true"></div>
 
     <footer class="site-footer">
-      <small>BE READY THIS SEASON © You</small>
+      <small>QB Diary — Season-ready portals. © You</small>
     </footer>
   </div>
 

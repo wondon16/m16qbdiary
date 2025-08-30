@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Schedule — QB Diary</title>
+
+  <!-- Fonts + Theme -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css"/>
+
+  <!-- PayPal SDK (defer to ensure DOM is ready before render) -->
+  <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=USD&intent=capture&components=buttons" defer></script>
+
+  <!-- Scheduler logic -->
+  <script src="schedule.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <h2 class="brand-name">QB Diary</h2>
+    </div>
+    <nav class="top-tabs" aria-label="Primary">
+      <a class="tab" href="index.html">Portals</a>
+      <a class="tab active" href="schedule.html" aria-current="page">Schedule</a>
+    </nav>
+    <div class="toolbar">
+      <div class="cta-group">
+        <a href="pay.html" class="btn pill btn-outline">$7 — Get Password</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="book-wrap">
+    <section class="book-hero">
+      <h1 class="book-title">Book a Google Meet</h1>
+      <p class="book-sub">Pick a date and time, enter your info, then pay to lock the spot. You’ll get an .ics file, a Google Calendar link, and the Meet link.</p>
+    </section>
+
+    <section class="book-layout">
+      <!-- Calendar -->
+      <div class="calendar card">
+        <div class="cal-header">
+          <button id="calPrev" class="nav-arrow" aria-label="Previous month">◀</button>
+          <div class="cal-title"><span id="calMonth"></span> <span id="calYear"></span></div>
+          <button id="calNext" class="nav-arrow" aria-label="Next month">▶</button>
+        </div>
+
+        <div class="cal-weekdays">
+          <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+        </div>
+
+        <div id="calGrid" class="cal-grid" role="grid" aria-label="Select a date"></div>
+
+        <div class="cal-foot">
+          <small class="muted">Times shown in your local timezone: <span id="tzLabel"></span></small>
+        </div>
+      </div>
+
+      <!-- Times / Details / Payment -->
+      <div class="slots card">
+        <h3 class="slots-title">Available Times</h3>
+        <p id="slotDateLabel" class="muted">Select a date to see times.</p>
+        <div id="slotList" class="slot-list"></div>
+
+        <hr class="divider">
+
+        <h3 class="slots-title">Details</h3>
+        <form id="bookingForm" class="booking-form" novalidate>
+          <div class="form-row">
+            <label class="lbl">Your Name</label>
+            <input class="inp" type="text" name="name" required placeholder="First Last" />
+          </div>
+          <div class="form-row">
+            <label class="lbl">Your Email</label>
+            <input class="inp" type="email" name="email" required placeholder="you@example.com" />
+          </div>
+          <div class="form-row two">
+            <div>
+              <label class="lbl">Selected Date</label>
+              <input class="inp" type="text" name="date" readonly placeholder="—" />
+            </div>
+            <div>
+              <label class="lbl">Selected Time</label>
+              <input class="inp" type="text" name="time" readonly placeholder="—" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <button id="toPay" type="button" class="btn btn-primary pill">Continue to Payment</button>
+            <button type="button" id="clearBooking" class="btn btn-outline pill">Clear</button>
+          </div>
+
+          <p id="bookMsg" class="muted" aria-live="polite"></p>
+        </form>
+
+        <!-- Payment -->
+        <div id="payPanel" class="pay-panel" hidden>
+          <h3 class="slots-title">Payment</h3>
+          <p class="muted">Complete your payment to confirm the booking.</p>
+          <div id="paypalButtons" class="paypal-wrap"></div>
+          <div id="payMsg" class="pay-msg" aria-live="polite"></div>
+        </div>
+
+        <!-- After booking -->
+        <div id="afterBooking" class="after-booking" hidden>
+          <p>✅ Booked! Add it to your calendar and join via Google Meet:</p>
+          <div class="after-actions">
+            <a id="icsBtn" class="btn btn-outline pill" download="QB-Diary-Booking.ics">Download .ics</a>
+            <a id="gcalBtn" class="btn btn-outline pill" target="_blank" rel="noopener">Add to Google Calendar</a>
+            <button id="copyMeet" class="btn btn-primary pill" type="button">Copy Meet Link</button>
+          </div>
+          <p class="muted">We also prepped an email to the organizer for your records:</p>
+          <a id="mailtoBtn" class="btn btn-ghost pill" target="_blank" rel="noopener">Email Confirmation</a>
+        </div>
+      </div>
+
+      <!-- My Bookings -->
+      <aside class="my-bookings card">
+        <h3 class="slots-title">My Bookings</h3>
+        <ul id="myBookingsList" class="bookings-list"></ul>
+        <button id="clearAllBookings" class="btn btn-outline pill" type="button">Clear All</button>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <small>QB Diary — Google Meet Sessions. © You</small>
+  </footer>
+</body>
+</html>
