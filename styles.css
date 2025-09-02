@@ -208,4 +208,12 @@ a{color:inherit; text-decoration:none}
   50% {
     border-color: transparent;
   }
-}
+  #bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;  /* keeps it behind all other elements */
+  background: radial-gradient(circle at center, #001, #000);}
+  }
