@@ -32,7 +32,7 @@ a{color:inherit; text-decoration:none}
 /* ===== COVER ===== */
 .cover{min-height:100dvh; display:grid; place-items:center; padding:24px}
 .cover-card{width:min(880px,96vw); background:linear-gradient(180deg,rgba(23,47,87,.92),rgba(14,30,57,.96)); border:1px solid var(--line); border-radius:18px; padding:28px 24px; text-align:center; box-shadow:0 40px 80px var(--shadow)}
-.cover-logo{width:400px; height:400px; object-fit:contain; margin:2px auto 10px; display:block}
+.cover-logo{width:700px; height:700px; object-fit:contain; margin:2px auto 10px; display:block}
 .cover-title{margin:8px 0 6px; font:700 40px/1.08 "Playfair Display", serif}
 .cover-desc{margin:6px auto 18px; color:var(--muted); max-width:62ch; font-size:15px}
 .gate-actions{display:flex; justify-content:center; gap:12px; margin:6px 0 8px}
