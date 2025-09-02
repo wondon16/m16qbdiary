@@ -208,7 +208,7 @@
     const last = parseInt(localStorage.getItem('qb_diary_last_week')||'1',10);
     currentWeek = Math.min(Math.max(1,last),TOTAL_WEEKS); weekBadge.textContent=`Week ${currentWeek}`; loadWeek();
     const hash = location.hash.replace('#',''); if (hash && ORDER.includes(hash)) openPortal(hash);
-    const text = "Welcome to My Website! 🚀";
+    const text = "Thank you for visiting my website! && Email me at mushymillc@gmail.com to recieve password";
 let index = 0;
 const speed = 100; // typing speed in ms
 
