@@ -208,7 +208,7 @@
     const last = parseInt(localStorage.getItem('qb_diary_last_week')||'1',10);
     currentWeek = Math.min(Math.max(1,last),TOTAL_WEEKS); weekBadge.textContent=`Week ${currentWeek}`; loadWeek();
     const hash = location.hash.replace('#',''); if (hash && ORDER.includes(hash)) openPortal(hash);
-    const text = "Thank you for visiting my website!\n Email mushymillc@gmail.com to recieve password.\n The QB Game Day Pocketbook is a premium,\n season-long flipbook designed for athletes,\n blending futuristic, motivational aesthetics\n with interactive tools for mental prep,\n film study, workouts, nutrition,\n and post-game reflection.";
+    const text = "Thank you for visiting my website!\nEmail mushymillc@gmail.com to recieve password.\nM1Game Day Pocketbook is a premium\n season-long flipbook designed for athletes\n blending futuristic, motivational aesthetics\n with interactive tools for mental prep\n film study, workouts, nutrition\n and post-game reflection.";
 let index = 0;
 const speed = 100; // typing speed in ms
 
