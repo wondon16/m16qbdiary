@@ -192,3 +192,21 @@ a{color:inherit; text-decoration:none}
 @keyframes fall{0%{transform:translateY(-20px) rotate(0)}100%{transform:translateY(110vh) rotate(720deg)}}
 .site-footer{max-width:1040px; margin:30px auto 50px; padding:0 20px; color:var(--muted); font-size:12px}
 @keyframes fadeIn{from{opacity:0} to{opacity:1}}
+.typewriter {
+  font-family: 'Courier New', monospace;
+  font-size: 2rem;
+  color: #00f7ff;
+  text-shadow: 0 0 8px #00f7ff;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 3px solid #00f7ff; /* blinking cursor */
+  width: fit-content;
+  margin: 50px auto;
+  animation: blink-cursor 0.7s steps(1) infinite;
+}
+
+@keyframes blink-cursor {
+  50% {
+    border-color: transparent;
+  }
+}
