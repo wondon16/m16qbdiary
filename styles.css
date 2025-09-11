@@ -31,11 +31,14 @@ a{color:inherit; text-decoration:none}
 /* ===== COVER ===== */
 .cover{min-height:100dvh; display:grid; place-items:center; padding:24px}
 .cover-card{width:min(880px,96vw); background:linear-gradient(180deg,rgba(23,47,87,.92),rgba(14,30,57,.96)); border:1px solid var(--line); border-radius:18px; padding:28px 24px; text-align:center; box-shadow:0 40px 80px var(--shadow)}
+.cover-card--bare{background:transparent; border:none; box-shadow:none; padding:24px 14px}
 .cover-logo{width:100%; height:100%; object-fit:contain; display:block}
 .cover-logo-wrap{width:min(86vw, 760px); height:min(86vw, 760px); margin:2px auto 10px; perspective:800px; animation:float 6s ease-in-out infinite; will-change:transform}
 .cover-logo-wrap .cover-logo{transform-style:preserve-3d; animation:spinY 12s linear infinite; will-change:transform; filter:drop-shadow(0 12px 24px rgba(0,0,0,.45)) drop-shadow(0 4px 10px rgba(98,199,255,.25))}
-.cover-title{margin:8px 0 6px; font: px 40px/1.08 "Playfair Display", serif}
+.cover-title{margin:8px 0 6px; font: 700 40px/1.08 "Playfair Display", serif}
+.cover-card--bare .cover-title{margin:12px 0 10px; font-weight:800; font-size:clamp(36px,6vw,64px); line-height:1.05}
 .cover-desc{margin:6px auto 18px; color:var(--muted); max-width:62ch; font-size:15px}
+.cover-card--bare .cover-desc{font-size:clamp(16px,2.4vw,20px); margin:8px auto 20px}
 .gate-actions{display:flex; justify-content:center; gap:12px; margin:6px 0 8px}
 .gate{display:grid; gap:10px; max-width:440px; margin:0 auto 10px}
 .gate-label{font-weight:700; color:#e6f3ff; text-align:left}
