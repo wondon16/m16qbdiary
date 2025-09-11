@@ -76,9 +76,9 @@
     ctx.fillStyle = '#050913';
     ctx.fillRect(0, 0, w, h);
 
-    // Subtle nebula glow tuned to Carolina palette
+    // Subtle nebula glow
     const grad = ctx.createRadialGradient(cx + 0.2*w, cy - 0.3*h, 20, cx, cy, Math.hypot(w, h));
-    grad.addColorStop(0, 'rgba(19,41,75,0.35)');
+    grad.addColorStop(0, 'rgba(20,40,100,0.35)');
     grad.addColorStop(1, 'rgba(0,0,0,0)');
     ctx.fillStyle = grad; ctx.fillRect(0, 0, w, h);
 
@@ -101,13 +101,13 @@
 
       // trail from previous projected position for streak effect
       if (s.px && s.py) {
-        ctx.strokeStyle = 'rgba(75,156,211,0.35)';
+        ctx.strokeStyle = 'rgba(140,200,255,0.35)';
         ctx.lineWidth = Math.max(0.5, size * 0.12);
         ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(s.px, s.py); ctx.stroke();
       }
 
-      ctx.fillStyle = '#e4f3ff';
-      ctx.shadowBlur = 12; ctx.shadowColor = '#7BAFD4';
+      ctx.fillStyle = '#cfeaff';
+      ctx.shadowBlur = 12; ctx.shadowColor = '#8fd0ff';
       ctx.beginPath(); ctx.arc(sx, sy, size * 0.5, 0, Math.PI * 2); ctx.fill();
 
       s.px = sx; s.py = sy;
@@ -127,3 +127,4 @@
   resize();
   start();
 })();
+
