@@ -31,9 +31,9 @@ a{color:inherit; text-decoration:none}
 /* ===== COVER ===== */
 .cover{min-height:100dvh; display:grid; place-items:center; padding:24px}
 .cover-card{width:min(880px,96vw); background:linear-gradient(180deg,rgba(23,47,87,.92),rgba(14,30,57,.96)); border:1px solid var(--line); border-radius:18px; padding:28px 24px; text-align:center; box-shadow:0 40px 80px var(--shadow)}
-.cover-logo{width:700px; height:700px; object-fit:contain; margin:2px auto 10px; display:block}
-.cover-logo-wrap{width:700px; height:700px; margin:2px auto 10px; perspective:800px; animation:float 6s ease-in-out infinite; will-change:transform}
-.cover-logo-wrap .cover-logo{width:100%; height:100%; object-fit:contain; display:block; transform-style:preserve-3d; animation:spinY 12s linear infinite; will-change:transform; filter:drop-shadow(0 12px 24px rgba(0,0,0,.45)) drop-shadow(0 4px 10px rgba(98,199,255,.25))}
+.cover-logo{width:100%; height:100%; object-fit:contain; display:block}
+.cover-logo-wrap{width:min(86vw, 760px); height:min(86vw, 760px); margin:2px auto 10px; perspective:800px; animation:float 6s ease-in-out infinite; will-change:transform}
+.cover-logo-wrap .cover-logo{transform-style:preserve-3d; animation:spinY 12s linear infinite; will-change:transform; filter:drop-shadow(0 12px 24px rgba(0,0,0,.45)) drop-shadow(0 4px 10px rgba(98,199,255,.25))}
 .cover-title{margin:8px 0 6px; font: px 40px/1.08 "Playfair Display", serif}
 .cover-desc{margin:6px auto 18px; color:var(--muted); max-width:62ch; font-size:15px}
 .gate-actions{display:flex; justify-content:center; gap:12px; margin:6px 0 8px}
@@ -194,7 +194,7 @@ a{color:inherit; text-decoration:none}
 .site-footer{max-width:1040px; margin:30px auto 50px; padding:0 20px; color:var(--muted); font-size:12px}
 @keyframes fadeIn{from{opacity:0} to{opacity:1}}
 /* Fullscreen space canvas */
-#space-bg{position:fixed; inset:0; width:100vw; height:100vh; z-index:0; display:block; pointer-events:none}
+#space-bg{position:fixed; inset:0; width:100vw; height:100vh; z-index:-1; display:block; pointer-events:none}
 @keyframes spinY{from{transform:rotateY(0)} to{transform:rotateY(360deg)}}
 @keyframes float{0%{transform:translateY(0) rotateX(0)} 50%{transform:translateY(-12px) rotateX(8deg)} 100%{transform:translateY(0) rotateX(0)}}
 @media (prefers-reduced-motion: reduce){
