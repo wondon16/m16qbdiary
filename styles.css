@@ -38,6 +38,19 @@ a{color:inherit; text-decoration:none}
 .cover-logo-wrap .cover-logo{transform-style:preserve-3d; animation:spinY 12s linear infinite; will-change:transform; filter:drop-shadow(0 12px 24px rgba(0,0,0,.45)) drop-shadow(0 4px 10px rgba(98,199,255,.25))}
 /* Enlarge only on the main cover (bare card) */
 .cover-card--bare .cover-logo-wrap{width:min(96vw, 960px); height:min(96vw, 960px)}
+/* Pull password form closer to the emblem on cover */
+.cover-card--bare .cover-logo-wrap{margin-bottom:8px}
+.cover-card--bare .gate{margin-top:6px; margin-bottom:10px; gap:6px}
+.cover-card--bare .gate-label{margin-bottom:2px}
+.cover-card--bare .gate .btn-lg{margin-top:4px}
+.cover-card--bare .gate .btn-lg{width:100%}
+.cover-card--bare .gate .inp{padding:11px}
+.cover-card--bare .gate .inp-lg{padding:12px}
+.cover-card--bare .gate{max-width:380px}
+@media (max-width:520px){
+  .cover-card--bare .gate{max-width:320px}
+}
+.cover-card--bare .cover-foot{margin-top:6px; display:block}
 .cover-title{margin:8px 0 6px; font: 700 40px/1.08 "Playfair Display", serif}
 .cover-card--bare .cover-title{margin:12px 0 10px; font-weight:800; font-size:clamp(36px,6vw,64px); line-height:1.05}
 .cover-desc{margin:6px auto 18px; color:var(--muted); max-width:62ch; font-size:15px}
