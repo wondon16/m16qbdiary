@@ -188,7 +188,9 @@ a{color:inherit; text-decoration:none}
 .booking-who .paid{color:#9dffc9}
 .booking-actions{display:flex; gap:8px}
 
-/* Responsive */
+/* Ask page simplified layout */
+.slots-title{margin:6px 0}
+.booking-form .form-row{margin:10px 0}
 @media (max-width:980px){ .book-layout{grid-template-columns:1fr} }
 
 /* ===== TOAST/CONFETTI/FOOTER ===== */
