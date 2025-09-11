@@ -1,9 +1,10 @@
 /* ===== THEME ===== */
 :root{
-  --navy:#0b1e3a; --navy-2:#0f2b53;
-  --sky:#62c7ff;  --sky-2:#2aa3ff;
-  --ink:#f7fbff;  --muted:#c9e2ff;
-  --line:#163556; --success:#27d17a; --shadow:rgba(0,0,0,.45);
+  /* Carolina theme */
+  --navy:#13294B; --navy-2:#0f2140;
+  --sky:#7BAFD4;  --sky-2:#4B9CD3;
+  --ink:#f7fbff;  --muted:#cfe3f7;
+  --line:#1b3d66; --success:#27d17a; --shadow:rgba(0,0,0,.45);
 }
 *{box-sizing:border-box} html,body{height:100%} html{scroll-behavior:smooth}
 body{
@@ -54,7 +55,7 @@ a{color:inherit; text-decoration:none}
   backdrop-filter: blur(6px);
 }
 .brand{display:flex; align-items:center; gap:10px}
-.brand-mark{width:14px; height:14px; border-radius:50%; background:radial-gradient(circle at 30% 30%, var(--sky), #0a7ed8 70%, #08518d 100%); box-shadow:0 0 12px rgba(98,199,255,.7)}
+.brand-mark{width:14px; height:14px; border-radius:50%; background:radial-gradient(circle at 30% 30%, var(--sky), var(--sky-2) 75%, #1c4a7c 100%); box-shadow:0 0 12px rgba(123,175,212,.7)}
 .toolbar{display:flex; align-items:center; gap:12px}
 
 /* Tabs */
@@ -209,13 +210,27 @@ a{color:inherit; text-decoration:none}
 .logo3d img{display:block; width:100%; height:100%; object-fit:contain; transform-style:preserve-3d; animation:spinY 12s linear infinite; will-change:transform; filter:drop-shadow(0 6px 12px rgba(0,0,0,.35)) drop-shadow(0 2px 6px rgba(98,199,255,.2))}
 .logo3d--sm{width:64px; height:64px}
 @media (prefers-reduced-motion: reduce){ .logo3d, .logo3d img { animation:none } }
-.typewriter{position:relative; font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif; color:#e6f7ff; text-shadow:0 0 10px rgba(98,199,255,.18); overflow:hidden; max-width:min(92vw,980px); margin:16px auto 20px; padding:0 8px; text-align:center}
+.typewriter{position:relative; font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif; color:var(--ink); text-shadow:0 0 10px rgba(123,175,212,.18); overflow:hidden; max-width:min(92vw,980px); margin:16px auto 20px; padding:0 8px; text-align:center}
 .typewriter::after{content:""; position:absolute; inset:0; background:linear-gradient(120deg, transparent 0%, rgba(98,199,255,.18) 40%, transparent 70%); transform:translateX(-120%); animation:sheen 7s ease-in-out infinite; pointer-events:none}
 .typewriter-text{white-space:pre-wrap; font-size:clamp(18px,2.4vw,22px); line-height:1.5}
 .type-line{opacity:0; transform:translateY(8px) scale(.995); filter:blur(2px)}
 .type-line.show{animation:fadeUp .52s cubic-bezier(.2,.7,.2,1) forwards}
 @keyframes fadeUp{to{opacity:1; transform:none; filter:none}}
 @keyframes sheen{0%{transform:translateX(-120%)} 55%{transform:translateX(120%)} 100%{transform:translateX(120%)}}
+/* Glassy backdrop for intro text */
+.intro-glass{max-width:min(92vw,1000px); margin:8px auto 18px; padding:14px 18px; border-radius:14px; border:1px solid rgba(98,199,255,.28); background:linear-gradient(180deg, rgba(8,20,45,.52), rgba(8,20,45,.34)); backdrop-filter: blur(12px) saturate(130%); box-shadow:0 10px 40px rgba(0,0,0,.35), inset 0 0 30px rgba(98,199,255,.06)}
+@media (max-width:640px){ .intro-glass{padding:10px 12px; border-radius:12px} }
+
+/* Futuristic gradient text with safe fallback */
+.typewriter .type-line{ color:#e6f7ff }
+@supports (-webkit-background-clip:text){
+  .typewriter .type-line:not(.type-signature){
+    background:linear-gradient(180deg, #ffffff 0%, var(--sky) 46%, var(--sky-2) 92%);
+    -webkit-background-clip:text; background-clip:text; color:transparent; 
+    text-shadow:0 0 12px rgba(123,175,212,.18);
+  }
+}
+.typewriter .type-signature{ font-style:italic; color:#bdd9ee; opacity:.98 }
 @keyframes blink-cursor {
   50% {
     border-color: transparent;

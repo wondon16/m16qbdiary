@@ -216,7 +216,7 @@
       const lines = text.split('\n');
       lines.forEach((ln, i)=>{
         const d = document.createElement('div');
-        d.className='type-line';
+        d.className='type-line' + (i===lines.length-1 ? ' type-signature' : '');
         d.textContent = ln.replace(/^\s+/, '');
         el.appendChild(d);
         setTimeout(()=>d.classList.add('show'), 250 + i*160);
