@@ -42,6 +42,13 @@
   const weekChecklist = document.getElementById('weekChecklist');
   const toast = document.getElementById('toast');
   const confettiBox = document.getElementById('confetti');
+  // Signup elements (cover)
+  const signupBtn = document.getElementById('signupBtn');
+  const signupOverlay = document.getElementById('signupOverlay');
+  const signupClose = document.getElementById('signupClose');
+  const signupCancel = document.getElementById('signupCancel');
+  const signupForm = document.getElementById('signupForm');
+  const signupMsg = document.getElementById('signupMsg');
 
   let currentWeek = 1;
   let currentPortal = null;
@@ -195,6 +202,44 @@
   overlayClose.addEventListener('click', closePortal);
   overlay.addEventListener('click', e=>{ if(e.target===overlay) closePortal(); });
   document.addEventListener('keydown', e=>{ if(e.key==='Escape'&&overlay.classList.contains('show')) closePortal(); if(e.key==='ArrowRight'&&overlay.classList.contains('show')) gotoPortal(1); if(e.key==='ArrowLeft'&&overlay.classList.contains('show')) gotoPortal(-1); });
+
+  // ----- Signup modal behavior -----
+  function openSignup(){ signupOverlay.classList.add('show'); signupOverlay.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; setTimeout(()=>{ const el=document.getElementById('suFirst'); if(el) el.focus(); }, 50); }
+  function closeSignup(){ signupOverlay.classList.remove('show'); signupOverlay.setAttribute('aria-hidden','true'); document.body.style.overflow=''; signupMsg.textContent=''; }
+  if (signupBtn){ signupBtn.addEventListener('click', openSignup); }
+  if (signupClose){ signupClose.addEventListener('click', closeSignup); }
+  if (signupCancel){ signupCancel.addEventListener('click', closeSignup); }
+  if (signupOverlay){ signupOverlay.addEventListener('click', e=>{ if(e.target===signupOverlay) closeSignup(); }); }
+
+  async function submitSignup(e){
+    e.preventDefault(); if(!signupForm) return;
+    const data = {
+      firstName: signupForm.firstName.value.trim(),
+      lastName: signupForm.lastName.value.trim(),
+      email: signupForm.email.value.trim(),
+      phone: signupForm.phone.value.trim(),
+      reason: signupForm.reason.value.trim(),
+      focus: signupForm.focus.value.trim(),
+    };
+    // basic validation
+    if (!data.firstName || !data.lastName || !/^\S+@\S+\.\S+$/.test(data.email) || !data.reason || !data.focus){ signupMsg.textContent='Please complete all required fields.'; return; }
+    const btn = document.getElementById('signupSubmit'); if(btn){ btn.disabled=true; btn.textContent='Sending…'; }
+    signupMsg.textContent='Sending…';
+    try{
+      const resp = await fetch('/api/signup', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data) });
+      if (!resp.ok) throw new Error('server');
+      signupMsg.textContent='Submitted — check your email for confirmation.';
+      setTimeout(()=>{ closeSignup(); }, 700);
+    }catch(err){
+      // Fallback: mailto
+      const subject = encodeURIComponent(`New M16 Flow sign-up: ${data.firstName} ${data.lastName}`);
+      const body = encodeURIComponent(`Name: ${data.firstName} ${data.lastName}\nEmail: ${data.email}\nPhone: ${data.phone}\nReason: ${data.reason}\nFocus: ${data.focus}`);
+      window.location.href = `mailto:mushymillc@gmail.com?subject=${subject}&body=${body}`;
+      signupMsg.textContent='Opening your email app…';
+      setTimeout(()=>{ closeSignup(); }, 900);
+    } finally { if(btn){ btn.disabled=false; btn.textContent='Submit'; } }
+  }
+  if (signupForm){ signupForm.addEventListener('submit', submitSignup); }
 
   let timer; function autosave(){ setStatus('Editing…'); clearTimeout(timer); timer=setTimeout(()=>saveWeek(false),600); }
   form.addEventListener('input', autosave); form.addEventListener('change', autosave);
