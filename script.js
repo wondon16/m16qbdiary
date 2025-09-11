@@ -11,7 +11,7 @@
   const gateForm = document.getElementById('gateForm');
   const gateInput = document.getElementById('gateInput');
   const gateHint = document.getElementById('gateHint');
-  function unlockApp(){ app.classList.remove('locked'); app.removeAttribute('aria-hidden'); cover.style.display='none'; }
+  function unlockApp(){ app.classList.remove('locked'); app.removeAttribute('aria-hidden'); cover.style.display='none'; if (window.runIntroReveal) window.runIntroReveal(); }
   gateForm.addEventListener('submit', (e)=>{
     e.preventDefault();
     const v = (gateInput.value||'').trim();
@@ -223,7 +223,10 @@
       });
     }
 
+    // If intro is on screen initially (after unlock it's moved inside app)
     professionalReveal();
+    // expose to be called after unlocking
+    window.runIntroReveal = professionalReveal;
 
   });
 })();
