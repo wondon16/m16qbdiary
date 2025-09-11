@@ -239,6 +239,7 @@ a{color:inherit; text-decoration:none}
 .typewriter{position:relative; font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif; color:#e6f7ff; text-shadow:0 0 10px rgba(98,199,255,.18); overflow:hidden; max-width:min(92vw,980px); margin:16px auto 20px; padding:0 8px; text-align:center}
 .typewriter::after{content:""; position:absolute; inset:0; background:linear-gradient(120deg, transparent 0%, rgba(98,199,255,.18) 40%, transparent 70%); transform:translateX(-120%); animation:sheen 7s ease-in-out infinite; pointer-events:none}
 .typewriter-text{white-space:pre-wrap; font-size:clamp(18px,2.4vw,22px); line-height:1.5}
+.intro-clear .typewriter-text{font-size:clamp(30px,5vw,56px); line-height:1.2; font-weight:900}
 .type-line{opacity:0; transform:translateY(8px) scale(.995); filter:blur(2px)}
 .type-line.show{animation:fadeUp .52s cubic-bezier(.2,.7,.2,1) forwards}
 @keyframes fadeUp{to{opacity:1; transform:none; filter:none}}
@@ -257,13 +258,29 @@ a{color:inherit; text-decoration:none}
     -webkit-background-clip:text; background-clip:text; color:transparent; 
     text-shadow:0 0 12px rgba(98,199,255,.14);
   }
+  /* Animated gradient for home intro */
+  .intro-clear .typewriter .type-line:not(.type-signature){
+    background:linear-gradient(90deg,#ffffff 0%,#bfe6ff 25%,#8ecfff 50%,#bfe6ff 75%,#ffffff 100%);
+    background-size:200% auto; animation:gradientShift 12s ease-in-out infinite alternate;
+  }
+  .intro-clear .typewriter .type-signature{
+    background:linear-gradient(90deg,#ffffff 0%,#bfe6ff 25%,#8ecfff 50%,#bfe6ff 75%,#ffffff 100%);
+    background-size:200% auto; -webkit-background-clip:text; background-clip:text; color:transparent;
+    animation:gradientShift 12s ease-in-out infinite alternate;
+  }
 }
 .typewriter .type-signature{ font-style:italic; color:#a9d2ff; opacity:.95 }
+/* Glow animations for home intro text */
+.intro-clear .typewriter .type-line{ text-shadow:0 0 10px rgba(98,199,255,.18), 0 0 26px rgba(42,163,255,.12); animation:glow 4.2s ease-in-out infinite alternate }
+.intro-clear .typewriter .type-signature{ font-style:normal; font-weight:800; color:#e6f7ff; font-size:clamp(20px,3.2vw,32px) }
+@keyframes gradientShift{0%{background-position:0% 50%}100%{background-position:100% 50%}}
+@keyframes glow{0%{text-shadow:0 0 10px rgba(98,199,255,.18),0 0 22px rgba(42,163,255,.10)}100%{text-shadow:0 0 16px rgba(98,199,255,.35),0 0 36px rgba(42,163,255,.25)}}
 @keyframes blink-cursor {
   50% {
     border-color: transparent;
   }
 }
+@media (prefers-reduced-motion: reduce){ .intro-clear .typewriter .type-line{ animation:none } }
 .navbar {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
