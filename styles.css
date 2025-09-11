@@ -224,6 +224,10 @@ a{color:inherit; text-decoration:none}
 @keyframes fall{0%{transform:translateY(-20px) rotate(0)}100%{transform:translateY(110vh) rotate(720deg)}}
 .site-footer{max-width:1040px; margin:30px auto 50px; padding:0 20px; color:var(--muted); font-size:12px}
 @keyframes fadeIn{from{opacity:0} to{opacity:1}}
+/* Scroll reveal */
+.reveal{opacity:0; transform:translateY(14px) scale(.985); filter:blur(4px); transition:opacity .6s cubic-bezier(.2,.7,.2,1), transform .6s cubic-bezier(.2,.7,.2,1), filter .6s ease; will-change:transform}
+.reveal.in{opacity:1; transform:none; filter:none}
+.reveal[data-delay]{transition-delay:var(--reveal-delay, 0ms)}
 /* Fullscreen space canvas */
 #space-bg{position:fixed; inset:0; width:100vw; height:100vh; z-index:-1; display:block; pointer-events:none}
 @keyframes spinY{from{transform:rotateY(0)} to{transform:rotateY(360deg)}}

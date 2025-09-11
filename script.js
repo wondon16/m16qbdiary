@@ -273,5 +273,30 @@
     // expose to be called after unlocking
     window.runIntroReveal = professionalReveal;
 
+    // Scroll reveal setup
+    const sel = ['.intro-glass','.feature-strip','.week-meta','.hero','.portal-card','.card','.book-hero','.ask-card','.site-footer'];
+    const groups = sel.flatMap(s=>Array.from(document.querySelectorAll(s)));
+    groups.forEach(el=>el.classList.add('reveal'));
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if (entry.isIntersecting){
+          const el = entry.target;
+          // stagger based on index among siblings
+          const parent = el.parentElement; let idx = 0;
+          if (parent){ idx = Array.from(parent.children).indexOf(el); }
+          el.style.setProperty('--reveal-delay', Math.min(idx*70, 280)+'ms');
+          el.classList.add('in');
+          io.unobserve(el);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -10% 0px' });
+    groups.forEach(el=>io.observe(el));
+
+    // Header background subtle change on scroll
+    const hdr = document.querySelector('.site-header');
+    const onScroll = ()=>{ if(!hdr) return; if (window.scrollY>8) hdr.classList.add('scrolled'); else hdr.classList.remove('scrolled'); };
+    window.addEventListener('scroll', onScroll, { passive:true });
+    onScroll();
+
   });
 })();
