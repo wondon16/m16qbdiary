@@ -10,7 +10,18 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css"/>
-  <script src="space.js" defer></script>
+  <script src="media.js" defer></script>
+  <!-- Optional: EmailJS for automatic email sending -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js" defer></script>
+  <script>
+    // Fill these to enable automatic sending via EmailJS
+    window.EMAILJS_CONFIG = {
+      PUBLIC_KEY: '',       // e.g. 'your_public_key'
+      SERVICE_ID: '',       // e.g. 'service_xxxxxxx'
+      TEMPLATE_ID: '',      // e.g. 'template_yyyyyyy'
+      TO_EMAIL: 'mushymillc@gmail.com'
+    };
+  </script>
   <script src="schedule.js" defer></script>
 </head>
 <body>
@@ -39,7 +50,7 @@
       <p class="book-sub">Send your question and email. We’ll reply directly to your inbox.</p>
     </section>
 
-    <section class="card intro-glass" aria-label="Ask form">
+    <section class="card intro-glass ask-card" aria-label="Ask form">
       <form id="askForm" class="booking-form" novalidate>
         <div class="form-row">
           <label class="lbl">Your Name</label>
