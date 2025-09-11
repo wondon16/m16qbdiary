@@ -208,19 +208,22 @@
     const last = parseInt(localStorage.getItem('qb_diary_last_week')||'1',10);
     currentWeek = Math.min(Math.max(1,last),TOTAL_WEEKS); weekBadge.textContent=`Week ${currentWeek}`; loadWeek();
     const hash = location.hash.replace('#',''); if (hash && ORDER.includes(hash)) openPortal(hash);
-    const text = "Thank you for visiting my website!\nEmail mushymillc@gmail.com to recieve password.\nM16 Game Day Pocketbook is a premium\nseason-long flipbook designed for athletes\nblending futuristic, motivational aesthetics\nwith interactive tools for mental prep,\nfilm study, workouts, nutrition\nand post-game reflection.\n                               - Malik Henry";
-let index = 0;
-const speed = 100; // typing speed in ms
+    const text = "Thank you for visiting my website!\nEmail mushymillc@gmail.com to recieve password.\nM16 Game Day Pocketbook is a premium\nseason-long flipbook designed for athletes\nblending futuristic, motivational aesthetics\nwith interactive tools for mental prep,\nfilm study, workouts, nutrition\nand post-game reflection.\n- Malik Henry";
 
-function typeWriter() {
-  if (index < text.length) {
-    document.getElementById("typewriter-text").innerHTML += text.charAt(index);
-    index++;
-    setTimeout(typeWriter, speed);
-  }
-}
+    function professionalReveal(){
+      const el = document.getElementById('typewriter-text'); if(!el) return;
+      el.innerHTML='';
+      const lines = text.split('\n');
+      lines.forEach((ln, i)=>{
+        const d = document.createElement('div');
+        d.className='type-line';
+        d.textContent = ln.replace(/^\s+/, '');
+        el.appendChild(d);
+        setTimeout(()=>d.classList.add('show'), 250 + i*160);
+      });
+    }
 
-window.onload = typeWriter;
+    professionalReveal();
 
   });
 })();

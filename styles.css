@@ -33,7 +33,7 @@ a{color:inherit; text-decoration:none}
 .cover-card{width:min(880px,96vw); background:linear-gradient(180deg,rgba(23,47,87,.92),rgba(14,30,57,.96)); border:1px solid var(--line); border-radius:18px; padding:28px 24px; text-align:center; box-shadow:0 40px 80px var(--shadow)}
 .cover-card--bare{background:transparent; border:none; box-shadow:none; padding:24px 14px}
 .cover-logo{width:100%; height:100%; object-fit:contain; display:block}
-.cover-logo-wrap{width:min(86vw, 760px); height:min(86vw, 760px); margin:2px auto 10px; perspective:800px; animation:float 6s ease-in-out infinite; will-change:transform}
+.cover-logo-wrap{width:min(86vw, 760px); height:min(86vw, 760px); margin:2px auto 18px; perspective:800px; animation:float 6s ease-in-out infinite; will-change:transform}
 .cover-logo-wrap .cover-logo{transform-style:preserve-3d; animation:spinY 12s linear infinite; will-change:transform; filter:drop-shadow(0 12px 24px rgba(0,0,0,.45)) drop-shadow(0 4px 10px rgba(98,199,255,.25))}
 .cover-title{margin:8px 0 6px; font: 700 40px/1.08 "Playfair Display", serif}
 .cover-card--bare .cover-title{margin:12px 0 10px; font-weight:800; font-size:clamp(36px,6vw,64px); line-height:1.05}
@@ -209,18 +209,13 @@ a{color:inherit; text-decoration:none}
 .logo3d img{display:block; width:100%; height:100%; object-fit:contain; transform-style:preserve-3d; animation:spinY 12s linear infinite; will-change:transform; filter:drop-shadow(0 6px 12px rgba(0,0,0,.35)) drop-shadow(0 2px 6px rgba(98,199,255,.2))}
 .logo3d--sm{width:64px; height:64px}
 @media (prefers-reduced-motion: reduce){ .logo3d, .logo3d img { animation:none } }
-.typewriter {
-  font-family: 'Courier New', monospace;
-  font-size: 2rem;
-  color: #00f7ff;
-  text-shadow: 0 0 8px #00f7ff;
-  white-space: pre;   /* 👈 allows \n to create new lines */
-  overflow: hidden;
-  border-right: 3px solid #00f7ff;
-  width: fit-content;
-  margin: 50px auto;
-  animation: blink-cursor 0.7s steps(1) infinite;
-}
+.typewriter{position:relative; font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif; color:#e6f7ff; text-shadow:0 0 10px rgba(98,199,255,.18); overflow:hidden; max-width:min(92vw,980px); margin:16px auto 20px; padding:0 8px; text-align:center}
+.typewriter::after{content:""; position:absolute; inset:0; background:linear-gradient(120deg, transparent 0%, rgba(98,199,255,.18) 40%, transparent 70%); transform:translateX(-120%); animation:sheen 7s ease-in-out infinite; pointer-events:none}
+.typewriter-text{white-space:pre-wrap; font-size:clamp(18px,2.4vw,22px); line-height:1.5}
+.type-line{opacity:0; transform:translateY(8px) scale(.995); filter:blur(2px)}
+.type-line.show{animation:fadeUp .52s cubic-bezier(.2,.7,.2,1) forwards}
+@keyframes fadeUp{to{opacity:1; transform:none; filter:none}}
+@keyframes sheen{0%{transform:translateX(-120%)} 55%{transform:translateX(120%)} 100%{transform:translateX(120%)}}
 @keyframes blink-cursor {
   50% {
     border-color: transparent;
