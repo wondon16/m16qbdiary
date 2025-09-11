@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Homework — M16 Flow</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  <script src="space.js" defer></script>
+  <script src="homework.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <div class="logo3d logo3d--sm" aria-hidden="true">
+        <img src="altlogo2.png" alt="App emblem" />
+      </div>
+      <h2 class="brand-name">M16 Flow</h2>
+    </div>
+    <nav class="top-tabs" aria-label="Primary">
+      <a class="tab" href="index.html">Portals</a>
+      <a class="tab" href="schedule.html">Ask</a>
+      <a class="tab active" href="homework.html" aria-current="page">Homework</a>
+      <a class="tab" href="completed-homework.html">Completed</a>
+    </nav>
+    <div class="toolbar"></div>
+  </header>
+
+  <main class="book-wrap">
+    <section class="book-hero intro-glass">
+      <h1 class="book-title">Post Homework</h1>
+      <p class="book-sub">Upload files/images as assignments for users to download and complete.</p>
+    </section>
+
+    <section class="card intro-glass" aria-label="Create homework">
+      <form id="hwCreateForm" class="booking-form" novalidate>
+        <div class="form-row">
+          <label class="lbl" for="hwTitle">Title</label>
+          <input id="hwTitle" class="inp" type="text" name="title" placeholder="e.g., Week 1 Film Breakdown" required />
+        </div>
+        <div class="form-row">
+          <label class="lbl" for="hwNote">Instructions</label>
+          <textarea id="hwNote" class="inp" name="note" rows="4" placeholder="Describe what to do…"></textarea>
+        </div>
+        <div class="form-row">
+          <label class="lbl" for="hwFiles">Attach files (PDF, images, etc.)</label>
+          <input id="hwFiles" class="inp" type="file" name="files" multiple />
+        </div>
+        <div class="form-row">
+          <button type="submit" class="btn btn-primary pill">Post Assignment</button>
+          <button id="hwClearForm" type="button" class="btn btn-outline pill">Clear</button>
+        </div>
+        <p id="hwCreateMsg" class="muted" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <section class="card intro-glass" aria-label="Posted homework">
+      <h3 class="slots-title">Posted Assignments</h3>
+      <ul id="hwList" class="bookings-list"></ul>
+      <p class="muted" id="hwEmptyMsg">No assignments yet.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <small>M16 Flow © </small>
+  </footer>
+</body>
+</html>
+
