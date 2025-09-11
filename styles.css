@@ -246,6 +246,8 @@ a{color:inherit; text-decoration:none}
 /* Glassy backdrop for intro text */
 .intro-glass{max-width:min(92vw,1000px); margin:8px auto 18px; padding:14px 18px; border-radius:14px; border:1px solid rgba(98,199,255,.28); background:linear-gradient(180deg, rgba(8,20,45,.52), rgba(8,20,45,.34)); backdrop-filter: blur(12px) saturate(130%); box-shadow:0 10px 40px rgba(0,0,0,.35), inset 0 0 30px rgba(98,199,255,.06)}
 @media (max-width:640px){ .intro-glass{padding:10px 12px; border-radius:12px} }
+/* Transparent variant for home intro (no blue box) */
+.intro-glass.intro-clear{background:transparent; border:none; box-shadow:none; backdrop-filter:none}
 
 /* Futuristic gradient text with safe fallback */
 .typewriter .type-line{ color:#e6f7ff }
