@@ -11,7 +11,7 @@
   const gateForm = document.getElementById('gateForm');
   const gateInput = document.getElementById('gateInput');
   const gateHint = document.getElementById('gateHint');
-  function unlockApp(){ app.classList.remove('locked'); app.removeAttribute('aria-hidden'); cover.style.display='none'; if (window.runIntroReveal) window.runIntroReveal(); if (window.m16Audio && window.m16Audio.kickstartFromUserGesture) window.m16Audio.kickstartFromUserGesture(); }
+  function unlockApp(){ app.classList.remove('locked'); app.removeAttribute('aria-hidden'); cover.style.display='none'; if (window.runIntroReveal) window.runIntroReveal(); }
   gateForm.addEventListener('submit', (e)=>{
     e.preventDefault();
     const v = (gateInput.value||'').trim();
