@@ -80,18 +80,35 @@
       const openLink = document.getElementById('openLink');
       const downloadBtn = document.getElementById('downloadBtn');
 
-      function qrURL(v){
-        const encoded = encodeURIComponent(v);
-        // Using a widely available QR image service; safe to replace with your own
-        return `https://api.qrserver.com/v1/create-qr-code/?size=1024x1024&margin=20&data=${encoded}`;
-      }
+      // QR providers (primary then fallback)
+      const QR_PROVIDERS = [
+        (v) => `https://api.qrserver.com/v1/create-qr-code/?size=1024x1024&margin=20&data=${encodeURIComponent(v)}`,
+        (v) => `https://quickchart.io/qr?size=1024&margin=20&text=${encodeURIComponent(v)}`
+      ];
 
       function setAll(url){
         urlInput.value = url;
-        const src = qrURL(url);
-        qrImg.src = src;
         openLink.href = url;
-        downloadBtn.href = src;
+
+        let idx = 0;
+        const tryLoad = () => {
+          const src = QR_PROVIDERS[idx](url);
+          // Update download link to match current image source
+          downloadBtn.href = src;
+
+          // Swap provider on error (once per provider)
+          qrImg.onerror = () => {
+            if (idx < QR_PROVIDERS.length - 1) {
+              idx += 1;
+              tryLoad();
+            } else {
+              qrImg.onerror = null;
+              alert('Unable to load QR image. Please check your connection.');
+            }
+          };
+          qrImg.src = src;
+        };
+        tryLoad();
       }
 
       urlInput.addEventListener('change', (e)=> setAll(e.target.value));
