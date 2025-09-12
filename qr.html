@@ -51,7 +51,7 @@
         <a id="openLink" class="btn btn-outline pill btn-lg" href="#" target="_blank" rel="noopener">Open Link</a>
         <a id="downloadBtn" class="btn btn-outline pill btn-lg" href="#" download="m16-flow-qr.png">Download PNG</a>
       </div>
-      <input id="urlInput" class="inp qr-url" type="url" placeholder="https://yourdomain.com" />
+      <input id="urlInput" class="inp qr-url" type="url" placeholder="https://wondon16.github.io/m16qbdiary/" />
       <p class="qr-note">Tip: Append ?u=https://yourdomain.com to set a custom link automatically.</p>
     </section>
   </main>
@@ -71,7 +71,8 @@
     (function(){
       const params = new URLSearchParams(location.search);
       const provided = params.get('u');
-      const defaultURL = (provided ? provided : location.origin).replace(/\/$/, '');
+      const DEFAULT_QR_URL = 'https://wondon16.github.io/m16qbdiary/';
+      const defaultURL = provided ? provided : DEFAULT_QR_URL;
 
       const urlInput = document.getElementById('urlInput');
       const qrImg = document.getElementById('qrImg');
@@ -103,4 +104,3 @@
   </script>
 </body>
 </html>
-

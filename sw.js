@@ -14,8 +14,6 @@ const ASSETS = [
   './schedule.js',
   './pay.html',
   './qr.html',
-  './logo.png',
-  './altlogo2.png',
   './quarterback pocketbook/real1.png',
   './icons/icon-192.png',
   './icons/icon-512.png',
