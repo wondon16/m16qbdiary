@@ -34,6 +34,8 @@ a{color:inherit; text-decoration:none}
 .cover-card--bare{background:transparent; border:none; box-shadow:none; padding:24px 14px}
 .app-intro{margin:14px auto 16px}
 .cover-logo{width:100%; height:100%; object-fit:contain; display:block}
+/* Make white areas of the logo visually transparent over the moving background */
+.cover-logo, .logo3d img{ mix-blend-mode: darken; }
 .cover-logo-wrap{width:min(86vw, 760px); height:min(86vw, 760px); margin:2px auto 18px; perspective:800px; animation:float 6s ease-in-out infinite; will-change:transform}
 .cover-logo-wrap .cover-logo{transform-style:preserve-3d; animation:spinY 12s linear infinite; will-change:transform; filter:drop-shadow(0 12px 24px rgba(0,0,0,.45)) drop-shadow(0 4px 10px rgba(98,199,255,.25))}
 /* Enlarge only on the main cover (bare card) */
