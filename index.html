@@ -35,12 +35,6 @@
   <!-- ===== COVER / PASSWORD (shows every load) ===== -->
   <section id="cover" class="cover" aria-label="QB Diary Access">
     <div class="cover-card cover-card--bare">
-      <div class="toolbar" aria-label="Cover actions">
-        <div class="cta-group" role="group" aria-label="Actions">
-          <a href="qr.html" class="btn pill btn-outline" title="Share QR code">🔗 Share / QR</a>
-          <button id="installCoverBtn" class="btn pill btn-outline" type="button" title="Install M16 Flow as an app">⬇️ Install</button>
-        </div>
-      </div>
       <div class="cover-logo-wrap">
         <img src="quarterback pocketbook/real1.png" alt="QB Diary logo" class="cover-logo" />
       </div>
@@ -51,6 +45,14 @@
         <button id="gateBtn" type="submit" class="btn btn-primary btn-lg pill">Unlock</button>
         <p id="gateHint" class="gate-hint" aria-live="polite">Hint: case sensitive</p>
       </form>
+
+      <!-- Share/Install below the unlock button -->
+      <div class="toolbar" aria-label="Cover actions">
+        <div class="cta-group" role="group" aria-label="Actions">
+          <a href="qr.html" class="btn pill btn-outline" title="Share QR code">🔗 Share / QR</a>
+          <button id="installCoverBtn" class="btn pill btn-outline" type="button" title="Install M16 Flow as an app">⬇️ Install</button>
+        </div>
+      </div>
 
       <div class="gate-actions">
         <button id="signupBtn" type="button" class="btn btn-outline btn-lg pill">Sign Up</button>
