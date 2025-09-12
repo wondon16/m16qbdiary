@@ -85,6 +85,15 @@ a{color:inherit; text-decoration:none}
 .tab:hover{border-color:var(--sky); color:var(--sky)}
 .tab.active{border-color:rgba(98,199,255,.45); box-shadow:0 0 0 3px rgba(98,199,255,.18) inset}
 
+/* Responsive header: prevent button overlap on small screens */
+@media (max-width: 740px){
+  .site-header{flex-wrap:wrap; gap:8px; padding:10px 12px}
+  .site-header .brand{flex:1 0 100%}
+  .site-header .top-tabs{order:2; flex:1 0 100%; justify-content:center; gap:6px}
+  .site-header .toolbar{order:3; flex:1 0 100%; justify-content:space-between; flex-wrap:wrap; gap:8px}
+  .site-header .cta-group{display:flex; flex-wrap:wrap; gap:8px}
+}
+
 /* Week controls */
 .week-nav{display:flex; align-items:center; gap:8px}
 .nav-arrow{appearance:none; border:1px solid var(--line); background:transparent; color:var(--ink); padding:8px 11px; border-radius:999px; cursor:pointer; font-weight:700}
