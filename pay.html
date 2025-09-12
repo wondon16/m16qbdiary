@@ -4,6 +4,8 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Get Password — QB Diary</title>
+  <meta name="theme-color" content="#0b1e3a" />
+  <link rel="manifest" href="manifest.json" />
 
   <link rel="preload" as="image" href="quarterback pocketbook/real1.png">
   <link rel="icon" type="image/png" sizes="any" href="quarterback pocketbook/real1.png">
@@ -43,6 +45,12 @@
   </section>
 
   <script>
+    // Register SW for direct visits to pay page
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(console.error);
+      });
+    }
     paypal.Buttons({
       fundingSource: paypal.FUNDING.PAYPAL,
       style: { layout:'vertical', color:'gold', shape:'pill', label:'paypal' },

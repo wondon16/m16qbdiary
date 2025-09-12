@@ -4,6 +4,8 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Ask — M16 Flow</title>
+  <meta name="theme-color" content="#0b1e3a" />
+  <link rel="manifest" href="manifest.json" />
 
   <!-- Fonts + Theme -->
   <link rel="preload" as="image" href="quarterback pocketbook/real1.png">
@@ -43,6 +45,7 @@
     <div class="toolbar">
       <div class="cta-group">
         <a href="pay.html" class="btn pill btn-outline">$7 — Get Password</a>
+        <button id="installToolbarBtn" class="btn pill btn-outline" type="button" title="Install M16 Flow as an app">⬇️ Install</button>
       </div>
     </div>
   </header>
@@ -86,5 +89,28 @@
   <footer class="site-footer">
     <small>M16 Flow © </small>
   </footer>
+  <script>
+    // Register SW on this page too (for direct visits)
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(console.error);
+      });
+    }
+    // Minimal install fallback (same logic as index)
+    (function(){
+      const btnInstallToolbar = document.getElementById('installToolbarBtn');
+      let deferredPrompt = null;
+      function isStandalone(){ return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone; }
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault(); deferredPrompt = e; console.debug('beforeinstallprompt captured (schedule)');
+      });
+      btnInstallToolbar?.addEventListener('click', async () => {
+        if (deferredPrompt) { deferredPrompt.prompt(); try{ await deferredPrompt.userChoice; }finally{ deferredPrompt = null; } }
+        else { alert('Use the browser install icon/menu to install.'); }
+      });
+      window.addEventListener('appinstalled', () => { console.log('App installed'); });
+      if (isStandalone()) btnInstallToolbar?.remove();
+    })();
+  </script>
 </body>
 </html>
