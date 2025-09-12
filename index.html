@@ -35,6 +35,12 @@
   <!-- ===== COVER / PASSWORD (shows every load) ===== -->
   <section id="cover" class="cover" aria-label="QB Diary Access">
     <div class="cover-card cover-card--bare">
+      <div class="toolbar" aria-label="Cover actions">
+        <div class="cta-group" role="group" aria-label="Actions">
+          <a href="qr.html" class="btn pill btn-outline" title="Share QR code">🔗 Share / QR</a>
+          <button id="installCoverBtn" class="btn pill btn-outline" type="button" title="Install M16 Flow as an app">⬇️ Install</button>
+        </div>
+      </div>
       <div class="cover-logo-wrap">
         <img src="quarterback pocketbook/real1.png" alt="QB Diary logo" class="cover-logo" />
       </div>
@@ -508,6 +514,7 @@ The key isn’t just knowing their weakness, but knowing how to repeatedly stres
       const btnInstall = document.getElementById('installBtn');
       const btnDismiss = document.getElementById('dismissInstall');
       const btnInstallToolbar = document.getElementById('installToolbarBtn');
+      const btnInstallCover = document.getElementById('installCoverBtn');
       let deferredPrompt = null;
 
       // Only show banner if not already installed
@@ -565,9 +572,19 @@ The key isn’t just knowing their weakness, but knowing how to repeatedly stres
         }
       });
 
+      // Cover install button (same behavior)
+      btnInstallCover?.addEventListener('click', async () => {
+        if (deferredPrompt) {
+          deferredPrompt.prompt();
+          try { await deferredPrompt.userChoice; } finally { deferredPrompt = null; }
+        } else {
+          alert('To install: Use your browser\'s install option (computer icon in the address bar), or open the menu and choose Install/Add to Home Screen.');
+        }
+      });
+
       // Hide banner if already installed
       window.addEventListener('DOMContentLoaded', () => {
-        if (isStandalone()) hideBanner();
+        if (isStandalone()) { hideBanner(); btnInstallCover?.remove(); btnInstallToolbar?.remove(); }
       });
 
       // Listen for appinstalled to tidy up
