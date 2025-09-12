@@ -17,7 +17,7 @@
   <style>
     .qr-wrap{max-width:980px; margin:30px auto 40px; padding:0 16px; text-align:center}
     .qr-card{display:grid; gap:14px; place-items:center; border:1px solid var(--line); border-radius:16px; padding:16px; background:linear-gradient(180deg, rgba(18,45,85,.88), rgba(10,30,61,.88))}
-    .qr-img{width:min(520px,90vw); aspect-ratio:1/1; background:#fff; border-radius:12px}
+    .qr-img{width:min(520px,90vw); aspect-ratio:1/1; background:#fff; border-radius:12px; padding:14px}
     .qr-controls{display:flex; flex-wrap:wrap; gap:8px; justify-content:center}
     .qr-url{max-width:680px; margin:0 auto}
     .qr-note{color:var(--muted); font-size:13px}
@@ -45,7 +45,7 @@
     </section>
 
     <section class="qr-card">
-      <canvas id="qrCanvas" class="qr-img" aria-label="QR code to open M16 Flow"></canvas>
+      <img id="qrImg" class="qr-img" alt="QR code to open M16 Flow" src=""/>
       <div class="qr-controls">
         <button id="copyBtn" class="btn btn-primary pill btn-lg" type="button">Copy Link</button>
         <a id="openLink" class="btn btn-outline pill btn-lg" href="#" target="_blank" rel="noopener">Open Link</a>
@@ -60,7 +60,6 @@
     <small>M16 Flow © </small>
   </footer>
 
-  <script src="vendor/qrcode.min.js"></script>
   <script>
     // Register SW to ensure offline/share page still under control
     if ('serviceWorker' in navigator) {
@@ -75,39 +74,23 @@
       const defaultURL = (provided ? provided : location.origin).replace(/\/$/, '');
 
       const urlInput = document.getElementById('urlInput');
-      const qrCanvas = document.getElementById('qrCanvas');
+      const qrImg = document.getElementById('qrImg');
       const copyBtn = document.getElementById('copyBtn');
       const openLink = document.getElementById('openLink');
       const downloadBtn = document.getElementById('downloadBtn');
 
-      function renderQRToCanvas(canvas, text, size = 1024, margin = 24){
-        const qr = qrcode(0, 'M');
-        qr.addData(text);
-        qr.make();
-        const count = qr.getModuleCount();
-        const px = Math.floor((size - margin * 2) / count) || 1;
-        const qrSize = px * count;
-        const offset = Math.floor((size - qrSize) / 2);
-        canvas.width = size; canvas.height = size;
-        const ctx = canvas.getContext('2d');
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(0,0,size,size);
-        ctx.fillStyle = '#000000';
-        for (let r=0; r<count; r++){
-          for (let c=0; c<count; c++){
-            if (qr.isDark(r,c)){
-              ctx.fillRect(offset + c*px, offset + r*px, px, px);
-            }
-          }
-        }
-        return canvas.toDataURL('image/png');
+      function qrURL(v){
+        const encoded = encodeURIComponent(v);
+        // Using a widely available QR image service; safe to replace with your own
+        return `https://api.qrserver.com/v1/create-qr-code/?size=1024x1024&margin=20&data=${encoded}`;
       }
 
       function setAll(url){
         urlInput.value = url;
-        const dataUrl = renderQRToCanvas(qrCanvas, url);
+        const src = qrURL(url);
+        qrImg.src = src;
         openLink.href = url;
-        downloadBtn.href = dataUrl;
+        downloadBtn.href = src;
       }
 
       urlInput.addEventListener('change', (e)=> setAll(e.target.value));
@@ -120,3 +103,4 @@
   </script>
 </body>
 </html>
+

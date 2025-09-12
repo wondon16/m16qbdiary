@@ -14,7 +14,6 @@ const ASSETS = [
   './schedule.js',
   './pay.html',
   './qr.html',
-  './vendor/qrcode.min.js',
   './logo.png',
   './altlogo2.png',
   './quarterback pocketbook/real1.png',
