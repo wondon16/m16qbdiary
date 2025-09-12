@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>M16 Flow — Share QR</title>
+  <meta name="theme-color" content="#0b1e3a" />
+  <link rel="manifest" href="manifest.json" />
+
+  <link rel="preload" as="image" href="quarterback pocketbook/real1.png">
+  <link rel="icon" type="image/png" sizes="any" href="quarterback pocketbook/real1.png">
+  <link rel="apple-touch-icon" href="quarterback pocketbook/real1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .qr-wrap{max-width:980px; margin:30px auto 40px; padding:0 16px; text-align:center}
+    .qr-card{display:grid; gap:14px; place-items:center; border:1px solid var(--line); border-radius:16px; padding:16px; background:linear-gradient(180deg, rgba(18,45,85,.88), rgba(10,30,61,.88))}
+    .qr-img{width:min(520px,90vw); aspect-ratio:1/1; background:#fff; border-radius:12px}
+    .qr-controls{display:flex; flex-wrap:wrap; gap:8px; justify-content:center}
+    .qr-url{max-width:680px; margin:0 auto}
+    .qr-note{color:var(--muted); font-size:13px}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <div class="logo3d logo3d--sm" aria-hidden="true">
+        <img src="quarterback pocketbook/real1.png" alt="App emblem" />
+      </div>
+      <h2 class="brand-name">M16 Flow</h2>
+    </div>
+    <nav class="top-tabs" aria-label="Primary">
+      <a class="tab" href="index.html">Portals</a>
+      <a class="tab" href="schedule.html">Ask</a>
+    </nav>
+  </header>
+
+  <main class="qr-wrap">
+    <section class="intro-glass">
+      <h1 class="book-title" style="margin:0 0 6px">Share M16 Flow</h1>
+      <p class="book-sub">Scan this QR to open the app. You can copy the link below or download the PNG to share.</p>
+    </section>
+
+    <section class="qr-card">
+      <canvas id="qrCanvas" class="qr-img" aria-label="QR code to open M16 Flow"></canvas>
+      <div class="qr-controls">
+        <button id="copyBtn" class="btn btn-primary pill btn-lg" type="button">Copy Link</button>
+        <a id="openLink" class="btn btn-outline pill btn-lg" href="#" target="_blank" rel="noopener">Open Link</a>
+        <a id="downloadBtn" class="btn btn-outline pill btn-lg" href="#" download="m16-flow-qr.png">Download PNG</a>
+      </div>
+      <input id="urlInput" class="inp qr-url" type="url" placeholder="https://yourdomain.com" />
+      <p class="qr-note">Tip: Append ?u=https://yourdomain.com to set a custom link automatically.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <small>M16 Flow © </small>
+  </footer>
+
+  <script src="vendor/qrcode.min.js"></script>
+  <script>
+    // Register SW to ensure offline/share page still under control
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(console.error);
+      });
+    }
+
+    (function(){
+      const params = new URLSearchParams(location.search);
+      const provided = params.get('u');
+      const defaultURL = (provided ? provided : location.origin).replace(/\/$/, '');
+
+      const urlInput = document.getElementById('urlInput');
+      const qrCanvas = document.getElementById('qrCanvas');
+      const copyBtn = document.getElementById('copyBtn');
+      const openLink = document.getElementById('openLink');
+      const downloadBtn = document.getElementById('downloadBtn');
+
+      function renderQRToCanvas(canvas, text, size = 1024, margin = 24){
+        const qr = qrcode(0, 'M');
+        qr.addData(text);
+        qr.make();
+        const count = qr.getModuleCount();
+        const px = Math.floor((size - margin * 2) / count) || 1;
+        const qrSize = px * count;
+        const offset = Math.floor((size - qrSize) / 2);
+        canvas.width = size; canvas.height = size;
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0,0,size,size);
+        ctx.fillStyle = '#000000';
+        for (let r=0; r<count; r++){
+          for (let c=0; c<count; c++){
+            if (qr.isDark(r,c)){
+              ctx.fillRect(offset + c*px, offset + r*px, px, px);
+            }
+          }
+        }
+        return canvas.toDataURL('image/png');
+      }
+
+      function setAll(url){
+        urlInput.value = url;
+        const dataUrl = renderQRToCanvas(qrCanvas, url);
+        openLink.href = url;
+        downloadBtn.href = dataUrl;
+      }
+
+      urlInput.addEventListener('change', (e)=> setAll(e.target.value));
+      copyBtn.addEventListener('click', async ()=>{
+        try{ await navigator.clipboard.writeText(urlInput.value); copyBtn.textContent = 'Copied!'; setTimeout(()=> copyBtn.textContent='Copy Link', 1200);}catch{ alert('Copy failed.'); }
+      });
+
+      setAll(defaultURL);
+    })();
+  </script>
+</body>
+</html>

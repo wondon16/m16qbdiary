@@ -13,9 +13,14 @@ const ASSETS = [
   './schedule.html',
   './schedule.js',
   './pay.html',
+  './qr.html',
+  './vendor/qrcode.min.js',
   './logo.png',
   './altlogo2.png',
-  './quarterback pocketbook/real1.png'
+  './quarterback pocketbook/real1.png',
+  './icons/icon-192.png',
+  './icons/icon-512.png',
+  './icons/icon-512-maskable.png'
 ];
 
 self.addEventListener('install', (event) => {
@@ -83,4 +88,3 @@ self.addEventListener('message', (event) => {
     self.skipWaiting();
   }
 });
-
