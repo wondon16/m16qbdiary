@@ -4,6 +4,10 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>M16 Flow</title>
+  <meta name="theme-color" content="#0b1e3a" />
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json" />
 
   <!-- Fonts + Theme -->
   <link rel="preload" as="image" href="quarterback pocketbook/real1.png">
@@ -15,6 +19,19 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <!-- Install banner for PWA (hidden until eligible) -->
+  <div id="installBanner" role="region" aria-label="Install M16 Flow" class="install-banner" hidden>
+    <div class="install-banner__content">
+      <div class="install-banner__text">
+        <strong>M16 Flow</strong>
+        <span>Add to desktop for faster access</span>
+      </div>
+      <div class="install-banner__actions" role="group" aria-label="Install actions">
+        <button id="installBtn" class="btn btn-primary btn-sm pill" type="button">Install</button>
+        <button id="dismissInstall" class="btn btn-outline btn-sm pill" type="button" aria-label="Dismiss install banner">Not now</button>
+      </div>
+    </div>
+  </div>
   <!-- ===== COVER / PASSWORD (shows every load) ===== -->
   <section id="cover" class="cover" aria-label="QB Diary Access">
     <div class="cover-card cover-card--bare">
@@ -475,5 +492,73 @@ The key isn’t just knowing their weakness, but knowing how to repeatedly stres
 
   <script src="space.js" defer></script>
   <script src="script.js"></script>
+  <script>
+    // Register service worker for offline + PWA
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(console.error);
+      });
+    }
+
+    // Handle install prompt banner
+    (function() {
+      const banner = document.getElementById('installBanner');
+      const btnInstall = document.getElementById('installBtn');
+      const btnDismiss = document.getElementById('dismissInstall');
+      let deferredPrompt = null;
+
+      // Only show banner if not already installed
+      function isStandalone() {
+        return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+      }
+
+      function showBanner() {
+        if (!banner) return;
+        banner.hidden = false;
+        banner.classList.add('show');
+      }
+
+      function hideBanner() {
+        if (!banner) return;
+        banner.classList.remove('show');
+        banner.hidden = true;
+        // Remember dismissal for this browser session
+        sessionStorage.setItem('m16_install_dismissed', '1');
+      }
+
+      window.addEventListener('beforeinstallprompt', (e) => {
+        // Prevent default mini-infobar on mobile
+        e.preventDefault();
+        deferredPrompt = e;
+        if (!isStandalone() && sessionStorage.getItem('m16_install_dismissed') !== '1') {
+          showBanner();
+        }
+      });
+
+      // Handle manual install click
+      btnInstall?.addEventListener('click', async () => {
+        if (!deferredPrompt) return hideBanner();
+        deferredPrompt.prompt();
+        const choice = await deferredPrompt.userChoice;
+        deferredPrompt = null;
+        if (choice && choice.outcome === 'accepted') {
+          hideBanner();
+        }
+      });
+
+      // Dismiss banner
+      btnDismiss?.addEventListener('click', hideBanner);
+
+      // Hide banner if already installed
+      window.addEventListener('DOMContentLoaded', () => {
+        if (isStandalone()) hideBanner();
+      });
+
+      // Listen for appinstalled to tidy up
+      window.addEventListener('appinstalled', () => {
+        hideBanner();
+      });
+    })();
+  </script>
 </body>
 </html>
