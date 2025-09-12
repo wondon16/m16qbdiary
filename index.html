@@ -126,6 +126,7 @@
         <div class="cta-group" role="group" aria-label="Actions">
           <button id="saveBtn" class="btn pill btn-primary" type="button" title="Save current week">💾 Save</button>
           <button id="clearBtn" class="btn pill btn-outline" type="button" title="Clear current week">🗑️ Clear</button>
+          <button id="installToolbarBtn" class="btn pill btn-outline" type="button" title="Install M16 Flow as an app">⬇️ Install</button>
         </div>
         <span class="save-status" id="saveStatus" aria-live="polite">Ready</span>
       </div>
@@ -505,6 +506,7 @@ The key isn’t just knowing their weakness, but knowing how to repeatedly stres
       const banner = document.getElementById('installBanner');
       const btnInstall = document.getElementById('installBtn');
       const btnDismiss = document.getElementById('dismissInstall');
+      const btnInstallToolbar = document.getElementById('installToolbarBtn');
       let deferredPrompt = null;
 
       // Only show banner if not already installed
@@ -530,6 +532,7 @@ The key isn’t just knowing their weakness, but knowing how to repeatedly stres
         // Prevent default mini-infobar on mobile
         e.preventDefault();
         deferredPrompt = e;
+        console.debug('beforeinstallprompt captured');
         if (!isStandalone() && sessionStorage.getItem('m16_install_dismissed') !== '1') {
           showBanner();
         }
@@ -548,6 +551,18 @@ The key isn’t just knowing their weakness, but knowing how to repeatedly stres
 
       // Dismiss banner
       btnDismiss?.addEventListener('click', hideBanner);
+
+      // Toolbar install button as fallback
+      btnInstallToolbar?.addEventListener('click', async () => {
+        if (deferredPrompt) {
+          deferredPrompt.prompt();
+          const choice = await deferredPrompt.userChoice;
+          deferredPrompt = null;
+          if (choice && choice.outcome === 'accepted') hideBanner();
+        } else {
+          alert('To install: Use your browser\'s install option (computer icon in the address bar), or open the menu and choose Install/Add to Home Screen.');
+        }
+      });
 
       // Hide banner if already installed
       window.addEventListener('DOMContentLoaded', () => {

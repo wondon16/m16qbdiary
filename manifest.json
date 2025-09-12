@@ -2,6 +2,7 @@
   "name": "M16 Flow - QB Diary",
   "short_name": "M16 Flow",
   "description": "Quarterback preparation diary with portals, offline, and desktop install.",
+  "id": "./",
   "start_url": ".",
   "scope": ".",
   "display": "standalone",
@@ -9,9 +10,9 @@
   "background_color": "#0b1e3a",
   "theme_color": "#0b1e3a",
   "icons": [
-    { "src": "logo.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "logo.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "quarterback pocketbook/real1.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    { "src": "logo.png", "sizes": "1024x1024", "type": "image/png", "purpose": "any" },
+    { "src": "altlogo2.png", "sizes": "1024x1024", "type": "image/png", "purpose": "any" },
+    { "src": "quarterback pocketbook/real1.png", "sizes": "1024x1024", "type": "image/png", "purpose": "maskable" }
   ],
   "categories": ["productivity", "education", "sports"],
   "shortcuts": [
@@ -19,4 +20,3 @@
     { "name": "Ask Coach", "short_name": "Ask", "url": "/schedule.html" }
   ]
 }
-
