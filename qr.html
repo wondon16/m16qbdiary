@@ -2,145 +2,318 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>M16 Flow — Share QR</title>
-  <meta name="theme-color" content="#0b1e3a" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Share Portal | QuantumDrive</title>
+  <meta name="theme-color" content="#051229" />
   <link rel="manifest" href="manifest.json" />
-
-  <link rel="preload" as="image" href="quarterback pocketbook/real1.png">
-  <link rel="icon" type="image/png" sizes="any" href="quarterback pocketbook/real1.png">
-  <link rel="apple-touch-icon" href="quarterback pocketbook/real1.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
   <style>
-    .qr-wrap{max-width:980px; margin:30px auto 40px; padding:0 16px; text-align:center}
-    .qr-card{display:grid; gap:14px; place-items:center; border:1px solid var(--line); border-radius:16px; padding:16px; background:linear-gradient(180deg, rgba(18,45,85,.88), rgba(10,30,61,.88))}
-    .qr-img{width:min(520px,90vw); aspect-ratio:1/1; background:#fff; border-radius:12px; padding:14px}
-    .qr-controls{display:flex; flex-wrap:wrap; gap:8px; justify-content:center}
-    .qr-url{max-width:680px; margin:0 auto}
-    .qr-note{color:var(--muted); font-size:13px}
+    :root {
+      color-scheme: dark;
+      --bg: radial-gradient(circle at 12% 18%, rgba(255, 110, 250, 0.22), transparent 52%),
+             radial-gradient(circle at 82% 10%, rgba(0, 210, 255, 0.24), transparent 50%),
+             #010712;
+      --panel: rgba(4, 20, 40, 0.88);
+      --line: rgba(0, 210, 255, 0.24);
+      --accent: #7dffec;
+      --muted: #8ba2c1;
+      --shadow: 0 24px 80px rgba(0, 30, 64, 0.5);
+      font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: #e9f4ff;
+      overflow-x: hidden;
+    }
+
+    header.neo-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px clamp(20px, 4vw, 60px);
+      background: rgba(2, 12, 26, 0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(0, 210, 255, 0.14);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand strong { font-size: clamp(24px, 3.4vw, 32px); letter-spacing: 0.08em; }
+    .brand span { letter-spacing: 0.26em; text-transform: uppercase; font-size: 11px; color: var(--muted); }
+
+    .glyph {
+      width: 52px;
+      height: 52px;
+      border-radius: 18px;
+      position: relative;
+      background: linear-gradient(135deg, rgba(0, 245, 255, 0.92), rgba(0, 110, 255, 0.88));
+      box-shadow: 0 0 28px rgba(0, 220, 255, 0.6);
+    }
+
+    .glyph::after {
+      content: "AR";
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      letter-spacing: 0.28em;
+      color: #03263f;
+    }
+
+    nav.neo-nav { display: flex; gap: clamp(12px, 2.6vw, 22px); align-items: center; }
+
+    nav.neo-nav a {
+      display: inline-flex;
+      flex-direction: column;
+      gap: 4px;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 13px;
+      color: var(--muted);
+      padding: 10px 16px;
+      border-radius: 12px;
+      border: 1px solid transparent;
+      transition: 200ms ease;
+    }
+
+    nav.neo-nav a span { font-size: 10px; opacity: 0.6; }
+
+    nav.neo-nav a:hover,
+    nav.neo-nav a.active {
+      color: #ffffff;
+      border-color: rgba(0, 245, 255, 0.4);
+      background: rgba(0, 210, 255, 0.12);
+      box-shadow: 0 0 22px rgba(0, 210, 255, 0.35);
+    }
+
+    main.layout {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: clamp(24px, 6vw, 80px);
+      display: grid;
+      gap: clamp(24px, 3vw, 36px);
+      position: relative;
+      z-index: 1;
+    }
+
+    .panel {
+      background: var(--panel);
+      border-radius: 28px;
+      border: 1px solid var(--line);
+      padding: clamp(22px, 4vw, 36px);
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 78% 12%, rgba(255, 122, 250, 0.18), transparent 55%),
+                  radial-gradient(circle at 12% 88%, rgba(0, 210, 255, 0.18), transparent 52%);
+      pointer-events: none;
+    }
+
+    .panel > * { position: relative; z-index: 1; }
+
+    h1 {
+      margin: 0 0 14px;
+      font-size: clamp(32px, 5vw, 50px);
+      letter-spacing: -0.01em;
+    }
+
+    p.lead {
+      margin: 0 0 16px;
+      color: var(--muted);
+      font-size: clamp(16px, 2.1vw, 18px);
+      line-height: 1.6;
+    }
+
+    .qr-card {
+      display: grid;
+      gap: 18px;
+      border-radius: 22px;
+      border: 1px solid rgba(0, 225, 255, 0.24);
+      background: rgba(3, 12, 24, 0.86);
+      padding: clamp(20px, 3vw, 32px);
+      justify-items: center;
+    }
+
+    .qr-img {
+      width: min(320px, 76vw);
+      aspect-ratio: 1 / 1;
+      background: #fff;
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: 0 20px 60px rgba(0, 30, 60, 0.35);
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .btn-primary,
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 22px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: 200ms ease;
+    }
+
+    .btn-primary { background: linear-gradient(135deg, rgba(0, 250, 255, 0.92), rgba(0, 128, 255, 0.9)); color: #031429; box-shadow: 0 0 30px rgba(0, 220, 255, 0.4); }
+    .btn-outline { background: rgba(6, 24, 44, 0.6); border-color: rgba(0, 230, 255, 0.32); color: var(--accent); }
+    .btn-outline:hover { border-color: rgba(255, 110, 250, 0.5); color: #ffb9ff; }
+
+    input.url {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(4, 18, 36, 0.78);
+      border: 1px solid rgba(0, 230, 255, 0.22);
+      color: #ffffff;
+      font-size: 15px;
+      font-family: inherit;
+      text-align: center;
+    }
+
+    input.url:focus {
+      outline: none;
+      border-color: rgba(0, 250, 255, 0.55);
+      box-shadow: 0 0 0 4px rgba(0, 210, 255, 0.2);
+    }
+
+    footer.neo-footer {
+      padding: 40px clamp(20px, 6vw, 80px) 70px;
+      background: rgba(2, 10, 20, 0.86);
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 12px;
+      border-top: 1px solid rgba(0, 210, 255, 0.12);
+    }
+
+    footer.neo-footer a { color: var(--accent); text-decoration: none; }
+
+    @media (max-width: 720px) {
+      header.neo-header { flex-direction: column; gap: 18px; }
+      nav.neo-nav { flex-wrap: wrap; justify-content: center; }
+    }
   </style>
 </head>
 <body>
-  <header class="site-header">
+  <header class="neo-header">
     <div class="brand">
-      <span class="brand-mark" aria-hidden="true"></span>
-      <div class="logo3d logo3d--sm" aria-hidden="true">
-        <img src="quarterback pocketbook/real1.png" alt="App emblem" />
+      <div class="glyph"></div>
+      <div>
+        <strong>QuantumDrive Share Hub</strong>
+        <span>deploy your ai lab</span>
       </div>
-      <h2 class="brand-name">M16 Flow</h2>
     </div>
-    <nav class="top-tabs" aria-label="Primary">
-      <a class="tab" href="index.html">Portals</a>
-      <a class="tab" href="schedule.html">Ask</a>
+    <nav class="neo-nav" aria-label="Primary">
+      <a href="index.html">Program<span>dashboard</span></a>
+      <a href="schedule.html">Trainers<span>live desk</span></a>
+      <a class="active" href="qr.html">Share<span>portal</span></a>
     </nav>
-    <div class="toolbar">
-      <div class="cta-group" role="group" aria-label="Header actions">
-        <a href="qr.html" class="btn pill btn-outline" title="Share QR code">🔗 Share / QR</a>
-        <button id="installToolbarBtn" class="btn pill btn-outline" type="button" title="Install M16 Flow as an app">⬇️ Install</button>
-      </div>
-    </div>
   </header>
 
-  <main class="qr-wrap">
-    <section class="intro-glass">
-      <h1 class="book-title" style="margin:0 0 6px">Share M16 Flow</h1>
-      <p class="book-sub">Scan this QR to open the app. You can copy the link below or download the PNG to share.</p>
-    </section>
+  <main class="layout">
+    <section class="panel" aria-labelledby="shareTitle">
+      <h1 id="shareTitle">Share your AI performance portal.</h1>
+      <p class="lead">Distribute instant access to the QuantumDrive app. Customize the link, copy it to clipboard, pop it open, or download the QR PNG for posters and locker room boards.</p>
 
-    <section class="qr-card">
-      <img id="qrImg" class="qr-img" alt="QR code to open M16 Flow" src=""/>
-      <div class="qr-controls">
-        <button id="copyBtn" class="btn btn-primary pill btn-lg" type="button">Copy Link</button>
-        <a id="openLink" class="btn btn-outline pill btn-lg" href="#" target="_blank" rel="noopener">Open Link</a>
-        <a id="downloadBtn" class="btn btn-outline pill btn-lg" href="#" download="m16-flow-qr.png">Download PNG</a>
+      <div class="qr-card">
+        <img id="qrImage" class="qr-img" alt="QR code for QuantumDrive" src="" />
+        <div class="actions">
+          <button class="btn-primary" type="button" id="copyBtn">Copy Link</button>
+          <a class="btn-outline" id="openBtn" href="#" target="_blank" rel="noopener">Open Link</a>
+          <a class="btn-outline" id="downloadBtn" href="#" download="quantumdrive-qr.png">Download PNG</a>
+        </div>
+        <input id="urlInput" class="url" type="url" placeholder="https://yourdomain.com" />
+        <p class="lead" style="text-align:center; font-size:13px;">Tip: Append <code>?u=https://custom.link</code> to set the QR target instantly.</p>
       </div>
-      <input id="urlInput" class="inp qr-url" type="url" placeholder="https://wondon16.github.io/m16qbdiary/" />
-      <p class="qr-note">Tip: Append ?u=https://yourdomain.com to set a custom link automatically.</p>
     </section>
   </main>
 
-  <footer class="site-footer">
-    <small>M16 Flow © </small>
+  <footer class="neo-footer">
+    <div>QuantumDrive • Upload assets to `/quarterback pocketbook/` for custom icons.</div>
   </footer>
 
   <script>
-    // Register SW to ensure offline/share page still under control
+    const DEFAULT_URL = 'https://example.com/quantumdrive';
+    const PROVIDERS = [
+      (value) => `https://api.qrserver.com/v1/create-qr-code/?size=1024x1024&margin=20&data=${encodeURIComponent(value)}`,
+      (value) => `https://quickchart.io/qr?size=1024&margin=20&text=${encodeURIComponent(value)}`
+    ];
+
+    const params = new URLSearchParams(location.search);
+    const initial = params.get('u') || DEFAULT_URL;
+    const urlInput = document.getElementById('urlInput');
+    const qrImage = document.getElementById('qrImage');
+    const copyBtn = document.getElementById('copyBtn');
+    const openBtn = document.getElementById('openBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+
+    const setURL = (value) => {
+      const clean = value.trim() || DEFAULT_URL;
+      urlInput.value = clean;
+      openBtn.href = clean;
+      let index = 0;
+      const tryProvider = () => {
+        const src = PROVIDERS[index](clean);
+        downloadBtn.href = src;
+        qrImage.src = src;
+        qrImage.onerror = () => {
+          if (index < PROVIDERS.length - 1) {
+            index += 1;
+            tryProvider();
+          } else {
+            alert('Unable to load QR image. Check your connection.');
+          }
+        };
+      };
+      tryProvider();
+    };
+
+    urlInput.addEventListener('change', (event) => setURL(event.target.value));
+    copyBtn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(urlInput.value || DEFAULT_URL);
+        copyBtn.textContent = 'Copied';
+        setTimeout(() => { copyBtn.textContent = 'Copy Link'; }, 1200);
+      } catch (error) {
+        alert('Clipboard access blocked. Copy manually.');
+      }
+    });
+
+    setURL(initial);
+
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js').catch(console.error);
+        navigator.serviceWorker.register('sw.js').catch(() => {});
       });
     }
-
-    (function(){
-      const params = new URLSearchParams(location.search);
-      const provided = params.get('u');
-      const DEFAULT_QR_URL = 'https://wondon16.github.io/m16qbdiary/';
-      const defaultURL = provided ? provided : DEFAULT_QR_URL;
-
-      const urlInput = document.getElementById('urlInput');
-      const qrImg = document.getElementById('qrImg');
-      const copyBtn = document.getElementById('copyBtn');
-      const openLink = document.getElementById('openLink');
-      const downloadBtn = document.getElementById('downloadBtn');
-
-      // QR providers (primary then fallback)
-      const QR_PROVIDERS = [
-        (v) => `https://api.qrserver.com/v1/create-qr-code/?size=1024x1024&margin=20&data=${encodeURIComponent(v)}`,
-        (v) => `https://quickchart.io/qr?size=1024&margin=20&text=${encodeURIComponent(v)}`
-      ];
-
-      function setAll(url){
-        urlInput.value = url;
-        openLink.href = url;
-
-        let idx = 0;
-        const tryLoad = () => {
-          const src = QR_PROVIDERS[idx](url);
-          // Update download link to match current image source
-          downloadBtn.href = src;
-
-          // Swap provider on error (once per provider)
-          qrImg.onerror = () => {
-            if (idx < QR_PROVIDERS.length - 1) {
-              idx += 1;
-              tryLoad();
-            } else {
-              qrImg.onerror = null;
-              alert('Unable to load QR image. Please check your connection.');
-            }
-          };
-          qrImg.src = src;
-        };
-        tryLoad();
-      }
-
-      urlInput.addEventListener('change', (e)=> setAll(e.target.value));
-      copyBtn.addEventListener('click', async ()=>{
-        try{ await navigator.clipboard.writeText(urlInput.value); copyBtn.textContent = 'Copied!'; setTimeout(()=> copyBtn.textContent='Copy Link', 1200);}catch{ alert('Copy failed.'); }
-      });
-
-      setAll(defaultURL);
-    })();
-  </script>
-  <script>
-    // Minimal install hook for this page (mirrors schedule.html)
-    (function(){
-      const btnInstallToolbar = document.getElementById('installToolbarBtn');
-      let deferredPrompt = null;
-      function isStandalone(){ return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone; }
-      window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault(); deferredPrompt = e; console.debug('beforeinstallprompt captured (qr)');
-      });
-      btnInstallToolbar?.addEventListener('click', async () => {
-        if (deferredPrompt) { deferredPrompt.prompt(); try{ await deferredPrompt.userChoice; }finally{ deferredPrompt = null; } }
-        else { alert('Use the browser install icon/menu to install.'); }
-      });
-      window.addEventListener('appinstalled', () => { console.log('App installed'); });
-      if (isStandalone()) btnInstallToolbar?.remove();
-    })();
   </script>
 </body>
 </html>
