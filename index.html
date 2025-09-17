@@ -827,6 +827,12 @@
       letter-spacing: 0.04em;
     }
 
+    .alert.alert--warn {
+      border-color: rgba(255, 210, 120, 0.4);
+      background: rgba(46, 28, 8, 0.78);
+      color: #ffe9c7;
+    }
+
     footer.neo-footer {
       padding: 40px clamp(20px, 6vw, 80px) 70px;
       color: var(--text-muted);
@@ -1264,7 +1270,6 @@
     }
 
     let latestPlanBundle = null;
-    setDownloadEnabled(false);
     const setDownloadEnabled = (enabled) => {
       if (enabled) {
         downloadBtn.classList.remove('is-disabled');
@@ -1283,6 +1288,9 @@
       if (variant === 'loading') {
         formStatus.innerHTML = `<div class="loader">${loaderMarkup}<span>Generating</span></div>`;
         statusPill.textContent = 'Generating with Google AI…';
+      } else if (variant === 'warning') {
+        formStatus.innerHTML = `<div class="alert alert--warn">${message}</div>`;
+        statusPill.textContent = 'Standby — offline mode';
       } else if (variant === 'error') {
         formStatus.innerHTML = `<div class="alert">${message}</div>`;
         statusPill.textContent = 'Generation failed';
@@ -1291,6 +1299,20 @@
         statusPill.textContent = message ? 'Plan updated' : 'Awaiting input';
       }
     };
+
+    const checkApiHealth = async () => {
+      try {
+        const res = await fetch('/healthz', { cache: 'no-store' });
+        if (!res.ok) throw new Error(res.statusText || 'health check failed');
+        setStatus('Connected. Ready when you are.');
+      } catch (error) {
+        console.warn('Health check failed', error);
+        setStatus('API offline — results will use local fallback templates.', 'warning');
+      }
+    };
+
+    setDownloadEnabled(false);
+    checkApiHealth();
 
     const asArray = (value) => Array.isArray(value) ? value : (value ? [value] : []);
 
