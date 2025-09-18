@@ -1,25 +1,37 @@
-/* QB Diary — password gate, per-week save/reset, accurate completion, confetti */
+/* QB Diary — stable gate, accurate completion rules, per-portal reset, polished controls */
 (() => {
   const TOTAL_WEEKS = 18;
-  const PASSCODE = 'M16QB'; // required every load
+  const PASSCODE = 'M16QB';
   const STORAGE_PREFIX = 'qb_diary_week_';
   const COMPLETE_PREFIX = 'qb_diary_complete_';
 
-  // Gate
+  // ===== COVER GATE =====
   const cover = document.getElementById('cover');
   const app = document.getElementById('app');
   const gateForm = document.getElementById('gateForm');
   const gateInput = document.getElementById('gateInput');
   const gateHint = document.getElementById('gateHint');
-  function unlockApp(){ app.classList.remove('locked'); app.removeAttribute('aria-hidden'); cover.style.display='none'; if (window.runIntroReveal) window.runIntroReveal(); }
+
+  function unlockApp(){
+    app.classList.remove('locked');
+    app.removeAttribute('aria-hidden');
+    cover.style.display = 'none';
+  }
   gateForm.addEventListener('submit', (e)=>{
     e.preventDefault();
-    const v = (gateInput.value||'').trim();
-    if (v === PASSCODE){ gateHint.textContent=''; unlockApp(); document.getElementById('nextWeek').focus(); }
-    else { gateHint.textContent='Incorrect password. Try again.'; gateInput.select(); gateInput.focus(); }
+    const v = (gateInput.value || '').trim();
+    if (v === PASSCODE){
+      gateHint.textContent = '';
+      unlockApp();
+      document.getElementById('nextWeek').focus();
+    } else {
+      gateHint.textContent = 'Incorrect password. Try again.';
+      gateInput.select();
+      gateInput.focus();
+    }
   });
 
-  // Elements
+  // ===== GLOBAL ELEMENTS =====
   const weekBadge = document.getElementById('weekBadge');
   const prevWeekBtn = document.getElementById('prevWeek');
   const nextWeekBtn = document.getElementById('nextWeek');
@@ -42,236 +54,286 @@
   const weekChecklist = document.getElementById('weekChecklist');
   const toast = document.getElementById('toast');
   const confettiBox = document.getElementById('confetti');
-  // Signup elements (cover)
-  const signupBtn = document.getElementById('signupBtn');
-  const signupOverlay = document.getElementById('signupOverlay');
-  const signupClose = document.getElementById('signupClose');
-  const signupCancel = document.getElementById('signupCancel');
-  const signupForm = document.getElementById('signupForm');
-  const signupMsg = document.getElementById('signupMsg');
 
   let currentWeek = 1;
   let currentPortal = null;
 
-  const ORDER = ['weekly','rival-film','mobility','fuel','focus-throw','post-grade'];
-  const LABELS = {'weekly':'Weekly / Alter Ego','rival-film':'Rival / Film','mobility':'Mobility','fuel':'Fuel / Hydration','focus-throw':'Focus / Throwing','post-grade':'Post / Grade'};
-  const COPY = {
-    'weekly':{title:'Weekly Word + Alter Ego', intro:'Set the tone and step into your persona for this week’s competition.'},
-    'rival-film':{title:'Rival & Film Study', intro:'Define the opponent. Identify strengths, stress their weaknesses.'},
-    'mobility':{title:'Mobility & Warm-Up Flow', intro:'Prime the shoulders, open the hips, and cue fast feet.'},
-    'fuel':{title:'Fuel & Hydration', intro:'Eat clean, fuel right, and hydrate on purpose.'},
-    'focus-throw':{title:'Mental Focus & Throwing', intro:'Center your breath and sharpen your throwing progression.'},
-    'post-grade':{title:'Post-Game & Self-Grade', intro:'Reflect honestly, grade yourself, and set the next target.'}
+  const PORTAL_ORDER = ['weekly','rival-film','mobility','fuel','focus-throw','post-grade'];
+  const PORTAL_LABELS = {
+    'weekly':'Weekly / Alter Ego',
+    'rival-film':'Rival / Film',
+    'mobility':'Mobility',
+    'fuel':'Fuel / Hydration',
+    'focus-throw':'Focus / Throwing',
+    'post-grade':'Post / Grade'
+  };
+  const PORTAL_COPY = {
+    'weekly':      { title:'Weekly Word + Alter Ego', intro:'Set the tone and step into your persona for this week’s competition.' },
+    'rival-film':  { title:'Rival & Film Study',      intro:'Define the opponent. Identify strengths, stress their weaknesses.' },
+    'mobility':    { title:'Mobility & Warm-Up Flow', intro:'Prime the shoulders, open the hips, and cue fast feet.' },
+    'fuel':        { title:'Fuel & Hydration',        intro:'Eat clean, fuel right, and hydrate on purpose.' },
+    'focus-throw': { title:'Mental Focus & Throwing', intro:'Center your breath and sharpen your throwing progression.' },
+    'post-grade':  { title:'Post-Game & Self-Grade',  intro:'Reflect honestly, grade yourself, and set the next target.' },
   };
 
-  const keyFor = (w=currentWeek)=>`${STORAGE_PREFIX}${w}`;
-  const completeKeyFor = (w=currentWeek)=>`${COMPLETE_PREFIX}${w}`;
+  // ===== STORAGE =====
+  const keyFor = (week = currentWeek) => `${STORAGE_PREFIX}${week}`;
+  const completeKeyFor = (week = currentWeek) => `${COMPLETE_PREFIX}${week}`;
 
-  function setStatus(text, ok=false){ 
-    saveStatus.textContent=text; 
-    saveStatus.style.color = ok ? '#27d17a' : '#c9e2ff'; 
-    if (saveStatusPanel){ saveStatusPanel.textContent=text; saveStatusPanel.style.color = ok ? '#27d17a' : '#c9e2ff'; }
+  function setStatus(text, ok=false){
+    saveStatus.textContent = text;
+    saveStatus.style.color = ok ? '#27d17a' : '#c9e2ff';
+    if (saveStatusPanel){
+      saveStatusPanel.textContent = text;
+      saveStatusPanel.style.color = ok ? '#27d17a' : '#c9e2ff';
+    }
   }
 
+  // Serialize form (incl. checkboxes arrays)
   function collectData(){
     const data = {};
-    form.querySelectorAll('input[type="checkbox"]').forEach(cb=>{ if(!data[cb.name]) data[cb.name]=[]; if(cb.checked) data[cb.name].push(cb.value); });
+    form.querySelectorAll('input[type="checkbox"]').forEach(cb=>{
+      if (!data[cb.name]) data[cb.name] = [];
+      if (cb.checked) data[cb.name].push(cb.value);
+    });
     const fd = new FormData(form);
     for (const [k,v] of fd.entries()){
-      if (data[k] !== undefined){ Array.isArray(data[k]) ? data[k].push(v) : data[k] = [data[k], v]; }
-      else data[k]=v;
+      if (data[k] !== undefined){
+        if (Array.isArray(data[k])) data[k].push(v);
+        else data[k] = [data[k], v];
+      } else data[k] = v;
     }
     return data;
   }
 
   function populateForm(obj){
-    form.reset(); if(!obj) return;
+    form.reset();
+    if (!obj) return;
     Object.entries(obj).forEach(([name, value])=>{
-      const field = form.elements[name]; if(!field) return;
+      const field = form.elements[name];
+      if (!field) return;
       if (field instanceof RadioNodeList || (field.length && field[0])){
         const vals = Array.isArray(value) ? value : [value];
-        Array.from(field).forEach(el=>{ if(el.type==='checkbox'||el.type==='radio') el.checked = vals.includes(el.value); else el.value = value; });
+        Array.from(field).forEach(el=>{
+          if (el.type === 'checkbox' || el.type === 'radio') el.checked = vals.includes(el.value);
+          else el.value = value;
+        });
       } else field.value = value;
     });
   }
 
-  function isComplete(id,data){
+  // ===== COMPLETION RULES =====
+  function isPortalComplete(id, data){
     switch(id){
-      case 'weekly': return !!(data.weeklyWord && data.alterEgoName && data.trait1 && data.trait2 && data.trait3 && data.mantra);
-      case 'rival-film': return !!(data.opponent);
-      case 'mobility': { const a = Array.isArray(data.mobility)?data.mobility:[]; return a.length>=5; }
-      case 'fuel': { const c = Array.isArray(data.fuelConfirm)?data.fuelConfirm:(data.fuelConfirm?[data.fuelConfirm]:[]); return ['nightMealPlanned','breakfastPicked','hydrationReviewed'].every(x=>c.includes(x)); }
-      case 'focus-throw': { const f = Array.isArray(data.focus)?data.focus:(data.focus?[data.focus]:[]); return f.length>=1; }
-      case 'post-grade': return !!(data.selfGrade && (data.reflection||'').trim().length>0);
+      case 'weekly':
+        return !!(data.weeklyWord && data.alterEgoName && data.trait1 && data.trait2 && data.trait3 && data.mantra);
+      case 'rival-film':
+        return !!(data.opponent);
+      case 'mobility': {
+        const arr = Array.isArray(data.mobility) ? data.mobility : [];
+        return arr.length >= 5;
+      }
+      case 'fuel': {
+        const confirms = Array.isArray(data.fuelConfirm) ? data.fuelConfirm : (data.fuelConfirm ? [data.fuelConfirm] : []);
+        return ['nightMealPlanned','breakfastPicked','hydrationReviewed'].every(x => confirms.includes(x));
+      }
+      case 'focus-throw': {
+        const focus = Array.isArray(data.focus) ? data.focus : (data.focus ? [data.focus] : []);
+        return focus.length >= 1;
+      }
+      case 'post-grade':
+        return !!(data.selfGrade && (data.reflection || '').trim().length > 0);
       default: return false;
     }
   }
 
-  function updateCards(){
-    const data = JSON.parse(localStorage.getItem(keyFor())||'{}');
-    ORDER.forEach(id=>{
+  // ===== UI SYNC =====
+  function updatePortalCards(){
+    const data = JSON.parse(localStorage.getItem(keyFor()) || '{}');
+    PORTAL_ORDER.forEach(id=>{
       const card = document.querySelector(`.portal-card[data-portal="${id}"]`);
-      const done = isComplete(id,data);
-      card.classList.toggle('complete', done);
-      card.querySelector('.status-pill').textContent = done ? 'Complete' : 'Incomplete';
+      const complete = isPortalComplete(id, data);
+      card.classList.toggle('complete', !!complete);
+      card.querySelector('.status-pill').textContent = complete ? 'Complete' : 'Incomplete';
     });
   }
 
   function renderChecklist(){
-    weekChecklist.innerHTML=''; 
-    const data = JSON.parse(localStorage.getItem(keyFor())||'{}');
-    ORDER.forEach(id=>{
-      const li = document.createElement('li'); li.className='week-check-item'; li.dataset.portal=id;
-      if (isComplete(id,data)) li.classList.add('complete');
-      li.innerHTML = `<span class="check-dot" aria-hidden="true"></span>${LABELS[id]}`;
+    weekChecklist.innerHTML = '';
+    const data = JSON.parse(localStorage.getItem(keyFor()) || '{}');
+    PORTAL_ORDER.forEach(id=>{
+      const li = document.createElement('li');
+      li.className = 'week-check-item';
+      li.dataset.portal = id;
+      if (isPortalComplete(id, data)) li.classList.add('complete');
+      li.innerHTML = `<span class="check-dot" aria-hidden="true"></span>${PORTAL_LABELS[id]}`;
       li.addEventListener('click', ()=>openPortal(id));
       weekChecklist.appendChild(li);
     });
   }
 
-  function updateProgress(celebrate=true){
-    const data = JSON.parse(localStorage.getItem(keyFor())||'{}');
-    let done = ORDER.reduce((n,id)=>n + (isComplete(id,data)?1:0), 0);
-    weekBar.style.width = `${Math.round((done/ORDER.length)*100)}%`;
-    weekText.textContent = `${done}/${ORDER.length} complete`;
-    const was = localStorage.getItem(completeKeyFor())==='1';
-    const is = done===ORDER.length;
-    weekBadge.textContent = `Week ${currentWeek}`; 
-    weekBadge.classList.toggle('complete', is);
-    localStorage.setItem(completeKeyFor(), is ? '1' : '0');
-    if (is && !was && celebrate){ 
-      toast.textContent=`Week ${currentWeek} complete!`; 
-      toast.classList.add('show'); 
-      setTimeout(()=>toast.classList.remove('show'),2200); 
-      launchConfetti(); 
+  function updateProgressAndWeekBadge(showCelebrate=true){
+    const data = JSON.parse(localStorage.getItem(keyFor()) || '{}');
+    let completed = 0;
+    PORTAL_ORDER.forEach(id => { if (isPortalComplete(id, data)) completed++; });
+
+    const pct = Math.round((completed / PORTAL_ORDER.length) * 100);
+    weekBar.style.width = `${pct}%`;
+    weekText.textContent = `${completed}/${PORTAL_ORDER.length} complete`;
+
+    const wasComplete = localStorage.getItem(completeKeyFor()) === '1';
+    const isComplete = completed === PORTAL_ORDER.length;
+
+    weekBadge.textContent = `Week ${currentWeek}`;
+    weekBadge.classList.toggle('complete', isComplete);
+    localStorage.setItem(completeKeyFor(), isComplete ? '1' : '0');
+
+    if (isComplete && !wasComplete && showCelebrate){
+      showToast(`Week ${currentWeek} complete!`);
+      launchConfetti();
     }
   }
 
+  // ===== TOAST / CONFETTI =====
+  function showToast(message){
+    toast.textContent = message;
+    toast.classList.add('show');
+    setTimeout(()=>toast.classList.remove('show'), 2200);
+  }
   function launchConfetti(){
-    confettiBox.innerHTML=''; 
-    const colors=['#62c7ff','#2aa3ff','#ffffff','#27d17a','#e6f7ff'];
-    for(let i=0;i<60;i++){ 
-      const s=document.createElement('span'); 
-      s.className='piece'; 
-      s.style.left=Math.random()*100+'vw'; 
-      s.style.background=colors[Math.floor(Math.random()*colors.length)]; 
-      s.style.animationDelay=(Math.random()*300)+'ms'; 
-      confettiBox.appendChild(s); 
+    confettiBox.innerHTML = '';
+    const colors = ['#62c7ff','#2aa3ff','#ffffff','#27d17a','#e6f7ff'];
+    for (let i=0;i<60;i++){
+      const s = document.createElement('span');
+      s.className = 'piece';
+      s.style.left = Math.random()*100 + 'vw';
+      s.style.background = colors[Math.floor(Math.random()*colors.length)];
+      s.style.transform = `translateY(-20px) rotate(${Math.random()*360}deg)`;
+      s.style.animationDelay = (Math.random()*300) + 'ms';
+      s.style.opacity = 0.7 + Math.random()*0.3;
+      confettiBox.appendChild(s);
     }
-    setTimeout(()=>confettiBox.innerHTML='',1700);
+    setTimeout(()=>confettiBox.innerHTML='', 1700);
   }
 
+  // ===== SAVE / LOAD / CLEAR =====
   function saveWeek(manual=false){
-    localStorage.setItem(keyFor(), JSON.stringify(collectData()));
-    setStatus(`Saved • ${new Date().toLocaleTimeString()}`, true);
-    updateCards(); renderChecklist(); updateProgress();
-    if (manual){ toast.textContent=`Week ${currentWeek} saved`; toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'),1500); }
+    const data = collectData();
+    localStorage.setItem(keyFor(), JSON.stringify(data));
+    const stamp = new Date().toLocaleTimeString();
+    setStatus(`Saved • ${stamp}`, true);
+    updatePortalCards();
+    renderChecklist();
+    updateProgressAndWeekBadge();
+    if (manual) showToast(`Week ${currentWeek} saved`);
   }
   function loadWeek(){
-    const raw = localStorage.getItem(keyFor()); populateForm(raw?JSON.parse(raw):null);
-    setStatus(`Week ${currentWeek} loaded`); updateCards(); renderChecklist(); updateProgress(false);
+    const raw = localStorage.getItem(keyFor());
+    populateForm(raw ? JSON.parse(raw) : null);
+    setStatus(`Week ${currentWeek} loaded`);
+    updatePortalCards();
+    renderChecklist();
+    updateProgressAndWeekBadge(false);
   }
   function clearWeek(){
     if (!confirm(`Clear all data for Week ${currentWeek}?`)) return;
-    localStorage.removeItem(keyFor()); localStorage.setItem(completeKeyFor(),'0'); form.reset(); setStatus('Cleared');
-    updateCards(); renderChecklist(); updateProgress(false);
-    toast.textContent=`Week ${currentWeek} cleared`; toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'),1500);
+    localStorage.removeItem(keyFor());
+    localStorage.setItem(completeKeyFor(), '0');
+    form.reset();
+    setStatus('Cleared');
+    updatePortalCards();
+    renderChecklist();
+    updateProgressAndWeekBadge(false);
+    showToast(`Week ${currentWeek} cleared`);
   }
+
+  // ===== PER-PORTAL RESET =====
   function resetCurrentPortal(){
     if (!currentPortal) return;
-    if (!confirm(`Reset the "${LABELS[currentPortal]}" portal for Week ${currentWeek}?`)) return;
-    const sec = [...sections].find(s=>s.dataset.section===currentPortal); if (!sec) return;
-    sec.querySelectorAll('input[type="checkbox"]').forEach(cb=>cb.checked=false);
-    sec.querySelectorAll('input[type="text"], textarea, select').forEach(el=>{ if(el.tagName==='SELECT') el.selectedIndex=0; else el.value=''; });
-    saveWeek(false); setStatus('Portal reset', true);
+    if (!confirm(`Reset the "${PORTAL_LABELS[currentPortal]}" portal for Week ${currentWeek}?`)) return;
+    const activeSection = [...sections].find(s => s.dataset.section === currentPortal);
+    if (!activeSection) return;
+    activeSection.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+    activeSection.querySelectorAll('input[type="text"], textarea, select').forEach(el=>{
+      if (el.tagName === 'SELECT') el.selectedIndex = 0;
+      else el.value = '';
+    });
+    saveWeek(false);
+    setStatus('Portal reset', true);
   }
 
+  // ===== OVERLAY CONTROL =====
   function openPortal(id){
-    currentPortal=id; const info=COPY[id];
-    overlayTitle.textContent=info.title; overlayIntro.textContent=info.intro;
-    sections.forEach(sec=>sec.classList.toggle('active', sec.dataset.section===id));
-    overlay.classList.add('show'); overlay.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden';
+    currentPortal = id;
+    const info = PORTAL_COPY[id];
+    document.getElementById('overlayTitle').textContent = info.title;
+    document.getElementById('overlayIntro').textContent  = info.intro;
+    sections.forEach(sec => sec.classList.toggle('active', sec.dataset.section === id));
+    overlay.classList.add('show');
+    overlay.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
   }
-  function closePortal(){ overlay.classList.remove('show'); overlay.setAttribute('aria-hidden','true'); document.body.style.overflow=''; currentPortal=null; }
-  function gotoPortal(delta){ const idx=ORDER.indexOf(currentPortal); if(idx===-1) return; openPortal(ORDER[Math.min(Math.max(idx+delta,0),ORDER.length-1)]); }
-
-  prevSectionBtn.addEventListener('click', ()=>gotoPortal(-1));
-  nextSectionBtn.addEventListener('click', ()=>gotoPortal(+1));
-  resetPortalBtn.addEventListener('click', resetCurrentPortal);
-  portalCards.forEach(card=>{ const id=card.dataset.portal; card.addEventListener('click', ()=>openPortal(id)); card.querySelector('.btn-portal').addEventListener('click', e=>{e.stopPropagation(); openPortal(id);}); });
-  overlayClose.addEventListener('click', closePortal);
-  overlay.addEventListener('click', e=>{ if(e.target===overlay) closePortal(); });
-  document.addEventListener('keydown', e=>{ if(e.key==='Escape'&&overlay.classList.contains('show')) closePortal(); if(e.key==='ArrowRight'&&overlay.classList.contains('show')) gotoPortal(1); if(e.key==='ArrowLeft'&&overlay.classList.contains('show')) gotoPortal(-1); });
-
-  // ----- Signup modal behavior -----
-  function openSignup(){ signupOverlay.classList.add('show'); signupOverlay.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; setTimeout(()=>{ const el=document.getElementById('suFirst'); if(el) el.focus(); }, 50); }
-  function closeSignup(){ signupOverlay.classList.remove('show'); signupOverlay.setAttribute('aria-hidden','true'); document.body.style.overflow=''; signupMsg.textContent=''; }
-  if (signupBtn){ signupBtn.addEventListener('click', openSignup); }
-  if (signupClose){ signupClose.addEventListener('click', closeSignup); }
-  if (signupCancel){ signupCancel.addEventListener('click', closeSignup); }
-  if (signupOverlay){ signupOverlay.addEventListener('click', e=>{ if(e.target===signupOverlay) closeSignup(); }); }
-
-  async function submitSignup(e){
-    e.preventDefault(); if(!signupForm) return;
-    const data = {
-      firstName: signupForm.firstName.value.trim(),
-      lastName: signupForm.lastName.value.trim(),
-      email: signupForm.email.value.trim(),
-      phone: signupForm.phone.value.trim(),
-      reason: signupForm.reason.value.trim(),
-      focus: signupForm.focus.value.trim(),
-    };
-    // basic validation
-    if (!data.firstName || !data.lastName || !/^\S+@\S+\.\S+$/.test(data.email) || !data.reason || !data.focus){ signupMsg.textContent='Please complete all required fields.'; return; }
-    const btn = document.getElementById('signupSubmit'); if(btn){ btn.disabled=true; btn.textContent='Sending…'; }
-    signupMsg.textContent='Sending…';
-    try{
-      const resp = await fetch('/api/signup', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data) });
-      if (!resp.ok) throw new Error('server');
-      signupMsg.textContent='Submitted — check your email for confirmation.';
-      setTimeout(()=>{ closeSignup(); }, 700);
-    }catch(err){
-      // Fallback: mailto
-      const subject = encodeURIComponent(`New M16 Flow sign-up: ${data.firstName} ${data.lastName}`);
-      const body = encodeURIComponent(`Name: ${data.firstName} ${data.lastName}\nEmail: ${data.email}\nPhone: ${data.phone}\nReason: ${data.reason}\nFocus: ${data.focus}`);
-      window.location.href = `mailto:mushymillc@gmail.com?subject=${subject}&body=${body}`;
-      signupMsg.textContent='Opening your email app…';
-      setTimeout(()=>{ closeSignup(); }, 900);
-    } finally { if(btn){ btn.disabled=false; btn.textContent='Submit'; } }
+  function closePortal(){
+    overlay.classList.remove('show');
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    currentPortal = null;
   }
-  if (signupForm){ signupForm.addEventListener('submit', submitSignup); }
+  function gotoAdjacentPortal(delta){
+    const idx = PORTAL_ORDER.indexOf(currentPortal);
+    if (idx === -1) return;
+    const nextIdx = Math.min(Math.max(idx + delta, 0), PORTAL_ORDER.length-1);
+    openPortal(PORTAL_ORDER[nextIdx]);
+  }
 
-  let timer; function autosave(){ setStatus('Editing…'); clearTimeout(timer); timer=setTimeout(()=>saveWeek(false),600); }
-  form.addEventListener('input', autosave); form.addEventListener('change', autosave);
-  saveBtn.addEventListener('click', ()=>saveWeek(true)); clearBtn.addEventListener('click', clearWeek);
+  document.getElementById('prevSection').addEventListener('click', ()=>gotoAdjacentPortal(-1));
+  document.getElementById('nextSection').addEventListener('click', ()=>gotoAdjacentPortal(+1));
+  document.getElementById('resetPortalBtn').addEventListener('click', resetCurrentPortal);
 
-  function switchWeek(w){ localStorage.setItem(keyFor(), JSON.stringify(collectData())); currentWeek=w; localStorage.setItem('qb_diary_last_week', String(currentWeek)); weekBadge.textContent=`Week ${currentWeek}`; loadWeek(); }
-  prevWeekBtn.addEventListener('click', ()=>{ const w=Math.max(1,currentWeek-1); if(w!==currentWeek) switchWeek(w); });
-  nextWeekBtn.addEventListener('click', ()=>{ const w=Math.min(TOTAL_WEEKS,currentWeek+1); if(w!==currentWeek) switchWeek(w); });
+  portalCards.forEach(card=>{
+    const id = card.dataset.portal;
+    card.addEventListener('click', ()=>openPortal(id));
+    card.querySelector('.btn-portal').addEventListener('click', (e)=>{ e.stopPropagation(); openPortal(id); });
+  });
 
+  document.getElementById('overlayClose').addEventListener('click', closePortal);
+  overlay.addEventListener('click', (e)=>{ if (e.target === overlay) closePortal(); });
+  document.addEventListener('keydown', (e)=>{
+    if (e.key === 'Escape' && overlay.classList.contains('show')) closePortal();
+    if (e.key === 'ArrowRight' && overlay.classList.contains('show')) gotoAdjacentPortal(+1);
+    if (e.key === 'ArrowLeft'  && overlay.classList.contains('show')) gotoAdjacentPortal(-1);
+  });
+
+  // ===== AUTOSAVE =====
+  let saveTimer;
+  function scheduleAutosave(){
+    setStatus('Editing…');
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(()=>saveWeek(false), 600);
+  }
+  form.addEventListener('input', scheduleAutosave);
+  form.addEventListener('change', scheduleAutosave);
+  saveBtn.addEventListener('click', ()=>saveWeek(true));
+  clearBtn.addEventListener('click', clearWeek);
+
+  // ===== WEEK SWITCH =====
+  function switchWeek(week){
+    localStorage.setItem(keyFor(), JSON.stringify(collectData())); // silent save
+    currentWeek = week;
+    localStorage.setItem('qb_diary_last_week', String(currentWeek));
+    weekBadge.textContent = `Week ${currentWeek}`;
+    loadWeek();
+  }
+  prevWeekBtn.addEventListener('click', ()=>{ const w = Math.max(1, currentWeek-1); if (w!==currentWeek) switchWeek(w); });
+  nextWeekBtn.addEventListener('click', ()=>{ const w = Math.min(18, currentWeek+1); if (w!==currentWeek) switchWeek(w); });
+
+  // ===== BOOT =====
   window.addEventListener('DOMContentLoaded', ()=>{
-    const last = parseInt(localStorage.getItem('qb_diary_last_week')||'1',10);
-    currentWeek = Math.min(Math.max(1,last),TOTAL_WEEKS); weekBadge.textContent=`Week ${currentWeek}`; loadWeek();
-    const hash = location.hash.replace('#',''); if (hash && ORDER.includes(hash)) openPortal(hash);
-    const text = "Clarity, Soft focus, Steady mind.\n- Malik Henry";
-
-    function professionalReveal(){
-      const el = document.getElementById('typewriter-text'); if(!el) return;
-      el.innerHTML='';
-      const lines = text.split('\n');
-      lines.forEach((ln, i)=>{
-        const d = document.createElement('div');
-        d.className='type-line' + (i===lines.length-1 ? ' type-signature' : '');
-        d.textContent = ln.replace(/^\s+/, '');
-        el.appendChild(d);
-        setTimeout(()=>d.classList.add('show'), 250 + i*160);
-      });
-    }
-
-    // If intro is on screen initially (after unlock it's moved inside app)
-    professionalReveal();
-    // expose to be called after unlocking
-    window.runIntroReveal = professionalReveal;
-
+    const last = parseInt(localStorage.getItem('qb_diary_last_week') || '1', 10);
+    currentWeek = Math.min(Math.max(1, last), 18);
+    weekBadge.textContent = `Week ${currentWeek}`;
+    loadWeek();
+    const hash = location.hash.replace('#','');
+    if (hash && PORTAL_ORDER.includes(hash)) openPortal(hash);
   });
 })();

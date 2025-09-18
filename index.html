@@ -3,1534 +3,477 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>QuantumDrive | AI Performance Lab</title>
-  <meta name="description" content="Futuristic AI-powered performance lab delivering custom training, mobility, and nutrition plans." />
-  <meta name="theme-color" content="#061426" />
-  <link rel="manifest" href="manifest.json" />
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600;700&display=swap');
-    :root {
-      color-scheme: dark;
-      --bg-core: #020710;
-      --bg-panel: rgba(10, 24, 46, 0.78);
-      --bg-panel-strong: rgba(7, 19, 38, 0.94);
-      --bg-blur: rgba(3, 15, 31, 0.72);
-      --glow: #00e2ff;
-      --glow-soft: #04a9ff;
-      --accent: #7bffea;
-      --accent-alt: #ff8dfd;
-      --text-primary: #e9f4ff;
-      --text-muted: #8aa6c8;
-      --line: rgba(0, 190, 255, 0.25);
-      --shadow: 0 24px 80px rgba(0, 40, 80, 0.45);
-      --radius-xl: 28px;
-      --radius-lg: 20px;
-      --radius: 14px;
-      --radius-sm: 10px;
-      --transition: 200ms ease;
-      font-family: 'Rajdhani', "Inter", "Segoe UI", system-ui, sans-serif;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: radial-gradient(circle at top, rgba(0, 217, 255, 0.18), transparent 46%),
-                  radial-gradient(circle at 20% 20%, rgba(255, 84, 197, 0.16), transparent 50%),
-                  radial-gradient(circle at 80% 10%, rgba(0, 163, 255, 0.22), transparent 56%),
-                  #020710;
-      color: var(--text-primary);
-      overflow-x: hidden;
-    }
-
-    body::before,
-    body::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    body::before {
-      background-image: repeating-linear-gradient(0deg, rgba(0, 255, 255, 0.06) 0px, rgba(0, 255, 255, 0.06) 1px, transparent 1px, transparent 3px);
-      mix-blend-mode: screen;
-      opacity: 0.32;
-      animation: scan 6s linear infinite;
-    }
-
-    body::after {
-      background: radial-gradient(circle at 50% 18%, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.1) 40%, rgba(0, 0, 0, 0.55) 100%);
-    }
-
-    @keyframes scan {
-      0% { transform: translateY(-6%); }
-      50% { transform: translateY(4%); }
-      100% { transform: translateY(-6%); }
-    }
-
-    #sceneHost {
-      position: fixed;
-      inset: 0;
-      z-index: -2;
-      pointer-events: none;
-    }
-
-    .noise-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: -1;
-      opacity: 0.06;
-      background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAIAAACRXR/mAAAACXBIWXMAAAsSAAALEgHS3X78AAAAg0lEQVRYw+3SMQ6AIBAF0O18/85Y7AgNG0Ax7AnCM1j+2XJZkkiRJkm6InM2kfXgmQ34FtgC3wA9AJrAa1/E7Sfa4Xi0rX9G0FFg0/FhEWQrQxmq5YItSEvFY6UQBq3A4disYFmqGCrWA7VoAK1YDFWkGStYDFWkGStYDFWkGStYDFWkGStYDFWkGS9aAy7PS9IqSZIkSZL0A18B0nEgEgeq6QAAAABJRU5ErkJggg==');
-      pointer-events: none;
-    }
-
-    header.neo-header {
-      position: sticky;
-      top: 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 24px clamp(20px, 4vw, 60px);
-      backdrop-filter: blur(16px) saturate(140%);
-      background: linear-gradient(110deg, rgba(2, 12, 24, 0.9), rgba(4, 24, 44, 0.7));
-      z-index: 10;
-      border-bottom: 1px solid rgba(0, 200, 255, 0.1);
-    }
-
-    .hud-overlay {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 4;
-    }
-
-    .hud-card {
-      position: absolute;
-      backdrop-filter: blur(14px) saturate(150%);
-      background: linear-gradient(140deg, rgba(0, 42, 80, 0.74), rgba(0, 12, 26, 0.88));
-      border: 1px solid rgba(0, 255, 255, 0.32);
-      border-radius: 18px;
-      padding: 14px 18px;
-      color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      box-shadow: 0 16px 48px rgba(0, 38, 76, 0.55);
-      overflow: hidden;
-    }
-
-    .hud-card::before,
-    .hud-card::after {
-      content: "";
-      position: absolute;
-      width: 18px;
-      height: 18px;
-      border: 1px solid rgba(255, 120, 250, 0.3);
-      opacity: 0.85;
-    }
-
-    .hud-card::before { top: 10px; left: 10px; border-right: none; border-bottom: none; }
-    .hud-card::after { bottom: 10px; right: 10px; border-left: none; border-top: none; }
-
-    .hud-top-left { top: 88px; left: clamp(16px, 4vw, 56px); width: min(260px, 28vw); }
-    .hud-top-right { top: 88px; right: clamp(16px, 4vw, 56px); width: min(260px, 28vw); text-align: right; }
-    .hud-bottom { bottom: clamp(26px, 5vw, 64px); left: 50%; transform: translateX(-50%); width: min(540px, 88vw); text-align: center; padding: 16px 24px; }
-
-    .hud-title { font-size: 11px; color: rgba(140, 230, 255, 0.82); }
-    .hud-value { font-size: 24px; letter-spacing: 0.26em; margin-top: 6px; color: #ffffff; text-shadow: 0 0 14px rgba(0, 250, 255, 0.5); }
-    .hud-detail { font-size: 12px; letter-spacing: 0.18em; margin-top: 6px; color: rgba(180, 220, 255, 0.78); }
-
-    .hud-meter {
-      position: relative;
-      height: 16px;
-      margin-top: 14px;
-      border-radius: 999px;
-      background: rgba(0, 28, 54, 0.65);
-      border: 1px solid rgba(0, 240, 255, 0.32);
-      overflow: hidden;
-    }
-
-    .hud-meter-fill {
-      width: 62%;
-      height: 100%;
-      background: linear-gradient(90deg, rgba(0, 255, 214, 0.25), rgba(0, 255, 214, 0.95));
-      box-shadow: 0 0 16px rgba(0, 255, 214, 0.55);
-      transition: width 0.8s ease;
-    }
-
-    .hud-meter-label { font-size: 11px; letter-spacing: 0.22em; margin-top: 6px; color: rgba(124, 255, 240, 0.86); }
-
-    .hud-grid {
-      display: grid;
-      gap: 16px;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-      margin-top: 12px;
-    }
-
-    .hud-grid span {
-      display: inline-flex;
-      flex-direction: column;
-      gap: 4px;
-      font-size: 11px;
-      letter-spacing: 0.2em;
-      color: rgba(173, 217, 255, 0.84);
-    }
-
-    .hud-grid strong {
-      font-size: 16px;
-      color: #ffffff;
-      letter-spacing: 0.16em;
-      text-shadow: 0 0 12px rgba(0, 210, 255, 0.45);
-    }
-
-    .header-brand {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .brand-glyph {
-      width: 54px;
-      height: 54px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 35% 30%, #00f7ff, rgba(0, 90, 180, 0.4));
-      box-shadow: 0 0 34px rgba(0, 240, 255, 0.7);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .brand-glyph::before,
-    .brand-glyph::after {
-      content: "";
-      position: absolute;
-      inset: 16%;
-      border: 2px solid rgba(0, 255, 234, 0.5);
-      border-radius: 50%;
-      animation: pulse 6s infinite ease-in-out;
-    }
-
-    .brand-glyph::after {
-      inset: 4%;
-      border-color: rgba(255, 90, 220, 0.35);
-      animation-delay: 1.8s;
-    }
-
-    @keyframes pulse {
-      0%, 100% { transform: scale(0.94); opacity: 0.7; }
-      50% { transform: scale(1.04); opacity: 1; }
-    }
-
-    .brand-text {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .brand-text span {
-      font-size: clamp(13px, 1.8vw, 14px);
-      letter-spacing: 0.32em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-    }
-
-    .brand-text strong {
-      font-size: clamp(22px, 3vw, 30px);
-      font-weight: 700;
-      letter-spacing: 0.08em;
-    }
-
-    nav.neo-nav {
-      display: flex;
-      gap: clamp(12px, 2.5vw, 24px);
-      align-items: center;
-    }
-
-    nav.neo-nav a {
-      position: relative;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 16px;
-      border-radius: var(--radius-sm);
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 14px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      transition: color var(--transition), background var(--transition);
-    }
-
-    nav.neo-nav a span {
-      font-size: 11px;
-      letter-spacing: 0.18em;
-      opacity: 0.7;
-    }
-
-    nav.neo-nav a::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: inherit;
-      border: 1px solid transparent;
-      transition: border-color var(--transition), box-shadow var(--transition);
-    }
-
-    nav.neo-nav a:hover,
-    nav.neo-nav a.active {
-      color: var(--text-primary);
-      background: rgba(0, 200, 255, 0.08);
-    }
-
-    nav.neo-nav a:hover::after,
-    nav.neo-nav a.active::after {
-      border-color: rgba(0, 225, 255, 0.6);
-      box-shadow: 0 0 22px rgba(0, 200, 255, 0.38);
-    }
-
-    .neo-layout {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      gap: clamp(28px, 3vw, 34px);
-      padding: clamp(24px, 6vw, 80px);
-      max-width: 1300px;
-      margin: 0 auto 120px;
-    }
-
-    .hero-panel {
-      display: grid;
-      gap: 32px;
-      padding: clamp(24px, 4vw, 40px);
-      background: var(--bg-panel);
-      border-radius: var(--radius-xl);
-      border: 1px solid rgba(0, 209, 255, 0.18);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(28px) saturate(160%);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-panel::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at top right, rgba(255, 117, 250, 0.22), transparent 46%),
-                  radial-gradient(circle at 20% 20%, rgba(0, 255, 255, 0.18), transparent 58%);
-      opacity: 0.95;
-      pointer-events: none;
-    }
-
-    .hero-copy {
-      max-width: 620px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .hero-copy h1 {
-      margin: 0 0 12px;
-      font-size: clamp(34px, 6vw, 58px);
-      line-height: 1.05;
-      letter-spacing: -0.02em;
-    }
-
-    .glitch {
-      position: relative;
-      display: inline-block;
-    }
-
-    .glitch::before,
-    .glitch::after {
-      content: attr(data-text);
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 100%;
-      opacity: 0.6;
-      mix-blend-mode: screen;
-    }
-
-    .glitch::before {
-      color: rgba(0, 255, 214, 0.8);
-      animation: glitchShift 2200ms infinite ease-in-out;
-    }
-
-    .glitch::after {
-      color: rgba(255, 80, 240, 0.65);
-      animation: glitchShift 1800ms infinite ease-in-out reverse;
-    }
-
-    @keyframes glitchShift {
-      0% { transform: translate(0, 0); clip-path: inset(0 0 82% 0); }
-      25% { transform: translate(2px, -1px); clip-path: inset(30% 0 20% 0); }
-      50% { transform: translate(-2px, 1px); clip-path: inset(60% 0 10% 0); }
-      75% { transform: translate(1px, -2px); clip-path: inset(12% 0 66% 0); }
-      100% { transform: translate(-1px, 2px); clip-path: inset(0 0 82% 0); }
-    }
-
-    .hero-copy p {
-      margin: 0 0 18px;
-      color: var(--text-muted);
-      font-size: clamp(15px, 2.1vw, 18px);
-      max-width: 540px;
-      line-height: 1.6;
-    }
-
-    .stat-ribbon {
-      display: grid;
-      grid-auto-flow: column;
-      gap: 16px;
-      align-items: center;
-      max-width: fit-content;
-      padding: 10px 18px;
-      border-radius: 999px;
-      background: rgba(0, 190, 255, 0.12);
-      border: 1px solid rgba(0, 225, 255, 0.3);
-      color: var(--accent);
-      letter-spacing: 0.24em;
-      font-size: 10px;
-      text-transform: uppercase;
-    }
-
-    .profile-form {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      gap: 24px;
-      padding: clamp(18px, 3.2vw, 30px);
-      border-radius: var(--radius-xl);
-      background: var(--bg-panel-strong);
-      border: 1px solid rgba(120, 255, 244, 0.18);
-      box-shadow: inset 0 0 28px rgba(0, 255, 255, 0.08);
-    }
-
-    .form-grid {
-      display: grid;
-      gap: 18px;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    }
-
-    label.field {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      font-size: 13px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-    }
-
-    label.field span {
-      font-weight: 600;
-      color: rgba(177, 223, 255, 0.88);
-    }
-
-    .field input,
-    .field select,
-    .field textarea {
-      width: 100%;
-      padding: 12px 14px;
-      border-radius: var(--radius-sm);
-      background: rgba(4, 17, 32, 0.78);
-      border: 1px solid rgba(0, 210, 255, 0.18);
-      color: var(--text-primary);
-      font-size: 15px;
-      font-family: inherit;
-      transition: border-color var(--transition), box-shadow var(--transition);
-      resize: vertical;
-      min-height: 44px;
-    }
-
-    .field textarea { min-height: 88px; }
-
-    .field input:focus,
-    .field select:focus,
-    .field textarea:focus {
-      outline: none;
-      border-color: rgba(0, 255, 214, 0.6);
-      box-shadow: 0 0 0 4px rgba(0, 240, 255, 0.12);
-    }
-
-    .chip-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .chip-group label {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 14px;
-      border-radius: 999px;
-      border: 1px solid rgba(125, 255, 240, 0.2);
-      background: rgba(8, 24, 40, 0.72);
-      font-size: 13px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: transform var(--transition), border-color var(--transition), background var(--transition);
-    }
-
-    .chip-group input[type="checkbox"] {
-      accent-color: var(--glow);
-    }
-
-    .chip-group label:hover {
-      border-color: rgba(0, 254, 255, 0.6);
-      background: rgba(4, 44, 54, 0.9);
-      transform: translateY(-2px);
-    }
-
-    .action-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .btn-primary,
-    .btn-ghost {
-      position: relative;
-      padding: 14px 26px;
-      border-radius: 999px;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      border: 1px solid transparent;
-      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
-      background: none;
-      color: var(--text-primary);
-    }
-
-    .btn-primary {
-      background: linear-gradient(130deg, rgba(0, 255, 214, 0.92), rgba(0, 153, 255, 0.88));
-      color: #031220;
-      box-shadow: 0 0 34px rgba(0, 210, 255, 0.52);
-      border-color: rgba(0, 255, 224, 0.5);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px) scale(1.01);
-      box-shadow: 0 0 50px rgba(0, 255, 224, 0.55);
-    }
-
-    .btn-ghost {
-      border-color: rgba(0, 220, 255, 0.4);
-      color: var(--accent);
-      background: rgba(3, 26, 42, 0.6);
-    }
-
-    .btn-ghost:hover {
-      border-color: rgba(255, 96, 240, 0.5);
-      color: var(--accent-alt);
-      transform: translateY(-2px);
-    }
-
-    .btn-ghost.is-disabled {
-      opacity: 0.45;
-      pointer-events: none;
-    }
-
-    .hero-footnotes {
-      display: grid;
-      gap: 12px;
-      font-size: 13px;
-      color: var(--text-muted);
-      letter-spacing: 0.04em;
-    }
-
-    .neo-panels {
-      display: grid;
-      gap: clamp(20px, 2.6vw, 28px);
-    }
-
-    .panel {
-      background: var(--bg-panel);
-      border-radius: var(--radius-lg);
-      border: 1px solid rgba(0, 210, 255, 0.18);
-      backdrop-filter: blur(22px) saturate(150%);
-      padding: clamp(20px, 3vw, 30px);
-      box-shadow: var(--shadow);
-      position: relative;
-    }
-
-    .panel h2 {
-      margin-top: 0;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      font-size: 16px;
-      color: var(--accent);
-    }
-
-    .panel h3 {
-      margin-top: 0;
-      font-size: 22px;
-      letter-spacing: 0.04em;
-    }
-
-    .metrics {
-      display: grid;
-      gap: 18px;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    }
-
-    .metric-card {
-      padding: 18px;
-      border-radius: var(--radius);
-      background: rgba(4, 18, 36, 0.72);
-      border: 1px solid rgba(120, 255, 244, 0.18);
-      display: grid;
-      gap: 8px;
-    }
-
-    .metric-card strong {
-      font-size: 24px;
-      letter-spacing: 0.04em;
-    }
-
-    .metric-card span {
-      font-size: 12px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-    }
-
-    .results-panel {
-      display: grid;
-      gap: 24px;
-    }
-
-    .results-header {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .status-pill {
-      padding: 8px 14px;
-      border-radius: 999px;
-      background: rgba(0, 190, 255, 0.16);
-      border: 1px solid rgba(0, 255, 255, 0.35);
-      font-size: 11px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--accent);
-    }
-
-    .result-grid {
-      display: grid;
-      gap: 18px;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    }
-
-    .result-card {
-      padding: 20px;
-      border-radius: var(--radius);
-      background: rgba(2, 16, 33, 0.78);
-      border: 1px solid rgba(0, 210, 255, 0.16);
-      display: grid;
-      gap: 12px;
-    }
-
-    .result-card h4 {
-      margin: 0;
-      font-size: 16px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--accent);
-    }
-
-    .result-card ul {
-      margin: 0;
-      padding-left: 20px;
-      display: grid;
-      gap: 8px;
-      color: var(--text-muted);
-    }
-
-    .result-card p {
-      margin: 0;
-      color: var(--text-muted);
-      line-height: 1.6;
-    }
-
-    .schedule-section,
-    .meal-section,
-    .mobility-section,
-    .research-section {
-      display: grid;
-      gap: 20px;
-      border-radius: var(--radius-lg);
-      padding: clamp(20px, 3vw, 28px);
-      background: rgba(2, 16, 32, 0.86);
-      border: 1px solid rgba(0, 220, 255, 0.18);
-    }
-
-    .schedule-grid {
-      display: grid;
-      gap: 18px;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    }
-
-    .schedule-card {
-      padding: 18px;
-      border-radius: var(--radius);
-      background: rgba(5, 20, 38, 0.85);
-      border: 1px solid rgba(0, 210, 255, 0.18);
-      display: grid;
-      gap: 10px;
-    }
-
-    .schedule-card header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 8px;
-    }
-
-    .schedule-card h5 {
-      margin: 0;
-      font-size: 18px;
-      letter-spacing: 0.06em;
-    }
-
-    .schedule-card small {
-      font-size: 11px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-    }
-
-    .schedule-card ul {
-      margin: 0;
-      padding-left: 18px;
-      display: grid;
-      gap: 6px;
-      color: var(--text-muted);
-    }
-
-    .chip-tag {
-      align-self: flex-start;
-      padding: 6px 10px;
-      border-radius: 999px;
-      font-size: 11px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      background: rgba(255, 136, 240, 0.16);
-      border: 1px solid rgba(255, 84, 221, 0.35);
-      color: #ffb7f9;
-    }
-
-    .meal-grid {
-      display: grid;
-      gap: 18px;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    }
-
-    .meal-card {
-      padding: 20px;
-      border-radius: var(--radius);
-      background: rgba(6, 20, 38, 0.9);
-      border: 1px solid rgba(0, 210, 255, 0.16);
-      display: grid;
-      gap: 10px;
-    }
-
-    .meal-card h5 {
-      margin: 0;
-      font-size: 18px;
-    }
-
-    .meal-card ul {
-      margin: 0;
-      padding-left: 18px;
-      display: grid;
-      gap: 6px;
-      color: var(--text-muted);
-    }
-
-    .mobility-board {
-      display: grid;
-      gap: 18px;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    }
-
-    .mobility-column {
-      padding: 18px;
-      border-radius: var(--radius);
-      background: rgba(4, 18, 34, 0.88);
-      border: 1px solid rgba(0, 210, 255, 0.18);
-      display: grid;
-      gap: 10px;
-    }
-
-    .research-lists {
-      display: grid;
-      gap: 18px;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    }
-
-    .research-card {
-      padding: 18px;
-      border-radius: var(--radius);
-      background: rgba(6, 20, 36, 0.84);
-      border: 1px solid rgba(0, 210, 255, 0.16);
-      display: grid;
-      gap: 10px;
-    }
-
-    .research-card ul {
-      margin: 0;
-      padding-left: 18px;
-      display: grid;
-      gap: 8px;
-    }
-
-    .loader {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      font-size: 11px;
-      color: var(--accent);
-    }
-
-    .loader span {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--accent);
-      animation: loaderPulse 1s infinite ease-in-out;
-    }
-
-    .loader span:nth-child(2) { animation-delay: 0.2s; }
-    .loader span:nth-child(3) { animation-delay: 0.4s; }
-
-    @keyframes loaderPulse {
-      0%, 100% { transform: scale(0.6); opacity: 0.4; }
-      50% { transform: scale(1); opacity: 1; }
-    }
-
-    .alert {
-      padding: 14px 18px;
-      border-radius: var(--radius);
-      border: 1px solid rgba(255, 120, 140, 0.4);
-      background: rgba(46, 8, 18, 0.78);
-      color: #ffc7d1;
-      letter-spacing: 0.04em;
-    }
-
-    .alert.alert--warn {
-      border-color: rgba(255, 210, 120, 0.4);
-      background: rgba(46, 28, 8, 0.78);
-      color: #ffe9c7;
-    }
-
-    footer.neo-footer {
-      padding: 40px clamp(20px, 6vw, 80px) 70px;
-      color: var(--text-muted);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      font-size: 12px;
-      border-top: 1px solid rgba(0, 210, 255, 0.12);
-      background: rgba(2, 10, 20, 0.86);
-      position: relative;
-      z-index: 1;
-    }
-
-    footer.neo-footer a {
-      color: var(--accent);
-      text-decoration: none;
-    }
-
-    @media (max-width: 760px) {
-      header.neo-header { flex-direction: column; gap: 16px; }
-      nav.neo-nav { flex-wrap: wrap; justify-content: center; }
-      .action-row { flex-direction: column; align-items: stretch; }
-      .btn-primary, .btn-ghost { width: 100%; justify-content: center; }
-      .stat-ribbon { justify-self: start; }
-      .hud-top-left { top: 82px; left: 16px; width: calc(100% - 32px); }
-      .hud-top-right { display: none; }
-      .hud-bottom { bottom: 22px; width: calc(100% - 32px); }
-    }
-  </style>
+  <title>QB Diary 
+  </title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div id="sceneHost"></div>
-  <div class="noise-overlay"></div>
-  <header class="neo-header">
-    <div class="header-brand">
-      <div class="brand-glyph" aria-hidden="true"></div>
-      <div class="brand-text">
-        <span>Quantumdrive systems</span>
-        <strong>AI Performance Lab</strong>
-      </div>
-    </div>
-    <nav class="neo-nav" aria-label="Primary">
-      <a href="index.html" class="active">Program<span>dashboard</span></a>
-      <a href="schedule.html">Trainers<span>live desk</span></a>
-      <a href="qr.html">Share<span>portal</span></a>
-    </nav>
-  </header>
+  <!-- ===== COVER / PASSWORD (always shown on load) ===== -->
+  <section id="cover" class="cover" aria-label="QB Diary Access">
+    <div class="cover-card">
+      <!-- Your logo -->
+      <img src="logo.png" alt="QB Diary logo" class="cover-logo" />
+      <h1 class="brand-name cover-title">M16 QB Diary
+      </h1>
+      <p class="cover-desc">
+        Your all-in-one football prep hub — with weekly modules to track progress, healthy pre-game food and hydration tips, film-study guidance, and stretch routines. Built to sharpen your game, and keep your mindset focused through weekly self-reflection.
+        <strong></strong>.
+      </p>
 
-  <div class="hud-overlay" aria-hidden="true">
-    <div class="hud-card hud-top-left">
-      <div class="hud-title">Pilot ID</div>
-      <div class="hud-value">QD-ATHLETE</div>
-      <div class="hud-detail">Status: Synced • Neural uplink secure</div>
-      <div class="hud-meter"><div class="hud-meter-fill" id="xpFill"></div></div>
-      <div class="hud-meter-label">XP <span id="xpValue">68</span>% • Tier IV Vanguard</div>
-    </div>
-    <div class="hud-card hud-top-right">
-      <div class="hud-title">AI Link</div>
-      <div class="hud-value">Gemini Nexus</div>
-      <div class="hud-detail">Latency &lt; 38ms • Google Research feed live</div>
-      <div class="hud-detail">Coach relay • 24/7 coverage</div>
-    </div>
-    <div class="hud-card hud-bottom">
-      <div class="hud-title">Mission Stream</div>
-      <div class="hud-grid">
-        <span><strong>Next Uplink</strong>Session calibrates in 03:18</span>
-        <span><strong>Vitals</strong>HRV 98 • Sleep 9.1h</span>
-        <span><strong>Focus Lock</strong>Explosive drive • Mobility reset</span>
-      </div>
-    </div>
-  </div>
-
-  <main class="neo-layout">
-    <section class="hero-panel" aria-labelledby="heroTitle">
-      <div class="hero-copy">
-        <div class="stat-ribbon">Built with Google AI research streams</div>
-        <h1 id="heroTitle"><span class="glitch" data-text="Futuristic training, real athlete outcomes.">Futuristic training, real athlete outcomes.</span></h1>
-        <p>QuantumDrive calibrates custom performance blocks by blending Three.js immersive visuals with AI, Google research APIs, and philosophies from world-class trainers. Input your profile. Receive a detailed, time-bound plan with skill work, mobility, recovery, and nutrition mapped to your goals.</p>
-      </div>
-
-      <form id="profileForm" class="profile-form" autocomplete="on">
-        <div class="form-grid">
-          <label class="field">
-            <span>Full Name</span>
-            <input type="text" name="name" placeholder="Alex Carter" required />
-          </label>
-          <label class="field">
-            <span>Email (for coach sync)</span>
-            <input type="email" name="email" placeholder="you@example.com" />
-          </label>
-          <label class="field">
-            <span>Sport</span>
-            <select name="sport" required>
-              <option value="">Select sport…</option>
-              <option>Football</option>
-              <option>Basketball</option>
-              <option>Soccer</option>
-              <option>Track & Field</option>
-              <option>Baseball</option>
-              <option>Volleyball</option>
-              <option>Combat Sports</option>
-              <option>General Athletics</option>
-            </select>
-          </label>
-          <label class="field">
-            <span>Position / Event</span>
-            <input type="text" name="position" placeholder="Quarterback" />
-          </label>
-          <label class="field">
-            <span>Training Background</span>
-            <select name="experience" required>
-              <option value="">Experience level…</option>
-              <option>Emerging athlete</option>
-              <option>Intermediate</option>
-              <option>Advanced / Collegiate</option>
-              <option>Professional</option>
-            </select>
-          </label>
-          <label class="field">
-            <span>Primary Goal</span>
-            <input type="text" name="goal" placeholder="Explosive speed & durability" required />
-          </label>
-          <label class="field">
-            <span>Program Length</span>
-            <select name="timeframe" required>
-              <option value="">Select duration…</option>
-              <option>4 weeks</option>
-              <option>6 weeks</option>
-              <option>8 weeks</option>
-              <option>10 weeks</option>
-              <option>12 weeks</option>
-            </select>
-          </label>
-          <label class="field">
-            <span>Sessions per Week</span>
-            <select name="frequency" required>
-              <option value="">Choose frequency…</option>
-              <option>3</option>
-              <option>4</option>
-              <option>5</option>
-              <option>6</option>
-            </select>
-          </label>
-          <label class="field">
-            <span>Equipment Access</span>
-            <input type="text" name="equipment" placeholder="Full gym, field turf, sled" />
-          </label>
-          <label class="field">
-            <span>Key Metrics to Improve</span>
-            <input type="text" name="metrics" placeholder="40-yard dash, VO2 max, hip mobility" />
-          </label>
-          <label class="field">
-            <span>Current Limitations / Injuries</span>
-            <textarea name="injuries" placeholder="Grade 1 hamstring strain, shoulder stability work"></textarea>
-          </label>
-          <label class="field">
-            <span>Dietary Preference</span>
-            <select name="diet" required>
-              <option value="">Select preference…</option>
-              <option>Balanced omnivore</option>
-              <option>High-protein pescatarian</option>
-              <option>Plant-forward</option>
-              <option>Gluten-free</option>
-              <option>Dairy-free</option>
-              <option>Keto / low-carb</option>
-            </select>
-          </label>
-          <label class="field">
-            <span>Dietary Restrictions</span>
-            <input type="text" name="restrictions" placeholder="No peanuts, limit lactose" />
-          </label>
-        </div>
-
-        <label class="field">
-          <span>Training Days Available</span>
-          <div class="chip-group" role="group" aria-label="Training days">
-            <label><input type="checkbox" name="trainingDays" value="Monday" />Mon</label>
-            <label><input type="checkbox" name="trainingDays" value="Tuesday" />Tue</label>
-            <label><input type="checkbox" name="trainingDays" value="Wednesday" />Wed</label>
-            <label><input type="checkbox" name="trainingDays" value="Thursday" />Thu</label>
-            <label><input type="checkbox" name="trainingDays" value="Friday" />Fri</label>
-            <label><input type="checkbox" name="trainingDays" value="Saturday" />Sat</label>
-            <label><input type="checkbox" name="trainingDays" value="Sunday" />Sun</label>
-          </div>
-        </label>
-
-        <label class="field">
-          <span>Additional priorities (film study, leadership, etc.)</span>
-          <textarea name="priorities" placeholder="Incorporate pro-style read progression work and leadership mindset prompts."></textarea>
-        </label>
-
-        <div class="action-row">
-          <button class="btn-primary" type="submit">Generate AI Program</button>
-          <a class="btn-ghost" id="downloadBtn" href="#" download>Download Plan JSON</a>
-          <div id="formStatus" role="status" aria-live="polite"></div>
-        </div>
+      <form id="gateForm" class="gate" autocomplete="off" novalidate>
+        <label for="gateInput" class="gate-label"> Password Please </label>
+        <input id="gateInput" type="password" class="inp inp-lg" placeholder="Enter password…" inputmode="text" aria-describedby="gateHint" />
+        <button id="gateBtn" type="submit" class="btn btn-primary btn-lg pill">Unlock</button>
+        <p id="gateHint" class="gate-hint" aria-live="polite"></p>
       </form>
 
-      <p class="hero-footnotes">Plans align with evidence-based practices drawn from coaches including Tim Grover, Sue Falsone, Loren Landow, and EXOS methodology. Google APIs enrich the dataset with current research, rule updates, and sport-specific context.</p>
-    </section>
+      <small class="cover-foot">You’ll be asked each time you open the app. Entries save locally to your device.</small>
+    </div>
+  </section>
 
-    <section id="resultsPanel" class="panel results-panel" hidden aria-live="polite">
-      <div class="results-header">
-        <div>
-          <h2>AI Output</h2>
-          <h3 id="planTitle">Custom performance matrix</h3>
-        </div>
-        <div class="status-pill" id="statusPill"> Awaiting input </div>
+  <!-- ===== APP (hidden until password is entered) ===== -->
+  <div id="app" class="app locked" aria-hidden="true">
+    <header class="site-header">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <h2 class="brand-name">QB Diary</h2>
       </div>
 
-      <div class="result-grid">
-        <article class="result-card">
-          <h4>Program Overview</h4>
-          <p id="planOverview">—</p>
-        </article>
-        <article class="result-card">
-          <h4>Guiding Philosophies</h4>
-          <ul id="principlesList"></ul>
-        </article>
-        <article class="result-card">
-          <h4>Timeline Focus</h4>
-          <p id="timelineSummary">—</p>
-        </article>
-        <article class="result-card">
-          <h4>Key Metrics</h4>
-          <ul id="metricList"></ul>
-        </article>
-      </div>
-
-      <section class="schedule-section">
-        <header class="results-header">
-          <div>
-            <h2>Game-Ready Weekly Flow</h2>
-            <p class="hero-footnotes" id="scheduleIntro">Daily sessions adapt to readiness and practice calendars.</p>
-          </div>
-        </header>
-        <div id="scheduleGrid" class="schedule-grid"></div>
-      </section>
-
-      <section class="mobility-section">
-        <header class="results-header">
-          <div>
-            <h2>Mobility + Yoga Systems</h2>
-            <p class="hero-footnotes">Fascia care per Sue Falsone, nervous-system resets inspired by Kelly Starrett.</p>
-          </div>
-        </header>
-        <div id="mobilityBoard" class="mobility-board"></div>
-      </section>
-
-      <section class="meal-section">
-        <header class="results-header">
-          <div>
-            <h2>Fuel Blueprint</h2>
-            <p class="hero-footnotes">Powered by Google nutrition datasets and ISSN-backed macro ratios.</p>
-          </div>
-        </header>
-        <div id="mealGrid" class="meal-grid"></div>
-      </section>
-
-      <section class="research-section">
-        <header class="results-header">
-          <div>
-            <h2>Research + Sources</h2>
-            <p class="hero-footnotes">Direct pulls from Google Knowledge Graph and referenced sport science literature.</p>
-          </div>
-        </header>
-        <div class="research-lists">
-          <article class="research-card">
-            <h4>Google Intelligence</h4>
-            <ul id="googleList"></ul>
-          </article>
-          <article class="research-card">
-            <h4>Program References</h4>
-            <ul id="referenceList"></ul>
-          </article>
+      <div class="toolbar">
+        <div class="week-nav" role="group" aria-label="Week navigation">
+          <button id="prevWeek" class="nav-arrow" aria-label="Previous week">◀</button>
+          <button id="weekBadge" class="week-badge" aria-live="polite" aria-label="Current week">Week 1</button>
+          <button id="nextWeek" class="nav-arrow" aria-label="Next week">▶</button>
         </div>
-      </section>
+
+        <div class="cta-group" role="group" aria-label="Save and clear">
+          <button id="saveBtn" class="btn pill btn-primary" type="button" title="Save current week">💾 Save</button>
+          <button id="clearBtn" class="btn pill btn-outline" type="button" title="Clear current week">🗑️ Clear</button>
+        </div>
+        <span class="save-status" id="saveStatus" aria-live="polite">Ready</span>
+      </div>
+    </header>
+
+    <!-- Week progress + checklist -->
+    <section class="week-meta" aria-label="Week completion status">
+      <div class="week-progress"><div id="weekProgressBar" class="bar"></div></div>
+      <span id="weekProgressText" class="week-progress-text">0/6 complete</span>
+      <ul class="week-checklist" id="weekChecklist" role="list" aria-label="Week portals completion"></ul>
     </section>
-  </main>
 
-  <footer class="neo-footer">
-    <div>QuantumDrive Systems — AI Workout Programs • Lowering the barrier to elite coaching.</div>
-    <div>Deploy with your Google API key in <code>GOOGLE_API_KEY</code>. Need help? Visit the Trainer Desk.</div>
-  </footer>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-content">
+        <h3 class="hero-title">Clarity, Soft focus, Steady mind!</h3>
+        <p class="hero-sub">Tap a portal below. Use the pull-downs to complete each section. Fill out each week until the end of the season. Once season is completed use the notebook to reflect on how the year went.</p>
+      </div>
+    </section>
 
-  <script type="module">
-    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.module.js';
-    import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.161.0/examples/jsm/controls/OrbitControls.js';
+    <!-- PORTAL GRID -->
+    <main class="portal-grid" aria-label="Portals">
+      <article class="portal-card" data-portal="weekly">
+        <div class="card-head">
+          <h3>Weekly Word + Alter Ego</h3>
+          <div class="status-wrap">
+            <span class="status-pill">Incomplete</span>
+            <span class="portal-dot" aria-hidden="true"></span>
+          </div>
+        </div>
+        <p class="portal-kicker">Set intention. Step into your persona.</p>
+        <button class="btn-portal" type="button">Open</button>
+      </article>
 
-    // ----- THREE.JS HOLOGRID BACKDROP -----
-    const host = document.getElementById('sceneHost');
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setPixelRatio(window.devicePixelRatio || 1);
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.domElement.style.filter = 'brightness(0.95)';
-    host.appendChild(renderer.domElement);
+      <article class="portal-card" data-portal="rival-film">
+        <div class="card-head">
+          <h3>Rival & Film Study</h3>
+          <div class="status-wrap">
+            <span class="status-pill">Incomplete</span>
+            <span class="portal-dot" aria-hidden="true"></span>
+          </div>
+        </div>
+        <p class="portal-kicker">Know the opponent. Exploit tendencies.</p>
+        <button class="btn-portal" type="button">Open</button>
+      </article>
 
-    const scene = new THREE.Scene();
-    scene.fog = new THREE.Fog(0x030913, 18, 110);
+      <article class="portal-card" data-portal="mobility">
+        <div class="card-head">
+          <h3>Mobility & Warm-Up Flow</h3>
+          <div class="status-wrap">
+            <span class="status-pill">Incomplete</span>
+            <span class="portal-dot" aria-hidden="true"></span>
+          </div>
+        </div>
+        <p class="portal-kicker">Prime shoulders, hips, and speed.</p>
+        <button class="btn-portal" type="button">Open</button>
+      </article>
 
-    const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.6, 160);
-    camera.position.set(0, 10, 30);
+      <article class="portal-card" data-portal="fuel">
+        <div class="card-head">
+          <h3>Fuel & Hydration</h3>
+          <div class="status-wrap">
+            <span class="status-pill">Incomplete</span>
+            <span class="portal-dot" aria-hidden="true"></span>
+          </div>
+        </div>
+        <p class="portal-kicker">Clean energy. Smart recovery.</p>
+        <button class="btn-portal" type="button">Open</button>
+      </article>
 
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enablePan = false;
-    controls.enableZoom = false;
-    controls.enableRotate = false;
+      <article class="portal-card" data-portal="focus-throw">
+        <div class="card-head">
+          <h3>Mental Focus & Throwing</h3>
+          <div class="status-wrap">
+            <span class="status-pill">Incomplete</span>
+            <span class="portal-dot" aria-hidden="true"></span>
+          </div>
+        </div>
+        <p class="portal-kicker">Breathe. Visualize. Let it rip.</p>
+        <button class="btn-portal" type="button">Open</button>
+      </article>
 
-    const ambient = new THREE.AmbientLight(0x0b3d66, 1.2);
-    scene.add(ambient);
+      <article class="portal-card" data-portal="post-grade">
+        <div class="card-head">
+          <h3>Post-Game & Self-Grade</h3>
+          <div class="status-wrap">
+            <span class="status-pill">Incomplete</span>
+            <span class="portal-dot" aria-hidden="true"></span>
+          </div>
+        </div>
+        <p class="portal-kicker">Reflect. Improve. Lead.</p>
+        <button class="btn-portal" type="button">Open</button>
+      </article>
+    </main>
 
-    const portalLight = new THREE.PointLight(0x00d5ff, 2.2, 80, 1.4);
-    portalLight.position.set(0, 12, 2);
-    scene.add(portalLight);
+    <!-- OVERLAY -->
+    <div id="overlay" class="overlay" aria-hidden="true">
+      <div class="overlay-content" role="dialog" aria-modal="true" aria-labelledby="overlayTitle">
+        <button class="overlay-close" id="overlayClose" aria-label="Close portal">×</button>
+        <h3 id="overlayTitle" class="overlay-title"></h3>
+        <p id="overlayIntro" class="overlay-intro"></p>
 
-    const magentaLight = new THREE.PointLight(0xff44cc, 1.4, 90, 1.6);
-    magentaLight.position.set(-22, 8, -18);
-    scene.add(magentaLight);
+        <form id="pocketbookForm" class="portal-form" autocomplete="on">
+          <!-- WEEKLY + ALTER EGO -->
+          <section data-section="weekly" class="portal-section">
+            <details open class="pulldown">
+              <summary>1. Weekly Word</summary>
+              <p>Choose a word that best describes the week you want to have going into this game.</p>
+              <input class="inp" type="text" name="weeklyWord" placeholder="Enter your word…" required />
+            </details>
 
-    const grid = new THREE.GridHelper(240, 80, 0x0ffaff, 0x012b46);
-    grid.material.opacity = 0.22;
-    grid.material.transparent = true;
-    grid.position.y = -6;
-    scene.add(grid);
+            <details class="pulldown">
+              <summary>2. Beginning of the Week Mental Prep – Alter Ego Page</summary>
+              <p>Who am I when I step onto the field? When I step onto the field today who do I want to represent. Sometimes you need to take your mind to other places in order to get the best results. So let’s go there!</p>
+              <label class="lbl">Alter Ego Name:</label>
+              <input class="inp" type="text" name="alterEgoName" placeholder="____________________________" required />
 
-    const planeGeometry = new THREE.PlaneGeometry(300, 300, 120, 120);
-    const planeMaterial = new THREE.MeshBasicMaterial({ color: 0x021127, wireframe: true, opacity: 0.1, transparent: true });
-    const plane = new THREE.Mesh(planeGeometry, planeMaterial);
-    plane.rotation.x = -Math.PI / 2;
-    plane.position.y = -8;
-    scene.add(plane);
+              <label class="lbl">Traits of my Alter Ego (3–5 words):</label>
+              <div class="traits">
+                <input class="inp" type="text" name="trait1" placeholder="__________" required />
+                <input class="inp" type="text" name="trait2" placeholder="__________" required />
+                <input class="inp" type="text" name="trait3" placeholder="__________" required />
+                <input class="inp" type="text" name="trait4" placeholder="(optional) __________" />
+                <input class="inp" type="text" name="trait5" placeholder="(optional) __________" />
+              </div>
 
-    const knot = new THREE.Mesh(
-      new THREE.TorusKnotGeometry(6.2, 1.4, 320, 32),
-      new THREE.MeshStandardMaterial({
-        color: 0x099cff,
-        metalness: 0.75,
-        roughness: 0.18,
-        emissive: 0x0053ff,
-        emissiveIntensity: 1.6,
-        transparent: true,
-        opacity: 0.96
-      })
-    );
-    knot.position.set(0, 6, -18);
-    scene.add(knot);
+              <label class="lbl">Game-Day Mantra</label>
+              <p class="hint">What does this alter ego stand for. Does it stand on business or fold when things get tough? Ex: “nobody pushes me around” (1 sentence)</p>
+              <textarea class="inp" name="mantra" rows="2" placeholder="________________________________________________" required></textarea>
+            </details>
+          </section>
 
-    const capsule = new THREE.Mesh(
-      new THREE.CapsuleGeometry(2.6, 8, 12, 24),
-      new THREE.MeshStandardMaterial({
-        color: 0xff4fcf,
-        metalness: 0.68,
-        roughness: 0.25,
-        emissive: 0x550044,
-        emissiveIntensity: 1.3
-      })
-    );
-    capsule.position.set(10, 3.8, -10);
-    capsule.rotation.z = Math.PI / 7;
-    scene.add(capsule);
+          <!-- RIVAL + FILM -->
+          <section data-section="rival-film" class="portal-section">
+            <details open class="pulldown">
+              <summary>3. Rival Page</summary>
+              <label class="lbl">Opponent school/team & (position):</label>
+              <input class="inp" type="text" name="opponent" placeholder="____________________________" required />
 
-    const starGeometry = new THREE.BufferGeometry();
-    const starCount = 1200;
-    const positions = new Float32Array(starCount * 3);
-    for (let i = 0; i < starCount * 3; i += 3) {
-      positions[i] = (Math.random() - 0.5) * 180;
-      positions[i + 1] = Math.random() * 140;
-      positions[i + 2] = (Math.random() - 0.5) * 160;
-    }
-    starGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    const stars = new THREE.Points(
-      starGeometry,
-      new THREE.PointsMaterial({ color: 0x0ac9ff, size: 0.9, transparent: true, opacity: 0.8 })
-    );
-    scene.add(stars);
+              <label class="lbl">What do they do well?</label>
+              <textarea class="inp" name="rivalStrengths" rows="2" placeholder="________________________________________________"></textarea>
 
-    let tilt = { x: 0, y: 0 };
-    document.addEventListener('pointermove', (event) => {
-      const ratioX = (event.clientX / window.innerWidth) * 2 - 1;
-      const ratioY = (event.clientY / window.innerHeight) * 2 - 1;
-      tilt.x = ratioY * 0.6;
-      tilt.y = ratioX * 0.6;
-    });
+              <label class="lbl">What are their weaknesses?</label>
+              <textarea class="inp" name="rivalWeaknesses" rows="2" placeholder="—------------------------------------ - - - - - - - – - - - - - - - - - - - - – - - - -"></textarea>
+            </details>
 
-    const animate = () => {
-      requestAnimationFrame(animate);
-      knot.rotation.x += 0.002;
-      knot.rotation.y += 0.004;
-      capsule.rotation.y += 0.006;
-      capsule.rotation.x += 0.003;
-      stars.rotation.y += 0.0006;
-      camera.position.x = THREE.MathUtils.lerp(camera.position.x, tilt.y * 6, 0.04);
-      camera.position.y = THREE.MathUtils.lerp(camera.position.y, 8 + tilt.x * 4, 0.05);
-      camera.lookAt(0, 2, -14);
-      renderer.render(scene, camera);
-    };
-    animate();
+            <details class="pulldown">
+              <summary>4. Film Study Methods</summary>
+              <p>Ways I studied film this week:</p>
+              <ul class="bullets">
+                <li>Dont just watch highlights — watch the entire game flow. This helps you pick up on rhythm, fatigue patterns, substitution strategies, and how teams adjust throughout quarters/halves. Pay attention to the “small things” between plays: how players react after mistakes, how the coach signals in plays, or if tempo changes after certain situations (e.g., turnovers, timeouts, foul trouble).</li>
+                <li>Instead of following the ball every time, lock in on your position or the one you’ll be matched against. Notice:
 
-    window.addEventListener('resize', () => {
-      const { innerWidth, innerHeight } = window;
-      camera.aspect = innerWidth / innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(innerWidth, innerHeight);
-    });
+Stance and alignment: Are they balanced? Do they tip off run/pass/shot direction?
 
-    // ----- AI FORM + RENDERING LOGIC -----
-    const profileForm = document.getElementById('profileForm');
-    const formStatus = document.getElementById('formStatus');
-    const downloadBtn = document.getElementById('downloadBtn');
-    const resultsPanel = document.getElementById('resultsPanel');
-    const planTitle = document.getElementById('planTitle');
-    const planOverview = document.getElementById('planOverview');
-    const principlesList = document.getElementById('principlesList');
-    const timelineSummary = document.getElementById('timelineSummary');
-    const metricList = document.getElementById('metricList');
-    const scheduleGrid = document.getElementById('scheduleGrid');
-    const mobilityBoard = document.getElementById('mobilityBoard');
-    const mealGrid = document.getElementById('mealGrid');
-    const googleList = document.getElementById('googleList');
-    const referenceList = document.getElementById('referenceList');
-    const statusPill = document.getElementById('statusPill');
-    const xpFill = document.getElementById('xpFill');
-    const xpValue = document.getElementById('xpValue');
+Footwork: Is it explosive or lazy at certain points?
 
-    if (xpFill && xpValue) {
-      let xpProgress = 68;
-      let xpDirection = 1;
-      setInterval(() => {
-        xpProgress += xpDirection * 0.5;
-        if (xpProgress >= 94 || xpProgress <= 58) {
-          xpDirection *= -1;
-        }
-        xpFill.style.width = `${xpProgress}%`;
-        xpValue.textContent = Math.round(xpProgress).toString();
-      }, 160);
-    }
+Conditioning: Do they gas out after long drives or late in games?
+By isolating positions, you catch tendencies that the broadcast angle misses.</li>
+                <li>Zoom in on the top threats or your likely matchup. Ask:
 
-    let latestPlanBundle = null;
-    const setDownloadEnabled = (enabled) => {
-      if (enabled) {
-        downloadBtn.classList.remove('is-disabled');
-        downloadBtn.removeAttribute('aria-disabled');
-      } else {
-        downloadBtn.classList.add('is-disabled');
-        downloadBtn.setAttribute('aria-disabled', 'true');
-        downloadBtn.removeAttribute('href');
-        downloadBtn.removeAttribute('download');
-        latestPlanBundle = null;
-      }
-    };
+Do they favor going left or right?
 
-    const setStatus = (message, variant = 'idle') => {
-      const loaderMarkup = `<span></span><span></span><span></span>`;
-      if (variant === 'loading') {
-        formStatus.innerHTML = `<div class="loader">${loaderMarkup}<span>Generating</span></div>`;
-        statusPill.textContent = 'Generating with Google AI…';
-      } else if (variant === 'warning') {
-        formStatus.innerHTML = `<div class="alert alert--warn">${message}</div>`;
-        statusPill.textContent = 'Standby — offline mode';
-      } else if (variant === 'error') {
-        formStatus.innerHTML = `<div class="alert">${message}</div>`;
-        statusPill.textContent = 'Generation failed';
-      } else {
-        formStatus.textContent = message;
-        statusPill.textContent = message ? 'Plan updated' : 'Awaiting input';
-      }
-    };
+Do they always spin a certain way?
 
-    const checkApiHealth = async () => {
-      try {
-        const res = await fetch('/healthz', { cache: 'no-store' });
-        if (!res.ok) throw new Error(res.statusText || 'health check failed');
-        setStatus('Connected. Ready when you are.');
-      } catch (error) {
-        console.warn('Health check failed', error);
-        setStatus('API offline — results will use local fallback templates.', 'warning');
-      }
-    };
+How do they react to pressure vs. space?
 
-    setDownloadEnabled(false);
-    checkApiHealth();
+What’s their “go-to move” when things break down?
+If you learn a player’s comfort zone, you can force them away from it.</li>
+                <li>Find their weakness!? Everyone has one — it might be physical, technical, or mental.
 
-    const asArray = (value) => Array.isArray(value) ? value : (value ? [value] : []);
+Physical: slow first step, lack of strength, poor conditioning.
 
-    const fillList = (container, values) => {
-      container.innerHTML = '';
-      asArray(values).forEach((value) => {
-        const item = document.createElement('li');
-        item.textContent = value;
-        container.appendChild(item);
-      });
-      if (!container.children.length) {
-        const item = document.createElement('li');
-        item.textContent = '—';
-        container.appendChild(item);
-      }
-    };
+Technical: sloppy ball handling, weak hand/foot, struggles against zone/press.
 
-    const fillParagraph = (element, value) => {
-      element.textContent = value || '—';
-    };
+Mental: frustration after mistakes, slow to adjust, rattled by noise/pressure.
+Spot these cracks early, because good teams exploit them.</li>
+                <li>Formations, alignments, and spacing usually signal intent. Track how often a certain set leads to a type of play. For example:
 
-    const renderSchedule = (schedule = []) => {
-      scheduleGrid.innerHTML = '';
-      if (!schedule.length) {
-        const notice = document.createElement('p');
-        notice.className = 'hero-footnotes';
-        notice.textContent = 'Schedule not returned by the AI model.';
-        scheduleGrid.appendChild(notice);
-        return;
-      }
-      schedule.forEach((session) => {
-        const card = document.createElement('article');
-        card.className = 'schedule-card';
+Trips formation = screen game or quick slant.
 
-        const header = document.createElement('header');
-        const title = document.createElement('h5');
-        title.textContent = session.day || 'Session';
-        const focus = document.createElement('small');
-        focus.textContent = session.focus || '';
-        header.appendChild(title);
-        header.appendChild(focus);
-        card.appendChild(header);
+5-out = drive-and-kick action.
 
-        const tag = document.createElement('div');
-        tag.className = 'chip-tag';
-        tag.textContent = session.readiness || session.practice || 'Prime';
-        card.appendChild(tag);
+Wing overloaded = iso or pick-and-roll coming.
+Build a mental chart: “When they line up like this, 70% of the time they run X.”</li>
+                <li>Combine all the above:
 
-        const list = document.createElement('ul');
-        ['warmup', 'primary', 'conditioning', 'mobility', 'recovery', 'coachingCue', 'metrics'].forEach((key) => {
-          if (session[key]) {
-            const item = document.createElement('li');
-            item.textContent = `${key.replace(/([A-Z])/g, ' $1')}: ${session[key]}`;
-            list.appendChild(item);
-          }
-        });
-        card.appendChild(list);
-        scheduleGrid.appendChild(card);
-      });
-    };
+Pick plays that force their weak hand/foot.
 
-    const renderMobility = (mobility = {}) => {
-      mobilityBoard.innerHTML = '';
-      const entries = Object.entries(mobility);
-      if (!entries.length) {
-        const placeholder = document.createElement('p');
-        placeholder.className = 'hero-footnotes';
-        placeholder.textContent = 'Mobility flows will populate once AI context is available.';
-        mobilityBoard.appendChild(placeholder);
-        return;
-      }
-      entries.forEach(([title, moves]) => {
-        const column = document.createElement('article');
-        column.className = 'mobility-column';
-        const heading = document.createElement('h4');
-        heading.textContent = title.replace(/([A-Z])/g, ' $1').trim();
-        column.appendChild(heading);
-        const list = document.createElement('ul');
-        asArray(moves).forEach((move) => {
-          const item = document.createElement('li');
-          item.textContent = move;
-          list.appendChild(item);
-        });
-        column.appendChild(list);
-        mobilityBoard.appendChild(column);
-      });
-    };
+Target their tired players late in the game.
 
-    const renderMeals = (meals = []) => {
-      mealGrid.innerHTML = '';
-      if (!meals.length) {
-        const placeholder = document.createElement('p');
-        placeholder.className = 'hero-footnotes';
-        placeholder.textContent = 'Meal plan data was not returned. Add more detail about dietary needs and try again.';
-        mealGrid.appendChild(placeholder);
-        return;
-      }
-      meals.forEach((dayPlan) => {
-        const card = document.createElement('article');
-        card.className = 'meal-card';
-        const title = document.createElement('h5');
-        title.textContent = dayPlan.day || 'Day';
-        card.appendChild(title);
-        if (dayPlan.targets) {
-          const targets = document.createElement('p');
-          targets.textContent = `Targets: ${dayPlan.targets}`;
-          card.appendChild(targets);
-        }
-        if (dayPlan.hydration) {
-          const hydration = document.createElement('p');
-          hydration.textContent = `Hydration: ${dayPlan.hydration}`;
-          card.appendChild(hydration);
-        }
-        const list = document.createElement('ul');
-        asArray(dayPlan.meals).forEach((meal) => {
-          const item = document.createElement('li');
-          const label = meal.type ? `${meal.type}: ` : '';
-          const details = [meal.menu, meal.macros, meal.notes].filter(Boolean).join(' — ');
-          item.textContent = `${label}${details}`;
-          list.appendChild(item);
-        });
-        card.appendChild(list);
-        mealGrid.appendChild(card);
-      });
-    };
+Design mismatches through switches or screens.
+The key isn’t just knowing their weakness, but knowing how to repeatedly stress it until it breaks.</li>
+              </ul>
+              <label class="lbl">Notes from film study:</label>
+              <textarea class="inp" name="filmNotes" rows="5" placeholder="Type your notes here…"></textarea>
+            </details>
+          </section>
 
-    const renderResearch = (google = [], refs = []) => {
-      const fill = (listElement, items) => {
-        listElement.innerHTML = '';
-        if (!items.length) {
-          const li = document.createElement('li');
-          li.textContent = 'No data returned. Configure Google APIs to enrich research.';
-          listElement.appendChild(li);
-          return;
-        }
-        items.forEach((item) => {
-          const li = document.createElement('li');
-          if (item.url) {
-            const link = document.createElement('a');
-            link.href = item.url;
-            link.textContent = item.title || item.name || item.url;
-            link.target = '_blank';
-            link.rel = 'noopener';
-            li.appendChild(link);
-            if (item.note || item.snippet) {
-              const note = document.createElement('div');
-              note.textContent = ` — ${item.note || item.snippet}`;
-              li.appendChild(note);
-            }
-          } else {
-            li.textContent = item.title || item.note || item;
-          }
-          listElement.appendChild(li);
-        });
-      };
-      fill(googleList, google);
-      fill(referenceList, refs);
-    };
+          <!-- MOBILITY -->
+          <section data-section="mobility" class="portal-section">
+            <details open class="pulldown">
+              <summary>5. Weekly Mobility Flow — Shoulder Flow</summary>
+              <p><strong>Every workout should be 1 set of 10 reps each workout</strong></p>
+              <div class="checks">
+                <label><input type="checkbox" name="mobility" value="Arm circles forward" /> Arm circles forward</label>
+                <label><input type="checkbox" name="mobility" value="Arm circles backwards" /> Arm circles backwards</label>
+                <label><input type="checkbox" name="mobility" value="Touch the sky" /> Touch the sky</label>
+                <label><input type="checkbox" name="mobility" value="Corkscrew" /> Corkscrew (like arm circles but you’re twisting a bottle cap off)</label>
+                <label><input type="checkbox" name="mobility" value="Alternate 90 degree bends" /> Alternate 90 degree bends</label>
+                <label><input type="checkbox" name="mobility" value="Chest Flys" /> Chest Flys</label>
+                <label><input type="checkbox" name="mobility" value="Shoulder taps" /> shoulder taps</label>
+              </div>
+            </details>
 
-    const serializePlan = (data) => {
-      latestPlanBundle = data;
-      setDownloadEnabled(true);
-    };
+            <details class="pulldown">
+              <summary>Hip Mobility / lower back rotation</summary>
+              <div class="checks">
+                <label><input type="checkbox" name="mobility" value="Windshield wipers" /> Windshield wipers</label>
+                <label><input type="checkbox" name="mobility" value="spidermans" /> spidermans</label>
+                <label><input type="checkbox" name="mobility" value="Scorpions w/ chest opener" /> Scorpions w/ chest opener</label>
+                <label><input type="checkbox" name="mobility" value="Hip bridge hold 30 seconds" /> Hip bridge hold 30 seconds</label>
+                <label><input type="checkbox" name="mobility" value="Single leg bridge hold 30 sec (both legs)" /> Single leg bridge hold 30 sec (both legs)</label>
+                <label><input type="checkbox" name="mobility" value="Frog stretch" /> Frog stretch</label>
+                <label><input type="checkbox" name="mobility" value="Cobra stretch" /> Cobra stretch</label>
+                <label><input type="checkbox" name="mobility" value="Sumo stretch" /> Sumo stretch</label>
+              </div>
+            </details>
 
-    downloadBtn.addEventListener('click', (event) => {
-      if (downloadBtn.classList.contains('is-disabled') || !latestPlanBundle) {
-        event.preventDefault();
-        return;
-      }
-      const blob = new Blob([JSON.stringify(latestPlanBundle, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      downloadBtn.href = url;
-      downloadBtn.download = `${(latestPlanBundle?.profile?.name || 'quantumdrive')}-plan.json`;
-      setTimeout(() => URL.revokeObjectURL(url), 4000);
-    });
+            <details class="pulldown">
+              <summary>Dynamic warm up (go about 10–15 yards)</summary>
+              <div class="checks two">
+                <label><input type="checkbox" name="mobility" value="High knees / butt kicks" /> High knees / butt kicks</label>
+                <label><input type="checkbox" name="mobility" value="Side shuffles / karaoke" /> Side shuffles / karaoke</label>
+                <label><input type="checkbox" name="mobility" value="Hip openers / lunges/ heel scoops" /> Hip openers / lunges/ heel scoops</label>
+                <label><input type="checkbox" name="mobility" value="Quick feet ladder" /> Quick feet ladder</label>
+              </div>
+            </details>
+          </section>
 
-    profileForm.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      const formData = new FormData(profileForm);
-      const payload = Object.fromEntries(formData.entries());
-      payload.trainingDays = asArray(formData.getAll('trainingDays'));
-      setStatus('', 'loading');
-      setDownloadEnabled(false);
-      try {
-        const response = await fetch('/api/generate-plan', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-        const result = await response.json();
-        if (!response.ok || !result.ok) {
-          throw new Error(result?.error || 'Unknown generation failure');
-        }
-        latestPlanBundle = { profile: payload, ...result };
-        planTitle.textContent = `Performance launch for ${payload.name || 'athlete'}`;
-        fillParagraph(planOverview, result.plan?.overview);
-        fillList(principlesList, result.plan?.guidingPrinciples);
-        fillParagraph(timelineSummary, result.plan?.timelineSummary);
-        fillList(metricList, result.plan?.keyMetrics);
-        renderSchedule(result.plan?.weeklySchedule);
-        renderMobility(result.plan?.mobilitySeries);
-        renderMeals(result.plan?.mealPlan);
-        renderResearch(result.googleCitations || [], result.plan?.references || []);
-        resultsPanel.hidden = false;
-        setStatus('Plan ready. Sync with your coach.');
-        statusPill.textContent = 'Ready to deploy';
-        serializePlan(latestPlanBundle);
-      } catch (error) {
-        console.error(error);
-        setStatus(error.message || 'Could not generate plan.', 'error');
-      }
-    });
+          <!-- FUEL + HYDRATION -->
+          <section data-section="fuel" class="portal-section">
+            <details open class="pulldown">
+              <summary>6. Pre-Game Fuel — Night Before Meal</summary>
+              <div class="copy">
+                <p><strong>1. Grilled Chicken, Brown Rice &amp; Steamed Broccoli</strong></p>
+                <p><em>Nutrients:</em><br>
+                  Lean protein (chicken) → muscle repair &amp; recovery<br>
+                  Complex carbs (brown rice) → steady energy for game day<br>
+                  Fiber + vitamins (broccoli) → digestion &amp; immune support
+                </p>
 
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js').catch(() => {});
-      });
-    }
-  </script>
+                <p><strong>2. Baked Salmon, Roasted Sweet Potatoes &amp; Spinach Salad</strong></p>
+                <p><em>Nutrients:</em><br>
+                  Omega-3 fats (salmon) → reduce inflammation, improve joint mobility<br>
+                  Complex carbs (sweet potato) → glycogen storage for endurance<br>
+                  Iron &amp; antioxidants (spinach) → oxygen delivery &amp; recovery
+                </p>
+
+                <p><strong>3. Turkey Meatballs, Whole Wheat Pasta &amp; Mixed Veggies</strong></p>
+                <p><em>Nutrients:</em><br>
+                  Lean protein (turkey) → supports strength without heaviness<br>
+                  Whole grains (pasta) → long-lasting energy<br>
+                  Mixed vegetables → vitamins &amp; hydration support
+                </p>
+
+                <p class="idea">⚡ The idea: protein to repair, carbs to fuel, veggies to balance. Nothing too heavy, greasy, or sugary — just steady, clean fuel for tomorrow’s game.</p>
+              </div>
+            </details>
+
+            <details class="pulldown">
+              <summary>Game-Day Breakfast</summary>
+              <div class="copy">
+                <p><strong>Scrambled Eggs, Whole Wheat Toast &amp; Banana</strong></p>
+                <p><em>Nutrients:</em><br>
+                  Protein (eggs) → supports focus &amp; muscle readiness<br>
+                  Whole grains (toast) → steady energy release<br>
+                  Potassium (banana) → prevents cramps, aids hydration
+                </p>
+
+                <p><strong>2. Oatmeal with Berries &amp; Almond Butter</strong></p>
+                <p><em>Nutrients:</em><br>
+                  Complex carbs (oats) → sustained fuel<br>
+                  Antioxidants (berries) → reduce inflammation<br>
+                  Healthy fats + protein (almond butter) → stable blood sugar &amp; satiety
+                </p>
+
+                <p><strong>3. Greek Yogurt Parfait with Granola &amp; Honey</strong></p>
+                <p><em>Nutrients:</em><br>
+                  Protein (Greek yogurt) → builds muscle &amp; aids recovery<br>
+                  Carbs (granola + honey) → quick energy boost<br>
+                  Probiotics (yogurt) → gut health for better digestion
+                </p>
+
+                <p class="idea">⚡ Rule of thumb: light but balanced → carbs for energy, protein for stability, fruit for quick fuel. Nothing too heavy so you stay fast and sharp.</p>
+              </div>
+            </details>
+
+            <details class="pulldown">
+              <summary>Hydration Plan (before/during game &amp; post-game)</summary>
+              <div class="copy">
+                <p><em>Night Before the Game</em><br>
+                  Drink 16–20 oz of water with dinner.<br>
+                  Sip water steadily throughout the evening (don’t chug all at once).<br>
+                  Option: add an electrolyte packet or pinch of sea salt + squeeze of lemon if you’ve been sweating a lot that week.<br>
+                  ⚡ Goal: Go to bed hydrated, not bloated.
+                </p>
+                <p><em>Morning of the Game</em><br>
+                  Drink 16 oz of water right after waking up.<br>
+                  With breakfast, sip another 8–12 oz of water or electrolyte drink.<br>
+                  ⚡ Goal: Replace overnight loss + start fueling cells early.
+                </p>
+                <p><em>2 Hours Before Kickoff</em><br>
+                  Drink 16–20 oz of water.<br>
+                  If it’s hot: include electrolytes to prevent cramping.<br>
+                  ⚡ Goal: Top off hydration tanks without feeling heavy.
+                </p>
+                <p><em>During the Game</em><br>
+                  Every quarter: sip 3–6 oz of water or sports drink.<br>
+                  Rotate: water for thirst, electrolytes for endurance.<br>
+                  ⚡ Goal: Stay consistent, never wait until you feel thirsty.
+                </p>
+                <p><em>Post-Game</em><br>
+                  Drink 16–24 oz of water for every pound lost (weigh before & after if possible).<br>
+                  Add electrolytes if sweating was heavy.<br>
+                  ⚡ Goal: Rehydrate fast to recover faster.
+                </p>
+              </div>
+            </details>
+
+            <!-- Completion confirmations for this portal -->
+            <details class="pulldown">
+              <summary>Confirm Fuel & Hydration Plan</summary>
+              <div class="checks">
+                <label><input type="checkbox" name="fuelConfirm" value="nightMealPlanned"> I picked my night-before meal</label>
+                <label><input type="checkbox" name="fuelConfirm" value="breakfastPicked"> I picked my game-day breakfast</label>
+                <label><input type="checkbox" name="fuelConfirm" value="hydrationReviewed"> I reviewed the hydration plan</label>
+              </div>
+            </details>
+          </section>
+
+          <!-- FOCUS + THROWING -->
+          <section data-section="focus-throw" class="portal-section">
+            <details open class="pulldown">
+              <summary>7. Pre-Game Mental Focus</summary>
+              <p>Breathing Technique (describe or choose):</p>
+              <div class="checks two">
+                <label><input type="checkbox" name="focus" value="4-4-4 Box Breath" /> 4-4-4 Box Breath — Inhale 4s → Hold 4s → Exhale 4s (Repeat 4–6 cycles)</label>
+                <label><input type="checkbox" name="focus" value="6-2-6 Calm Breath" /> 6-2-6 Calm Breath — Inhale 6s → Hold 2s → Exhale 6s (Repeat until relaxed)</label>
+                <label><input type="checkbox" name="focus" value="Visualization Breath" /> Visualization Breath — Inhale = picture the snap. Exhale = picture completing the throw. Repeat with different plays in your mind.</label>
+              </div>
+            </details>
+
+            <details class="pulldown">
+              <summary>8. Throwing Warm-Up Routine</summary>
+              <p>Pre-game throwing progression: <strong>7 throws each</strong></p>
+              <ul class="bullets">
+                <li>Basketball shots</li>
+                <li>Right leg down left leg is kicking and twisting</li>
+                <li>Left leg down right leg is twisting and kicking</li>
+                <li>Side ways (right leg in front) twisting torso throwing over hip</li>
+                <li>Left leg in front throwing over outside hip twisting torso</li>
+                <li>3 step drop spot throws</li>
+                <li>3 and hitch spot throws</li>
+                <li>5 step (if needed) spot throws</li>
+                <li>Throw on the run (spot throws)</li>
+                <li>Touch passes (spot throws: something over the shoulder/ i.e. fades or corners)</li>
+                <li>☑ Routes on air with WRs</li>
+              </ul>
+            </details>
+          </section>
+
+          <!-- POST + GRADE -->
+          <section data-section="post-grade" class="portal-section">
+            <details open class="pulldown">
+              <summary>10. Post-Game Reflection</summary>
+              <label class="lbl">Stats (Game / Goal Comparison):</label>
+              <textarea class="inp" name="stats" rows="2" placeholder="Completions: __/__  |  Yards: _____  |  TDs: _____  |  INTs: _____  |  Rush Yards: _____"></textarea>
+
+              <label class="lbl">One-sentence reflection (are you happy or upset with your performance?):</label>
+              <textarea class="inp" name="reflection" rows="2" placeholder="________________________________________________"></textarea>
+
+              <label class="lbl">If scouts were watching you tonight do you think theyd want you on their team/ at their school?</label>
+              <textarea class="inp" name="scouts" rows="2" placeholder="________________________________________________"></textarea>
+            </details>
+
+            <details class="pulldown">
+              <summary>11. Self-Grade</summary>
+              <p>Circle one: A | B | C | F</p>
+              <select class="inp" name="selfGrade">
+                <option value="">Select Grade</option>
+                <option>A</option><option>B</option><option>C</option><option>F</option>
+              </select>
+
+              <label class="lbl">How can I eliminate the mistakes I made today?</label>
+              <textarea class="inp" name="eliminateMistakes" rows="2" placeholder="________________________________________________"></textarea>
+
+              <label class="lbl">What can i do to help my team succeed next week?</label>
+              <textarea class="inp" name="helpTeam" rows="2" placeholder="________________________________________________"></textarea>
+            </details>
+          </section>
+
+          <!-- panel actions -->
+          <div class="panel-actions">
+            <button type="button" class="btn btn-ghost" id="prevSection">◀ Prev Portal</button>
+            <button type="button" class="btn btn-ghost" id="nextSection">Next Portal ▶</button>
+            <button type="button" class="btn btn-outline" id="resetPortalBtn" title="Reset just this portal">Reset Portal</button>
+            <span class="save-status save-status--panel" id="saveStatusPanel" aria-hidden="true"></span>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Toast + Confetti -->
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <div id="confetti" class="confetti" aria-hidden="true"></div>
+
+    <footer class="site-footer">
+      <small>QB Diary — Season-ready portals. © You</small>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
