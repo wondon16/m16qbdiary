@@ -130,6 +130,10 @@ body{
 .pulldown p,.pulldown .copy{ color:#e6f4ff }
 .bullets{ margin:10px 0 12px 18px; color:#e6f4ff }
 .bullets .bullets{ margin:6px 0 0 18px; color:inherit }
+.coverage-diagrams{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px; margin:0 }
+.coverage-diagram{ margin:0; padding:12px 12px 14px; border:1px solid var(--line); border-radius:14px; background:linear-gradient(180deg, rgba(17,36,68,.82), rgba(9,24,50,.88)); box-shadow:0 16px 36px rgba(0,0,0,.3); display:grid; gap:10px }
+.coverage-diagram img{ width:100%; height:auto; border-radius:10px; border:1px solid rgba(21,64,109,.55); background:#061830 }
+.coverage-diagram figcaption{ margin:0; font-size:13px; color:var(--muted) }
 .lbl{ display:block; margin:10px 0 6px; color:var(--ink); font-weight:600 }
 .hint{ margin:-2px 0 8px; color:var(--muted); font-size:12px }
 
