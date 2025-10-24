@@ -686,6 +686,15 @@ The key isn’t just knowing their weakness, but knowing how to repeatedly stres
       </div>
     </div>
 
+    <!-- Image Lightbox -->
+    <div id="imageLightbox" class="image-lightbox" aria-hidden="true">
+      <div class="image-lightbox__inner" role="dialog" aria-modal="true" aria-labelledby="lightboxCaption">
+        <button type="button" class="image-lightbox__close" id="lightboxClose" aria-label="Close image">×</button>
+        <img id="lightboxImg" alt="" />
+        <p id="lightboxCaption"></p>
+      </div>
+    </div>
+
     <!-- Toast + Confetti -->
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
     <div id="confetti" class="confetti" aria-hidden="true"></div>

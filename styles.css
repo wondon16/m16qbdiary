@@ -132,8 +132,16 @@ body{
 .bullets .bullets{ margin:6px 0 0 18px; color:inherit }
 .coverage-diagrams{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px; margin:0 }
 .coverage-diagram{ margin:0; padding:12px 12px 14px; border:1px solid var(--line); border-radius:14px; background:linear-gradient(180deg, rgba(17,36,68,.82), rgba(9,24,50,.88)); box-shadow:0 16px 36px rgba(0,0,0,.3); display:grid; gap:10px }
-.coverage-diagram img{ width:100%; height:auto; border-radius:10px; border:1px solid rgba(21,64,109,.55); background:#061830 }
+.coverage-diagram img{ width:100%; height:auto; border-radius:10px; border:1px solid rgba(21,64,109,.55); background:#061830; cursor:zoom-in; outline:none }
+.coverage-diagram img:focus{ outline:2px solid var(--sky); outline-offset:4px }
 .coverage-diagram figcaption{ margin:0; font-size:13px; color:var(--muted) }
+.image-lightbox{ position:fixed; inset:0; display:none; place-items:center; background:rgba(4,12,25,0.8); backdrop-filter:blur(8px); z-index:120; padding:20px }
+.image-lightbox.show{ display:grid; animation:fadeIn .24s ease }
+.image-lightbox__inner{ position:relative; max-width:92vw; max-height:92vh; display:grid; gap:14px; justify-items:center; background:linear-gradient(180deg, rgba(14,32,60,.96), rgba(8,20,44,.98)); border:1px solid var(--line); border-radius:18px; padding:24px; box-shadow:0 40px 90px rgba(0,0,0,.55) }
+.image-lightbox__inner img{ width:100%; height:auto; max-height:70vh; object-fit:contain; border-radius:12px; border:1px solid rgba(39,209,122,.18); background:#041228 }
+.image-lightbox__inner p{ margin:0; color:var(--muted); font-size:14px; text-align:center }
+.image-lightbox__close{ position:absolute; top:12px; right:12px; background:transparent; color:var(--ink); border:none; font-size:32px; line-height:1; cursor:pointer; padding:4px 8px; border-radius:10px }
+.image-lightbox__close:hover{ color:var(--sky) }
 .lbl{ display:block; margin:10px 0 6px; color:var(--ink); font-weight:600 }
 .hint{ margin:-2px 0 8px; color:var(--muted); font-size:12px }
 

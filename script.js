@@ -54,6 +54,55 @@
   const weekChecklist = document.getElementById('weekChecklist');
   const toast = document.getElementById('toast');
   const confettiBox = document.getElementById('confetti');
+  const coverageImages = document.querySelectorAll('.coverage-diagram img');
+  const lightbox = document.getElementById('imageLightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  const lightboxCaption = document.getElementById('lightboxCaption');
+  const lightboxClose = document.getElementById('lightboxClose');
+  let lastFocusedElement = null;
+
+  function openLightbox(img){
+    if (!lightbox || !lightboxImg || !lightboxCaption) return;
+    lastFocusedElement = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    lightboxImg.src = img.src;
+    lightboxImg.alt = img.alt || '';
+    const caption = img.closest('.coverage-diagram')?.querySelector('figcaption')?.textContent || '';
+    lightboxCaption.textContent = caption;
+    lightbox.classList.add('show');
+    lightbox.setAttribute('aria-hidden', 'false');
+    if (lightboxClose) lightboxClose.focus();
+  }
+
+  function closeLightbox(){
+    if (!lightbox || !lightboxImg || !lightboxCaption) return;
+    lightbox.classList.remove('show');
+    lightbox.setAttribute('aria-hidden', 'true');
+    lightboxImg.removeAttribute('src');
+    lightboxImg.alt = '';
+    lightboxCaption.textContent = '';
+    if (lastFocusedElement) lastFocusedElement.focus();
+  }
+
+  if (coverageImages.length && lightbox){
+    coverageImages.forEach(img=>{
+      img.setAttribute('tabindex','0');
+      img.setAttribute('role','button');
+      img.addEventListener('click', ()=> openLightbox(img));
+      img.addEventListener('keydown', (evt)=>{
+        if (evt.key === 'Enter' || evt.key === ' '){
+          evt.preventDefault();
+          openLightbox(img);
+        }
+      });
+    });
+    if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', (evt)=>{
+      if (evt.target === lightbox) closeLightbox();
+    });
+    document.addEventListener('keydown', (evt)=>{
+      if (evt.key === 'Escape' && lightbox.classList.contains('show')) closeLightbox();
+    });
+  }
 
   let currentWeek = 1;
   let currentPortal = null;
