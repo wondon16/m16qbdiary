@@ -107,24 +107,20 @@
   let currentWeek = 1;
   let currentPortal = null;
 
-  const PORTAL_ORDER = ['weekly','rival-film','mobility','fuel','focus-throw','coverage','post-grade'];
+  const PORTAL_ORDER = ['rival-film','mobility','fuel','focus-throw','coverage'];
   const PORTAL_LABELS = {
-    'weekly':'Weekly / Alter Ego',
     'rival-film':'Rival / Film',
     'mobility':'Mobility',
     'fuel':'Fuel / Hydration',
     'focus-throw':'Focus / Throwing',
-    'coverage':'Coverage Recognition',
-    'post-grade':'Post / Grade'
+    'coverage':'Coverage Recognition'
   };
   const PORTAL_COPY = {
-    'weekly':      { title:'Weekly Word + Alter Ego', intro:'Set the tone and step into your persona for this week’s competition.' },
     'rival-film':  { title:'Rival & Film Study',      intro:'Define the opponent. Identify strengths, stress their weaknesses.' },
     'mobility':    { title:'Mobility & Warm-Up Flow', intro:'Prime the shoulders, open the hips, and cue fast feet.' },
     'fuel':        { title:'Fuel & Hydration',        intro:'Eat clean, fuel right, and hydrate on purpose.' },
     'focus-throw': { title:'Mental Focus & Throwing', intro:'Center your breath and sharpen your throwing progression.' },
     'coverage':    { title:'Coverage Recognition Help', intro:'Lock in the Top Gun coverage bullets and prep answers for every shell.' },
-    'post-grade':  { title:'Post-Game & Self-Grade',  intro:'Reflect honestly, grade yourself, and set the next target.' },
   };
 
   // ===== STORAGE =====
@@ -176,8 +172,6 @@
   // ===== COMPLETION RULES =====
   function isPortalComplete(id, data){
     switch(id){
-      case 'weekly':
-        return !!(data.weeklyWord && data.alterEgoName && data.trait1 && data.trait2 && data.trait3 && data.mantra);
       case 'rival-film':
         return !!(data.opponent);
       case 'mobility': {
@@ -196,8 +190,6 @@
         const confirm = Array.isArray(data.coverageConfirm) ? data.coverageConfirm : (data.coverageConfirm ? [data.coverageConfirm] : []);
         return ['preSnapReviewed','readsReviewed','manPlanReady'].every(x => confirm.includes(x));
       }
-      case 'post-grade':
-        return !!(data.selfGrade && (data.reflection || '').trim().length > 0);
       default: return false;
     }
   }

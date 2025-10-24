@@ -60,7 +60,7 @@
     <!-- Week progress + checklist -->
     <section class="week-meta" aria-label="Week completion status">
       <div class="week-progress"><div id="weekProgressBar" class="bar"></div></div>
-      <span id="weekProgressText" class="week-progress-text">0/6 complete</span>
+      <span id="weekProgressText" class="week-progress-text">0/5 complete</span>
       <ul class="week-checklist" id="weekChecklist" role="list" aria-label="Week portals completion"></ul>
     </section>
 
@@ -74,18 +74,6 @@
 
     <!-- PORTAL GRID -->
     <main class="portal-grid" aria-label="Portals">
-      <article class="portal-card" data-portal="weekly">
-        <div class="card-head">
-          <h3>Weekly Word + Alter Ego</h3>
-          <div class="status-wrap">
-            <span class="status-pill">Incomplete</span>
-            <span class="portal-dot" aria-hidden="true"></span>
-          </div>
-        </div>
-        <p class="portal-kicker">Set intention. Step into your persona.</p>
-        <button class="btn-portal" type="button">Open</button>
-      </article>
-
       <article class="portal-card" data-portal="rival-film">
         <div class="card-head">
           <h3>Rival & Film Study</h3>
@@ -145,18 +133,6 @@
         <p class="portal-kicker">Know the shell. Win the read.</p>
         <button class="btn-portal" type="button">Open</button>
       </article>
-
-      <article class="portal-card" data-portal="post-grade">
-        <div class="card-head">
-          <h3>Post-Game & Self-Grade</h3>
-          <div class="status-wrap">
-            <span class="status-pill">Incomplete</span>
-            <span class="portal-dot" aria-hidden="true"></span>
-          </div>
-        </div>
-        <p class="portal-kicker">Reflect. Improve. Lead.</p>
-        <button class="btn-portal" type="button">Open</button>
-      </article>
     </main>
 
     <!-- OVERLAY -->
@@ -167,39 +143,10 @@
         <p id="overlayIntro" class="overlay-intro"></p>
 
         <form id="pocketbookForm" class="portal-form" autocomplete="on">
-          <!-- WEEKLY + ALTER EGO -->
-          <section data-section="weekly" class="portal-section">
-            <details open class="pulldown">
-              <summary>1. Weekly Word</summary>
-              <p>Choose a word that best describes the week you want to have going into this game.</p>
-              <input class="inp" type="text" name="weeklyWord" placeholder="Enter your word…" required />
-            </details>
-
-            <details class="pulldown">
-              <summary>2. Beginning of the Week Mental Prep – Alter Ego Page</summary>
-              <p>Who am I when I step onto the field? When I step onto the field today who do I want to represent. Sometimes you need to take your mind to other places in order to get the best results. So let’s go there!</p>
-              <label class="lbl">Alter Ego Name:</label>
-              <input class="inp" type="text" name="alterEgoName" placeholder="____________________________" required />
-
-              <label class="lbl">Traits of my Alter Ego (3–5 words):</label>
-              <div class="traits">
-                <input class="inp" type="text" name="trait1" placeholder="__________" required />
-                <input class="inp" type="text" name="trait2" placeholder="__________" required />
-                <input class="inp" type="text" name="trait3" placeholder="__________" required />
-                <input class="inp" type="text" name="trait4" placeholder="(optional) __________" />
-                <input class="inp" type="text" name="trait5" placeholder="(optional) __________" />
-              </div>
-
-              <label class="lbl">Game-Day Mantra</label>
-              <p class="hint">What does this alter ego stand for. Does it stand on business or fold when things get tough? Ex: “nobody pushes me around” (1 sentence)</p>
-              <textarea class="inp" name="mantra" rows="2" placeholder="________________________________________________" required></textarea>
-            </details>
-          </section>
-
           <!-- RIVAL + FILM -->
           <section data-section="rival-film" class="portal-section">
             <details open class="pulldown">
-              <summary>3. Rival Page</summary>
+              <summary>1. Rival Page</summary>
               <label class="lbl">Opponent school/team & (position):</label>
               <input class="inp" type="text" name="opponent" placeholder="____________________________" required />
 
@@ -211,7 +158,7 @@
             </details>
 
             <details class="pulldown">
-              <summary>4. Film Study Methods</summary>
+              <summary>2. Film Study Methods</summary>
               <p>Ways I studied film this week:</p>
               <ul class="bullets">
                 <li>Dont just watch highlights — watch the entire game flow. This helps you pick up on rhythm, fatigue patterns, substitution strategies, and how teams adjust throughout quarters/halves. Pay attention to the “small things” between plays: how players react after mistakes, how the coach signals in plays, or if tempo changes after certain situations (e.g., turnovers, timeouts, foul trouble).</li>
@@ -266,7 +213,7 @@ The key isn’t just knowing their weakness, but knowing how to repeatedly stres
           <!-- MOBILITY -->
           <section data-section="mobility" class="portal-section">
             <details open class="pulldown">
-              <summary>5. Weekly Mobility Flow — Shoulder Flow</summary>
+              <summary>3. Weekly Mobility Flow — Shoulder Flow</summary>
               <p><strong>Every workout should be 1 set of 10 reps each workout</strong></p>
               <div class="checks">
                 <label><input type="checkbox" name="mobility" value="Arm circles forward" /> Arm circles forward</label>
@@ -307,7 +254,7 @@ The key isn’t just knowing their weakness, but knowing how to repeatedly stres
           <!-- FUEL + HYDRATION -->
           <section data-section="fuel" class="portal-section">
             <details open class="pulldown">
-              <summary>6. Pre-Game Fuel — Night Before Meal</summary>
+              <summary>4. Pre-Game Fuel — Night Before Meal</summary>
               <div class="copy">
                 <p><strong>1. Grilled Chicken, Brown Rice &amp; Steamed Broccoli</strong></p>
                 <p><em>Nutrients:</em><br>
@@ -408,7 +355,7 @@ The key isn’t just knowing their weakness, but knowing how to repeatedly stres
           <!-- FOCUS + THROWING -->
           <section data-section="focus-throw" class="portal-section">
             <details open class="pulldown">
-              <summary>7. Pre-Game Mental Focus</summary>
+              <summary>5. Pre-Game Mental Focus</summary>
               <p>Breathing Technique (describe or choose):</p>
               <div class="checks two">
                 <label><input type="checkbox" name="focus" value="4-4-4 Box Breath" /> 4-4-4 Box Breath — Inhale 4s → Hold 4s → Exhale 4s (Repeat 4–6 cycles)</label>
@@ -418,7 +365,7 @@ The key isn’t just knowing their weakness, but knowing how to repeatedly stres
             </details>
 
             <details class="pulldown">
-              <summary>8. Throwing Warm-Up Routine</summary>
+              <summary>6. Throwing Warm-Up Routine</summary>
               <p>Pre-game throwing progression: <strong>7 throws each</strong></p>
               <ul class="bullets">
                 <li>Basketball shots</li>
@@ -439,7 +386,7 @@ The key isn’t just knowing their weakness, but knowing how to repeatedly stres
           <!-- COVERAGE HELP -->
           <section data-section="coverage" class="portal-section">
             <details open class="pulldown">
-              <summary>9. Coverage Shell Quick List</summary>
+              <summary>7. Coverage Shell Quick List</summary>
               <p>Recognize these core coverage shells the moment you break the huddle:</p>
               <ul class="bullets">
                 <li>Cover 3 Zone</li>
@@ -451,7 +398,7 @@ The key isn’t just knowing their weakness, but knowing how to repeatedly stres
             </details>
 
             <details class="pulldown">
-              <summary>9A. Pre-Snap Checklist</summary>
+              <summary>7A. Pre-Snap Checklist</summary>
               <ul class="bullets">
                 <li>Always get to the line quickly with your hands under center.
                   <ul class="bullets">
@@ -484,7 +431,7 @@ The key isn’t just knowing their weakness, but knowing how to repeatedly stres
             </details>
 
             <details class="pulldown">
-              <summary>9B. Dropback Reminders</summary>
+              <summary>7B. Dropback Reminders</summary>
               <ul class="bullets">
                 <li>Realize you are making the final decision on where to go with the ball on your way back — not at the end of your drop.
                   <ul class="bullets">
@@ -496,7 +443,7 @@ The key isn’t just knowing their weakness, but knowing how to repeatedly stres
             </details>
 
             <details class="pulldown">
-              <summary>9C. Ten Basic Reads (Top Gun)</summary>
+              <summary>7C. Ten Basic Reads (Top Gun)</summary>
               <ul class="bullets">
                 <li><strong>#1 The Slant Read</strong>
                   <ul class="bullets">
@@ -607,7 +554,7 @@ The key isn’t just knowing their weakness, but knowing how to repeatedly stres
             </details>
 
             <details class="pulldown">
-              <summary>9D. Visual Shell Reference</summary>
+              <summary>7D. Visual Shell Reference</summary>
               <div class="coverage-diagrams">
                 <figure class="coverage-diagram">
                   <img src="images/quarters-coverage.png" alt="Quarters coverage diagram showing assignments, strengths, and weaknesses." loading="lazy" />
@@ -633,7 +580,7 @@ The key isn’t just knowing their weakness, but knowing how to repeatedly stres
             </details>
 
             <details class="pulldown">
-              <summary>9E. Notes &amp; Completion Check</summary>
+              <summary>7E. Notes &amp; Completion Check</summary>
               <p>Lock the information in and capture what you need for this week’s opponent.</p>
               <div class="checks">
                 <label><input type="checkbox" name="coverageConfirm" value="preSnapReviewed" /> I walked through the pre-snap and dropback keys.</label>
@@ -642,36 +589,6 @@ The key isn’t just knowing their weakness, but knowing how to repeatedly stres
               </div>
               <label class="lbl">Coverage reminders for this week:</label>
               <textarea class="inp" name="coverageNotes" rows="3" placeholder="Key tells, leverage cues, or blitz alerts…"></textarea>
-            </details>
-          </section>
-
-          <!-- POST + GRADE -->
-          <section data-section="post-grade" class="portal-section">
-            <details open class="pulldown">
-              <summary>10. Post-Game Reflection</summary>
-              <label class="lbl">Stats (Game / Goal Comparison):</label>
-              <textarea class="inp" name="stats" rows="2" placeholder="Completions: __/__  |  Yards: _____  |  TDs: _____  |  INTs: _____  |  Rush Yards: _____"></textarea>
-
-              <label class="lbl">One-sentence reflection (are you happy or upset with your performance?):</label>
-              <textarea class="inp" name="reflection" rows="2" placeholder="________________________________________________"></textarea>
-
-              <label class="lbl">If scouts were watching you tonight do you think theyd want you on their team/ at their school?</label>
-              <textarea class="inp" name="scouts" rows="2" placeholder="________________________________________________"></textarea>
-            </details>
-
-            <details class="pulldown">
-              <summary>11. Self-Grade</summary>
-              <p>Circle one: A | B | C | F</p>
-              <select class="inp" name="selfGrade">
-                <option value="">Select Grade</option>
-                <option>A</option><option>B</option><option>C</option><option>F</option>
-              </select>
-
-              <label class="lbl">How can I eliminate the mistakes I made today?</label>
-              <textarea class="inp" name="eliminateMistakes" rows="2" placeholder="________________________________________________"></textarea>
-
-              <label class="lbl">What can i do to help my team succeed next week?</label>
-              <textarea class="inp" name="helpTeam" rows="2" placeholder="________________________________________________"></textarea>
             </details>
           </section>
 
