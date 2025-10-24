@@ -58,13 +58,14 @@
   let currentWeek = 1;
   let currentPortal = null;
 
-  const PORTAL_ORDER = ['weekly','rival-film','mobility','fuel','focus-throw','post-grade'];
+  const PORTAL_ORDER = ['weekly','rival-film','mobility','fuel','focus-throw','coverage','post-grade'];
   const PORTAL_LABELS = {
     'weekly':'Weekly / Alter Ego',
     'rival-film':'Rival / Film',
     'mobility':'Mobility',
     'fuel':'Fuel / Hydration',
     'focus-throw':'Focus / Throwing',
+    'coverage':'Coverage Recognition',
     'post-grade':'Post / Grade'
   };
   const PORTAL_COPY = {
@@ -73,6 +74,7 @@
     'mobility':    { title:'Mobility & Warm-Up Flow', intro:'Prime the shoulders, open the hips, and cue fast feet.' },
     'fuel':        { title:'Fuel & Hydration',        intro:'Eat clean, fuel right, and hydrate on purpose.' },
     'focus-throw': { title:'Mental Focus & Throwing', intro:'Center your breath and sharpen your throwing progression.' },
+    'coverage':    { title:'Coverage Recognition Help', intro:'Lock in the Top Gun coverage bullets and prep answers for every shell.' },
     'post-grade':  { title:'Post-Game & Self-Grade',  intro:'Reflect honestly, grade yourself, and set the next target.' },
   };
 
@@ -140,6 +142,10 @@
       case 'focus-throw': {
         const focus = Array.isArray(data.focus) ? data.focus : (data.focus ? [data.focus] : []);
         return focus.length >= 1;
+      }
+      case 'coverage': {
+        const confirm = Array.isArray(data.coverageConfirm) ? data.coverageConfirm : (data.coverageConfirm ? [data.coverageConfirm] : []);
+        return ['preSnapReviewed','readsReviewed','manPlanReady'].every(x => confirm.includes(x));
       }
       case 'post-grade':
         return !!(data.selfGrade && (data.reflection || '').trim().length > 0);
