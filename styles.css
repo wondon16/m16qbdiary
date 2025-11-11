@@ -96,9 +96,49 @@ body{
 .hero-sub{margin:0; color:var(--muted); font-size:14px}
 
 /* ===== PORTAL GRID ===== */
-.portal-grid{ max-width:1040px; margin:14px auto 40px; padding:0 20px; display:grid; gap:18px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)) }
-.portal-card{ position:relative; overflow:hidden; padding:16px 18px 16px; border:1px solid var(--line); border-radius:14px; background:linear-gradient(180deg, rgba(18,45,85,0.88), rgba(10,30,61,0.88)); transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; cursor:pointer }
-.portal-card:hover{ transform:translateY(-2px); border-color:#235488; box-shadow: 0 20px 48px var(--shadow), inset 0 0 0 1px rgba(255,255,255,0.02) }
+.portal-grid{
+  max-width:100%;
+  margin:14px auto 40px;
+  padding:0 20px 18px;
+  display:flex;
+  gap:18px;
+  overflow-x:auto;
+  scroll-snap-type:x proximity;
+  scroll-behavior:smooth;
+  -webkit-overflow-scrolling:touch;
+}
+.portal-grid::-webkit-scrollbar{ height:8px }
+.portal-grid::-webkit-scrollbar-track{ background:rgba(255,255,255,.04); border-radius:999px }
+.portal-grid::-webkit-scrollbar-thumb{ background:rgba(109,152,201,.45); border-radius:999px }
+.portal-grid{ scrollbar-width:thin; scrollbar-color:rgba(109,152,201,.6) transparent }
+.portal-card{
+  position:relative;
+  overflow:hidden;
+  padding:16px 18px 16px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:linear-gradient(180deg, rgba(18,45,85,0.88), rgba(10,30,61,0.88));
+  transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  cursor:pointer;
+  flex:0 0 clamp(240px,32vw,320px);
+  min-height:170px;
+  scroll-snap-align:center;
+  opacity:0;
+  transform:translateY(24px) scale(.94);
+  animation:portalShuffle .7s ease forwards;
+}
+.portal-card:hover{ transform:translateY(-2px) scale(1.01); border-color:#235488; box-shadow: 0 20px 48px var(--shadow), inset 0 0 0 1px rgba(255,255,255,0.02) }
+.portal-card:nth-child(1){ animation-delay:0.05s }
+.portal-card:nth-child(2){ animation-delay:0.12s }
+.portal-card:nth-child(3){ animation-delay:0.18s }
+.portal-card:nth-child(4){ animation-delay:0.24s }
+.portal-card:nth-child(5){ animation-delay:0.3s }
+.portal-card:nth-child(n+6){ animation-delay:0.36s }
+@keyframes portalShuffle{
+  0%{ opacity:0; transform:translateY(26px) translateX(-14px) rotate(-2deg) scale(.92) }
+  55%{ opacity:1; transform:translateY(-6px) translateX(6px) rotate(.8deg) scale(1.03) }
+  100%{ opacity:1; transform:translateY(0) translateX(0) rotate(0) scale(1) }
+}
 .card-head{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:8px }
 .card-head h3{ margin:0; font:700 20px/1.2 Inter, sans-serif }
 .status-wrap{ display:flex; align-items:center; gap:8px }
