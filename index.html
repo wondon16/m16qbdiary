@@ -284,18 +284,6 @@ The key isn’t just knowing their weakness, but knowing how to repeatedly stres
 
           <!-- HOMEWORK -->
           <section data-section="homework" class="portal-section">
-            <details open class="pulldown">
-              <summary>6. Homework File Locker</summary>
-              <p>Upload PDFs, scripts, or workout sheets for this week. Files stay local to this device.</p>
-              <div id="homeworkDropZone" class="homework-drop" role="button" tabindex="0" aria-label="Homework file upload area">
-                <input type="file" id="homeworkFilesInput" class="visually-hidden" multiple aria-hidden="true">
-                <p>Drag files here or <button type="button" class="btn-link" id="homeworkFileBrowse">browse</button></p>
-                <small>Accepted: any file type • Stored locally</small>
-              </div>
-              <ul id="homeworkFileList" class="homework-file-list" aria-live="polite"></ul>
-              <input type="hidden" name="homeworkFilesData" id="homeworkFilesData" value="">
-            </details>
-
             <details class="pulldown">
               <summary>6A. Video HW links</summary>
               <p></p>
@@ -306,6 +294,21 @@ The key isn’t just knowing their weakness, but knowing how to repeatedly stres
               </div>
               <div id="homeworkVideoList" class="homework-video-grid" aria-live="polite"></div>
               <input type="hidden" name="homeworkVideosData" id="homeworkVideosData" value="">
+            </details>
+
+            <details open class="pulldown">
+              <summary>6B. Homework Resources</summary>
+              <p>Quick-launch PDFs your coaches drop in. These open in a new tab so you can study while you work through this module.</p>
+              <div class="homework-resource-grid">
+                <article class="homework-resource-card">
+                  <div class="resource-body">
+                    <p class="resource-tag">PDF</p>
+                    <h4>Front Structure Quiz</h4>
+                    <p class="resource-desc">Reinforce how you ID defensive fronts and gap fits before you even break the huddle.</p>
+                  </div>
+                  <a class="btn pill btn-outline" href="homework/frontsquiz.pdf" target="_blank" rel="noopener">Open PDF</a>
+                </article>
+              </div>
             </details>
           </section>
 
