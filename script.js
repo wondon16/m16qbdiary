@@ -107,18 +107,16 @@
   let currentWeek = 1;
   let currentPortal = null;
 
-  const PORTAL_ORDER = ['rival-film','mobility','fuel','focus-throw','coverage'];
+  const PORTAL_ORDER = ['rival-film','mobility','focus-throw','coverage'];
   const PORTAL_LABELS = {
     'rival-film':'Rival / Film',
     'mobility':'Mobility',
-    'fuel':'Fuel / Hydration',
     'focus-throw':'Focus / Throwing',
     'coverage':'Coverage Recognition'
   };
   const PORTAL_COPY = {
     'rival-film':  { title:'Rival & Film Study',      intro:'Define the opponent. Identify strengths, stress their weaknesses.' },
     'mobility':    { title:'Mobility & Warm-Up Flow', intro:'Prime the shoulders, open the hips, and cue fast feet.' },
-    'fuel':        { title:'Fuel & Hydration',        intro:'Eat clean, fuel right, and hydrate on purpose.' },
     'focus-throw': { title:'Mental Focus & Throwing', intro:'Center your breath and sharpen your throwing progression.' },
     'coverage':    { title:'Coverage Recognition Help', intro:'Lock in the Top Gun coverage bullets and prep answers for every shell.' },
   };
@@ -177,10 +175,6 @@
       case 'mobility': {
         const arr = Array.isArray(data.mobility) ? data.mobility : [];
         return arr.length >= 5;
-      }
-      case 'fuel': {
-        const confirms = Array.isArray(data.fuelConfirm) ? data.fuelConfirm : (data.fuelConfirm ? [data.fuelConfirm] : []);
-        return ['nightMealPlanned','breakfastPicked','hydrationReviewed'].every(x => confirms.includes(x));
       }
       case 'focus-throw': {
         const focus = Array.isArray(data.focus) ? data.focus : (data.focus ? [data.focus] : []);

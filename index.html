@@ -60,7 +60,7 @@
     <!-- Week progress + checklist -->
     <section class="week-meta" aria-label="Week completion status">
       <div class="week-progress"><div id="weekProgressBar" class="bar"></div></div>
-      <span id="weekProgressText" class="week-progress-text">0/5 complete</span>
+      <span id="weekProgressText" class="week-progress-text">0/4 complete</span>
       <ul class="week-checklist" id="weekChecklist" role="list" aria-label="Week portals completion"></ul>
     </section>
 
@@ -95,18 +95,6 @@
           </div>
         </div>
         <p class="portal-kicker">Prime shoulders, hips, and speed.</p>
-        <button class="btn-portal" type="button">Open</button>
-      </article>
-
-      <article class="portal-card" data-portal="fuel">
-        <div class="card-head">
-          <h3>Fuel & Hydration</h3>
-          <div class="status-wrap">
-            <span class="status-pill">Incomplete</span>
-            <span class="portal-dot" aria-hidden="true"></span>
-          </div>
-        </div>
-        <p class="portal-kicker">Clean energy. Smart recovery.</p>
         <button class="btn-portal" type="button">Open</button>
       </article>
 
@@ -251,111 +239,10 @@ The key isn’t just knowing their weakness, but knowing how to repeatedly stres
             </details>
           </section>
 
-          <!-- FUEL + HYDRATION -->
-          <section data-section="fuel" class="portal-section">
-            <details open class="pulldown">
-              <summary>4. Pre-Game Fuel — Night Before Meal</summary>
-              <div class="copy">
-                <p><strong>1. Grilled Chicken, Brown Rice &amp; Steamed Broccoli</strong></p>
-                <p><em>Nutrients:</em><br>
-                  Lean protein (chicken) → muscle repair &amp; recovery<br>
-                  Complex carbs (brown rice) → steady energy for game day<br>
-                  Fiber + vitamins (broccoli) → digestion &amp; immune support
-                </p>
-
-                <p><strong>2. Baked Salmon, Roasted Sweet Potatoes &amp; Spinach Salad</strong></p>
-                <p><em>Nutrients:</em><br>
-                  Omega-3 fats (salmon) → reduce inflammation, improve joint mobility<br>
-                  Complex carbs (sweet potato) → glycogen storage for endurance<br>
-                  Iron &amp; antioxidants (spinach) → oxygen delivery &amp; recovery
-                </p>
-
-                <p><strong>3. Turkey Meatballs, Whole Wheat Pasta &amp; Mixed Veggies</strong></p>
-                <p><em>Nutrients:</em><br>
-                  Lean protein (turkey) → supports strength without heaviness<br>
-                  Whole grains (pasta) → long-lasting energy<br>
-                  Mixed vegetables → vitamins &amp; hydration support
-                </p>
-
-                <p class="idea">⚡ The idea: protein to repair, carbs to fuel, veggies to balance. Nothing too heavy, greasy, or sugary — just steady, clean fuel for tomorrow’s game.</p>
-              </div>
-            </details>
-
-            <details class="pulldown">
-              <summary>Game-Day Breakfast</summary>
-              <div class="copy">
-                <p><strong>Scrambled Eggs, Whole Wheat Toast &amp; Banana</strong></p>
-                <p><em>Nutrients:</em><br>
-                  Protein (eggs) → supports focus &amp; muscle readiness<br>
-                  Whole grains (toast) → steady energy release<br>
-                  Potassium (banana) → prevents cramps, aids hydration
-                </p>
-
-                <p><strong>2. Oatmeal with Berries &amp; Almond Butter</strong></p>
-                <p><em>Nutrients:</em><br>
-                  Complex carbs (oats) → sustained fuel<br>
-                  Antioxidants (berries) → reduce inflammation<br>
-                  Healthy fats + protein (almond butter) → stable blood sugar &amp; satiety
-                </p>
-
-                <p><strong>3. Greek Yogurt Parfait with Granola &amp; Honey</strong></p>
-                <p><em>Nutrients:</em><br>
-                  Protein (Greek yogurt) → builds muscle &amp; aids recovery<br>
-                  Carbs (granola + honey) → quick energy boost<br>
-                  Probiotics (yogurt) → gut health for better digestion
-                </p>
-
-                <p class="idea">⚡ Rule of thumb: light but balanced → carbs for energy, protein for stability, fruit for quick fuel. Nothing too heavy so you stay fast and sharp.</p>
-              </div>
-            </details>
-
-            <details class="pulldown">
-              <summary>Hydration Plan (before/during game &amp; post-game)</summary>
-              <div class="copy">
-                <p><em>Night Before the Game</em><br>
-                  Drink 16–20 oz of water with dinner.<br>
-                  Sip water steadily throughout the evening (don’t chug all at once).<br>
-                  Option: add an electrolyte packet or pinch of sea salt + squeeze of lemon if you’ve been sweating a lot that week.<br>
-                  ⚡ Goal: Go to bed hydrated, not bloated.
-                </p>
-                <p><em>Morning of the Game</em><br>
-                  Drink 16 oz of water right after waking up.<br>
-                  With breakfast, sip another 8–12 oz of water or electrolyte drink.<br>
-                  ⚡ Goal: Replace overnight loss + start fueling cells early.
-                </p>
-                <p><em>2 Hours Before Kickoff</em><br>
-                  Drink 16–20 oz of water.<br>
-                  If it’s hot: include electrolytes to prevent cramping.<br>
-                  ⚡ Goal: Top off hydration tanks without feeling heavy.
-                </p>
-                <p><em>During the Game</em><br>
-                  Every quarter: sip 3–6 oz of water or sports drink.<br>
-                  Rotate: water for thirst, electrolytes for endurance.<br>
-                  ⚡ Goal: Stay consistent, never wait until you feel thirsty.
-                </p>
-                <p><em>Post-Game</em><br>
-                  Drink 16–24 oz of water for every pound lost (weigh before & after if possible).<br>
-                  Add electrolytes if sweating was heavy.<br>
-                  ⚡ Goal: Rehydrate fast to recover faster.
-                </p>
-              </div>
-            </details>
-
-            <!-- Completion confirmations for this portal -->
-            <details class="pulldown">
-              <summary>Confirm Fuel & Hydration Plan</summary>
-              <div class="checks">
-                <label><input type="checkbox" name="fuelConfirm" value="nightMealPlanned"> I picked my night-before meal</label>
-                <label><input type="checkbox" name="fuelConfirm" value="breakfastPicked"> I picked my game-day breakfast</label>
-                <label><input type="checkbox" name="fuelConfirm" value="hydrationReviewed"> I reviewed the hydration plan</label>
-              </div>
-            </details>
-          </section>
-
           <!-- FOCUS + THROWING -->
           <section data-section="focus-throw" class="portal-section">
             <details open class="pulldown">
-              <summary>5. Pre-Game Mental Focus</summary>
+              <summary>4. Pre-Game Mental Focus</summary>
               <p>Breathing Technique (describe or choose):</p>
               <div class="checks two">
                 <label><input type="checkbox" name="focus" value="4-4-4 Box Breath" /> 4-4-4 Box Breath — Inhale 4s → Hold 4s → Exhale 4s (Repeat 4–6 cycles)</label>
@@ -365,7 +252,7 @@ The key isn’t just knowing their weakness, but knowing how to repeatedly stres
             </details>
 
             <details class="pulldown">
-              <summary>6. Throwing Warm-Up Routine</summary>
+              <summary>5. Throwing Warm-Up Routine</summary>
               <p>Pre-game throwing progression: <strong>7 throws each</strong></p>
               <ul class="bullets">
                 <li>Basketball shots</li>
@@ -386,7 +273,7 @@ The key isn’t just knowing their weakness, but knowing how to repeatedly stres
           <!-- COVERAGE HELP -->
           <section data-section="coverage" class="portal-section">
             <details open class="pulldown">
-              <summary>7. Coverage Shell Quick List</summary>
+              <summary>6. Coverage Shell Quick List</summary>
               <p>Recognize these core coverage shells the moment you break the huddle:</p>
               <ul class="bullets">
                 <li>Cover 3 Zone</li>
@@ -398,7 +285,7 @@ The key isn’t just knowing their weakness, but knowing how to repeatedly stres
             </details>
 
             <details class="pulldown">
-              <summary>7A. Pre-Snap Checklist</summary>
+              <summary>6A. Pre-Snap Checklist</summary>
               <ul class="bullets">
                 <li>Always get to the line quickly with your hands under center.
                   <ul class="bullets">
@@ -431,7 +318,7 @@ The key isn’t just knowing their weakness, but knowing how to repeatedly stres
             </details>
 
             <details class="pulldown">
-              <summary>7B. Dropback Reminders</summary>
+              <summary>6B. Dropback Reminders</summary>
               <ul class="bullets">
                 <li>Realize you are making the final decision on where to go with the ball on your way back — not at the end of your drop.
                   <ul class="bullets">
@@ -443,7 +330,7 @@ The key isn’t just knowing their weakness, but knowing how to repeatedly stres
             </details>
 
             <details class="pulldown">
-              <summary>7C. Ten Basic Reads (Top Gun)</summary>
+              <summary>6C. Ten Basic Reads (Top Gun)</summary>
               <ul class="bullets">
                 <li><strong>#1 The Slant Read</strong>
                   <ul class="bullets">
@@ -554,7 +441,7 @@ The key isn’t just knowing their weakness, but knowing how to repeatedly stres
             </details>
 
             <details class="pulldown">
-              <summary>7D. Visual Shell Reference</summary>
+              <summary>6D. Visual Shell Reference</summary>
               <div class="coverage-diagrams">
                 <figure class="coverage-diagram">
                   <img src="images/quarters-coverage.png" alt="Quarters coverage diagram showing assignments, strengths, and weaknesses." loading="lazy" />
@@ -580,7 +467,7 @@ The key isn’t just knowing their weakness, but knowing how to repeatedly stres
             </details>
 
             <details class="pulldown">
-              <summary>7E. Notes &amp; Completion Check</summary>
+              <summary>6E. Notes &amp; Completion Check</summary>
               <p>Lock the information in and capture what you need for this week’s opponent.</p>
               <div class="checks">
                 <label><input type="checkbox" name="coverageConfirm" value="preSnapReviewed" /> I walked through the pre-snap and dropback keys.</label>
