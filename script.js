@@ -59,6 +59,16 @@
   const lightboxImg = document.getElementById('lightboxImg');
   const lightboxCaption = document.getElementById('lightboxCaption');
   const lightboxClose = document.getElementById('lightboxClose');
+  const homeworkDropZone = document.getElementById('homeworkDropZone');
+  const homeworkFilesInput = document.getElementById('homeworkFilesInput');
+  const homeworkFileList = document.getElementById('homeworkFileList');
+  const homeworkFilesField = document.getElementById('homeworkFilesData');
+  const homeworkFileBrowse = document.getElementById('homeworkFileBrowse');
+  const homeworkVideoTitle = document.getElementById('homeworkVideoTitle');
+  const homeworkVideoUrl = document.getElementById('homeworkVideoUrl');
+  const addHomeworkVideoBtn = document.getElementById('addHomeworkVideo');
+  const homeworkVideoList = document.getElementById('homeworkVideoList');
+  const homeworkVideosField = document.getElementById('homeworkVideosData');
   let lastFocusedElement = null;
 
   function openLightbox(img){
@@ -106,17 +116,21 @@
 
   let currentWeek = 1;
   let currentPortal = null;
+  let homeworkFiles = [];
+  let homeworkVideos = [];
 
-  const PORTAL_ORDER = ['rival-film','mobility','focus-throw','coverage'];
+  const PORTAL_ORDER = ['rival-film','mobility','focus-throw','homework','coverage'];
   const PORTAL_LABELS = {
     'rival-film':'Rival / Film',
     'mobility':'Mobility',
+    'homework':'Homework',
     'focus-throw':'Focus / Throwing',
     'coverage':'Coverage Recognition'
   };
   const PORTAL_COPY = {
     'rival-film':  { title:'Rival & Film Study',      intro:'Define the opponent. Identify strengths, stress their weaknesses.' },
     'mobility':    { title:'Mobility & Warm-Up Flow', intro:'Prime the shoulders, open the hips, and cue fast feet.' },
+    'homework':    { title:'Homework & Resources',     intro:'Drop weekly assignments, PDFs, and teaching clips.' },
     'focus-throw': { title:'Mental Focus & Throwing', intro:'Center your breath and sharpen your throwing progression.' },
     'coverage':    { title:'Coverage Recognition Help', intro:'Lock in the Top Gun coverage bullets and prep answers for every shell.' },
   };
@@ -151,6 +165,16 @@
     return data;
   }
 
+  function parseStoredArray(raw){
+    if (!raw) return [];
+    try{
+      const parsed = JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch(err){
+      return [];
+    }
+  }
+
   function populateForm(obj){
     form.reset();
     if (!obj) return;
@@ -167,6 +191,231 @@
     });
   }
 
+  const formatBytes = bytes => {
+    if (!bytes && bytes !== 0) return '';
+    if (bytes < 1024) return `${bytes} B`;
+    if (bytes < 1024*1024) return `${(bytes/1024).toFixed(1)} KB`;
+    return `${(bytes/(1024*1024)).toFixed(1)} MB`;
+  };
+
+  function renderHomeworkFiles(){
+    if (!homeworkFileList) return;
+    homeworkFileList.innerHTML = '';
+    if (!homeworkFiles.length){
+      const empty = document.createElement('li');
+      empty.className = 'empty';
+      empty.textContent = 'No files yet. Drag them above when you are ready.';
+      homeworkFileList.appendChild(empty);
+      return;
+    }
+    homeworkFiles.forEach((file, idx)=>{
+      const li = document.createElement('li');
+      const textWrap = document.createElement('div');
+      const title = document.createElement('strong');
+      const meta = document.createElement('span');
+      title.textContent = file.name || 'Untitled file';
+      meta.className = 'homework-file-meta';
+      meta.textContent = `${file.type || 'file'} • ${formatBytes(file.size || 0)}`;
+      textWrap.appendChild(title);
+      textWrap.appendChild(meta);
+
+      const actionWrap = document.createElement('div');
+      actionWrap.style.display = 'flex';
+      actionWrap.style.gap = '8px';
+      const openLink = document.createElement('a');
+      openLink.href = file.data || '#';
+      openLink.download = file.name || 'homework';
+      openLink.className = 'btn-portal';
+      openLink.style.padding = '6px 12px';
+      openLink.textContent = 'Download';
+      openLink.target = '_blank';
+      openLink.rel = 'noopener noreferrer';
+
+      const removeBtn = document.createElement('button');
+      removeBtn.type = 'button';
+      removeBtn.className = 'homework-remove';
+      removeBtn.textContent = 'Remove';
+      removeBtn.addEventListener('click', ()=>{
+        homeworkFiles.splice(idx,1);
+        persistHomeworkFiles();
+      });
+
+      actionWrap.appendChild(openLink);
+      actionWrap.appendChild(removeBtn);
+      li.appendChild(textWrap);
+      li.appendChild(actionWrap);
+      homeworkFileList.appendChild(li);
+    });
+  }
+
+  function renderHomeworkVideos(){
+    if (!homeworkVideoList) return;
+    homeworkVideoList.innerHTML = '';
+    if (!homeworkVideos.length){
+      const empty = document.createElement('div');
+      empty.className = 'empty';
+      empty.textContent = 'No clips yet. Paste a YouTube link to embed it.';
+      homeworkVideoList.appendChild(empty);
+      return;
+    }
+    homeworkVideos.forEach((video, idx)=>{
+      const card = document.createElement('div');
+      card.className = 'homework-video-card';
+      if (video.embed){
+        const iframe = document.createElement('iframe');
+        iframe.src = video.embed;
+        iframe.title = video.title || 'Homework video';
+        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+        iframe.allowFullscreen = true;
+        card.appendChild(iframe);
+      }
+      const h4 = document.createElement('h4');
+      h4.textContent = video.title || 'YouTube Clip';
+      card.appendChild(h4);
+      const link = document.createElement('a');
+      link.href = video.url;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.textContent = video.url;
+      card.appendChild(link);
+      const footer = document.createElement('footer');
+      const label = document.createElement('span');
+      label.textContent = 'Shared';
+      const remove = document.createElement('button');
+      remove.type = 'button';
+      remove.className = 'homework-remove';
+      remove.textContent = 'Remove';
+      remove.addEventListener('click', ()=>{
+        homeworkVideos.splice(idx,1);
+        persistHomeworkVideos();
+      });
+      footer.appendChild(label);
+      footer.appendChild(remove);
+      card.appendChild(footer);
+      homeworkVideoList.appendChild(card);
+    });
+  }
+
+  function persistHomeworkFiles(){
+    if (homeworkFilesField) homeworkFilesField.value = homeworkFiles.length ? JSON.stringify(homeworkFiles) : '';
+    renderHomeworkFiles();
+    scheduleAutosave();
+  }
+  function persistHomeworkVideos(){
+    if (homeworkVideosField) homeworkVideosField.value = homeworkVideos.length ? JSON.stringify(homeworkVideos) : '';
+    renderHomeworkVideos();
+    scheduleAutosave();
+  }
+
+  function getYouTubeId(url){
+    if (!url) return '';
+    try{
+      const u = new URL(url);
+      if (u.hostname.includes('youtu.be')){
+        return u.pathname.replace('/','');
+      }
+      if (u.hostname.includes('youtube.com')){
+        if (u.searchParams.get('v')) return u.searchParams.get('v');
+        if (u.pathname.startsWith('/shorts/')) return u.pathname.split('/shorts/')[1]?.split('/')[0];
+        if (u.pathname.startsWith('/embed/')) return u.pathname.split('/embed/')[1]?.split('/')[0];
+      }
+    } catch(err){
+      return '';
+    }
+    return '';
+  }
+  const embedFromUrl = url => {
+    const id = getYouTubeId(url);
+    return id ? `https://www.youtube.com/embed/${id}` : '';
+  };
+
+  function handleHomeworkFiles(fileList){
+    if (!fileList || !fileList.length) return;
+    const jobs = [...fileList].map(file => new Promise((resolve, reject)=>{
+      const reader = new FileReader();
+      reader.onload = () => resolve({ name:file.name, size:file.size, type:file.type, data:reader.result });
+      reader.onerror = () => reject(reader.error);
+      reader.readAsDataURL(file);
+    }));
+    Promise.all(jobs).then(results=>{
+      homeworkFiles = homeworkFiles.concat(results);
+      persistHomeworkFiles();
+    }).catch(()=> setStatus('File failed to load'));
+  }
+
+  function syncHomeworkUI(){
+    if (homeworkFilesField){
+      homeworkFiles = parseStoredArray(homeworkFilesField.value);
+      renderHomeworkFiles();
+    }
+    if (homeworkVideosField){
+      homeworkVideos = parseStoredArray(homeworkVideosField.value);
+      renderHomeworkVideos();
+    }
+  }
+
+  function resetHomeworkSection(){
+    homeworkFiles = [];
+    homeworkVideos = [];
+    if (homeworkFilesField) homeworkFilesField.value = '';
+    if (homeworkVideosField) homeworkVideosField.value = '';
+    renderHomeworkFiles();
+    renderHomeworkVideos();
+  }
+
+  function setupHomeworkModule(){
+    if (homeworkFileBrowse && homeworkFilesInput){
+      homeworkFileBrowse.addEventListener('click', ()=>homeworkFilesInput.click());
+    }
+    if (homeworkFilesInput){
+      homeworkFilesInput.addEventListener('change', ()=>{
+        if (homeworkFilesInput.files?.length){
+          handleHomeworkFiles(homeworkFilesInput.files);
+          homeworkFilesInput.value = '';
+        }
+      });
+    }
+    if (homeworkDropZone){
+      const prevent = evt => { evt.preventDefault(); evt.stopPropagation(); };
+      ['dragenter','dragover'].forEach(evt=>{
+        homeworkDropZone.addEventListener(evt, e=>{
+          prevent(e);
+          homeworkDropZone.classList.add('drag');
+        });
+      });
+      ['dragleave','drop'].forEach(evt=>{
+        homeworkDropZone.addEventListener(evt, e=>{
+          prevent(e);
+          if (evt === 'drop' && e.dataTransfer?.files?.length){
+            handleHomeworkFiles(e.dataTransfer.files);
+          }
+          homeworkDropZone.classList.remove('drag');
+        });
+      });
+      homeworkDropZone.addEventListener('click', ()=>{
+        homeworkFilesInput?.click();
+      });
+      homeworkDropZone.addEventListener('keydown', evt=>{
+        if (evt.key === 'Enter' || evt.key === ' '){
+          evt.preventDefault();
+          homeworkFilesInput?.click();
+        }
+      });
+    }
+    if (addHomeworkVideoBtn){
+      addHomeworkVideoBtn.addEventListener('click', ()=>{
+        const title = (homeworkVideoTitle?.value || '').trim();
+        const url = (homeworkVideoUrl?.value || '').trim();
+        if (!url) return;
+        const embed = embedFromUrl(url);
+        homeworkVideos.push({ title, url, embed });
+        if (homeworkVideoTitle) homeworkVideoTitle.value = '';
+        if (homeworkVideoUrl) homeworkVideoUrl.value = '';
+        persistHomeworkVideos();
+      });
+    }
+  }
+
   // ===== COMPLETION RULES =====
   function isPortalComplete(id, data){
     switch(id){
@@ -175,6 +424,11 @@
       case 'mobility': {
         const arr = Array.isArray(data.mobility) ? data.mobility : [];
         return arr.length >= 5;
+      }
+      case 'homework': {
+        const files = parseStoredArray(data.homeworkFilesData);
+        const videos = parseStoredArray(data.homeworkVideosData);
+        return (files.length + videos.length) > 0;
       }
       case 'focus-throw': {
         const focus = Array.isArray(data.focus) ? data.focus : (data.focus ? [data.focus] : []);
@@ -271,6 +525,7 @@
   function loadWeek(){
     const raw = localStorage.getItem(keyFor());
     populateForm(raw ? JSON.parse(raw) : null);
+    syncHomeworkUI();
     setStatus(`Week ${currentWeek} loaded`);
     updatePortalCards();
     renderChecklist();
@@ -281,6 +536,7 @@
     localStorage.removeItem(keyFor());
     localStorage.setItem(completeKeyFor(), '0');
     form.reset();
+    resetHomeworkSection();
     setStatus('Cleared');
     updatePortalCards();
     renderChecklist();
@@ -299,6 +555,7 @@
       if (el.tagName === 'SELECT') el.selectedIndex = 0;
       else el.value = '';
     });
+    if (currentPortal === 'homework') resetHomeworkSection();
     saveWeek(false);
     setStatus('Portal reset', true);
   }
@@ -344,6 +601,7 @@
     if (e.key === 'ArrowRight' && overlay.classList.contains('show')) gotoAdjacentPortal(+1);
     if (e.key === 'ArrowLeft'  && overlay.classList.contains('show')) gotoAdjacentPortal(-1);
   });
+  setupHomeworkModule();
 
   // ===== AUTOSAVE =====
   let saveTimer;
