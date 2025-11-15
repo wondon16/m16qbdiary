@@ -69,10 +69,6 @@
   const addHomeworkVideoBtn = document.getElementById('addHomeworkVideo');
   const homeworkVideoList = document.getElementById('homeworkVideoList');
   const homeworkVideosField = document.getElementById('homeworkVideosData');
-  const navToggle = document.getElementById('navToggle');
-  const wixNav = document.getElementById('wixNav');
-  const navCta = document.querySelector('.nav-cta');
-  const navLinks = wixNav ? wixNav.querySelectorAll('a') : [];
   let lastFocusedElement = null;
 
   function openLightbox(img){
@@ -85,24 +81,6 @@
     lightbox.classList.add('show');
     lightbox.setAttribute('aria-hidden', 'false');
     if (lightboxClose) lightboxClose.focus();
-  }
-
-  if (navToggle && wixNav){
-    const closeNav = ()=>setNavOpen(false);
-    navToggle.addEventListener('click', ()=>{
-      const open = !document.body.classList.contains('nav-open');
-      setNavOpen(open);
-    });
-    navLinks.forEach(link=>{
-      link.addEventListener('click', closeNav);
-    });
-    if (navCta) navCta.addEventListener('click', closeNav);
-    window.addEventListener('resize', ()=>{
-      if (window.innerWidth > 900) closeNav();
-    });
-    document.addEventListener('keydown', (evt)=>{
-      if (evt.key === 'Escape' && document.body.classList.contains('nav-open')) closeNav();
-    });
   }
 
   function closeLightbox(){
@@ -134,11 +112,6 @@
     document.addEventListener('keydown', (evt)=>{
       if (evt.key === 'Escape' && lightbox.classList.contains('show')) closeLightbox();
     });
-  }
-
-  function setNavOpen(open){
-    document.body.classList.toggle('nav-open', open);
-    if (navToggle) navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
   }
 
   let currentWeek = 1;

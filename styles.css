@@ -30,7 +30,6 @@ body.wix-shell{
     linear-gradient(180deg, #f9fbff 0%, #e9f1ff 45%, #f7f9ff 100%);
   color:#112040;
 }
-body.nav-open{overflow:hidden}
 
 .wix-main{display:flex; flex-direction:column; gap:40px}
 .wix-header{
@@ -47,32 +46,6 @@ body.nav-open{overflow:hidden}
   backdrop-filter:blur(18px);
   box-shadow:0 10px 25px rgba(13,40,90,0.08);
 }
-.wix-header-actions{display:flex; align-items:center; gap:18px}
-.wix-menu-toggle{
-  display:none;
-  width:46px;
-  height:46px;
-  border-radius:16px;
-  border:1px solid rgba(10,35,66,0.2);
-  background:#fff;
-  cursor:pointer;
-  align-items:center;
-  justify-content:center;
-  padding:12px;
-  transition:border-color .2s ease, box-shadow .2s ease;
-}
-.wix-menu-toggle span{
-  display:block;
-  width:22px;
-  height:2px;
-  border-radius:999px;
-  background:#112040;
-  transition:transform .2s ease, opacity .2s ease;
-}
-.wix-menu-toggle span+span{margin-top:6px}
-body.nav-open .wix-menu-toggle span:nth-child(1){transform:translateY(8px) rotate(45deg)}
-body.nav-open .wix-menu-toggle span:nth-child(2){opacity:0}
-body.nav-open .wix-menu-toggle span:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
 .wix-logo{display:flex; align-items:center; gap:14px; text-decoration:none; color:inherit}
 .wix-logo img{
   width:52px;
@@ -687,27 +660,8 @@ body.wix-shell .cover-foot{color:#7084a7; display:block; text-align:left}
 
 @media (max-width:900px){
   .wix-header{flex-direction:column; align-items:flex-start; gap:12px}
-  .wix-header-actions{width:100%; flex-wrap:wrap; justify-content:space-between; align-items:center}
-  .wix-menu-toggle{display:inline-flex}
-  .wix-nav{
-    order:3;
-    width:100%;
-    display:none;
-    flex-direction:column;
-    gap:14px;
-    padding:18px 20px 6px;
-    border-top:1px solid rgba(10,35,66,0.12);
-    border-radius:24px;
-    background:rgba(255,255,255,0.95);
-    box-shadow:0 20px 50px rgba(7,33,77,0.15);
-  }
-  body.nav-open .wix-nav{display:flex}
-  .wix-nav a{letter-spacing:.2em}
-  .nav-cta{
-    order:2;
-    width:100%;
-    text-align:center;
-  }
+  .wix-nav{width:100%; justify-content:space-between}
+  .nav-cta{align-self:flex-start}
   .cover-shell{grid-template-columns:1fr; gap:32px}
   body.wix-shell .cover-title{font-size:42px}
   .cover-panel{justify-content:flex-start}
