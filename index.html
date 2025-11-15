@@ -10,32 +10,67 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
-  <!-- ===== COVER / PASSWORD (always shown on load) ===== -->
-  <section id="cover" class="cover" aria-label="QB Diary Access">
-    <div class="cover-card">
-      <!-- Your logo -->
-      <img src="logo.png" alt="QB Diary logo" class="cover-logo" />
-      <h1 class="brand-name cover-title">M16 QB Diary
-      </h1>
-      <p class="cover-desc">
-        Your all-in-one football prep hub — with weekly modules to track progress, healthy pre-game food and hydration tips, film-study guidance, and stretch routines. Built to sharpen your game, and keep your mindset focused through weekly self-reflection.
-        <strong></strong>.
-      </p>
-
-      <form id="gateForm" class="gate" autocomplete="off" novalidate>
-        <label for="gateInput" class="gate-label"> Password Please </label>
-        <input id="gateInput" type="password" class="inp inp-lg" placeholder="Enter password…" inputmode="text" aria-describedby="gateHint" />
-        <button id="gateBtn" type="submit" class="btn btn-primary btn-lg pill">Unlock</button>
-        <p id="gateHint" class="gate-hint" aria-live="polite"></p>
-      </form>
-
-      <small class="cover-foot">You’ll be asked each time you open the app. Entries save locally to your device.</small>
+<body class="wix-shell">
+  <header class="wix-header" aria-label="Primary">
+    <div class="wix-logo">
+      <img src="logo.png" alt="M16 QB Diary logo" loading="lazy" />
+      <div>
+        <span class="wix-logo__eyebrow">Weekly Prep OS</span>
+        <strong class="wix-logo__title">QB Diary</strong>
+      </div>
     </div>
-  </section>
+    <div class="wix-header-actions">
+      <button class="wix-menu-toggle" id="navToggle" type="button" aria-controls="wixNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="wix-nav" id="wixNav" aria-label="Site">
+        <a href="#cover">Access</a>
+        <a href="#portals">Modules</a>
+        <a href="#homeworkPortal">Homework</a>
+        <a href="#coveragePortal">Coverage</a>
+      </nav>
+      <a class="nav-cta" href="#cover">Unlock Diary</a>
+    </div>
+  </header>
 
-  <!-- ===== APP (hidden until password is entered) ===== -->
-  <div id="app" class="app locked" aria-hidden="true">
+  <main class="wix-main">
+    <!-- ===== COVER / PASSWORD (always shown on load) ===== -->
+    <section id="cover" class="cover" aria-label="QB Diary Access">
+      <div class="cover-shell">
+        <div class="cover-copy">
+          <p class="cover-eyebrow">All-in-one football prep hub</p>
+          <h1 class="cover-title">M16 QB Diary</h1>
+          <p class="cover-desc">
+            Your all-in-one football prep hub — with weekly modules to track progress, healthy pre-game food and hydration tips, film-study guidance, and stretch routines. Built to sharpen your game, and keep your mindset focused through weekly self-reflection.
+          </p>
+          <div class="cover-actions">
+            <a class="cover-link" href="#portals">Explore modules</a>
+            <a class="cover-link" href="#homeworkPortal">Drop homework</a>
+          </div>
+        </div>
+        <div class="cover-panel">
+          <div class="cover-card">
+            <!-- Your logo -->
+            <img src="logo.png" alt="QB Diary logo" class="cover-logo" />
+
+            <form id="gateForm" class="gate" autocomplete="off" novalidate>
+              <label for="gateInput" class="gate-label"> Password Please </label>
+              <input id="gateInput" type="password" class="inp inp-lg" placeholder="Enter password…" inputmode="text" aria-describedby="gateHint" />
+              <button id="gateBtn" type="submit" class="btn btn-primary btn-lg pill">Unlock</button>
+              <p id="gateHint" class="gate-hint" aria-live="polite"></p>
+            </form>
+
+            <small class="cover-foot">You’ll be asked each time you open the app. Entries save locally to your device.</small>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== APP (hidden until password is entered) ===== -->
+    <section class="app-shell" id="modules">
+      <div id="app" class="app locked" aria-hidden="true">
     <header class="site-header">
       <div class="brand">
         <span class="brand-mark" aria-hidden="true"></span>
@@ -73,7 +108,7 @@
     </section>
 
     <!-- PORTAL GRID -->
-    <main class="portal-grid" aria-label="Portals">
+    <main id="portals" class="portal-grid" aria-label="Portals">
       <article class="portal-card" data-portal="rival-film">
         <div class="card-head">
           <h3>Rival & Film Study</h3>
@@ -110,7 +145,7 @@
         <button class="btn-portal" type="button">Open</button>
       </article>
 
-      <article class="portal-card" data-portal="homework">
+      <article class="portal-card" data-portal="homework" id="homeworkPortal">
         <div class="card-head">
           <h3>Homework & Resources</h3>
           <div class="status-wrap">
@@ -122,7 +157,7 @@
         <button class="btn-portal" type="button">Open</button>
       </article>
 
-      <article class="portal-card" data-portal="coverage">
+      <article class="portal-card" data-portal="coverage" id="coveragePortal">
         <div class="card-head">
           <h3>Coverage Recognition Help</h3>
           <div class="status-wrap">
@@ -283,7 +318,7 @@ The key isn’t just knowing their weakness, but knowing how to repeatedly stres
           </section>
 
           <!-- HOMEWORK -->
-          <section data-section="homework" class="portal-section">
+          <section data-section="homework" class="portal-section" id="homeworkSection">
             <details class="pulldown">
               <summary>6A. Video HW links</summary>
               <p></p>
@@ -321,7 +356,7 @@ The key isn’t just knowing their weakness, but knowing how to repeatedly stres
           </section>
 
           <!-- COVERAGE HELP -->
-          <section data-section="coverage" class="portal-section">
+          <section data-section="coverage" class="portal-section" id="coverageSection">
             <details open class="pulldown">
               <summary>7. Coverage Shell Quick List</summary>
               <p>Recognize these core coverage shells the moment you break the huddle:</p>
@@ -557,6 +592,8 @@ The key isn’t just knowing their weakness, but knowing how to repeatedly stres
       <small>QB Diary — Season-ready portals. © You</small>
     </footer>
   </div>
+    </section>
+  </main>
 
   <script src="script.js"></script>
 </body>
