@@ -10,7 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body class="wix-shell">
+<body class="wix-shell landing-only">
   <header class="wix-header" aria-label="Primary">
     <div class="wix-logo">
       <img src="logo.png" alt="M16 QB Diary logo" loading="lazy" />
@@ -20,45 +20,17 @@
       </div>
     </div>
     <nav class="wix-nav" aria-label="Site">
-      <a href="#cover">Access</a>
       <a href="#portals">Modules</a>
-      <a href="#homeworkPortal">Homework</a>
-      <a href="#coveragePortal">Coverage</a>
     </nav>
     <a class="nav-cta" href="#cover">Unlock Diary</a>
   </header>
 
   <main class="wix-main">
     <!-- ===== COVER / PASSWORD (always shown on load) ===== -->
-    <section id="cover" class="cover" aria-label="QB Diary Access">
-      <div class="cover-shell">
-        <div class="cover-copy">
-          <p class="cover-eyebrow">All-in-one football prep hub</p>
-          <h1 class="cover-title">M16 QB Diary</h1>
-          <p class="cover-desc">
-            Your all-in-one football prep hub — with weekly modules to track progress, healthy pre-game food and hydration tips, film-study guidance, and stretch routines. Built to sharpen your game, and keep your mindset focused through weekly self-reflection.
-          </p>
-          <div class="cover-actions">
-            <a class="cover-link" href="#portals">Explore modules</a>
-            <a class="cover-link" href="#homeworkPortal">Drop homework</a>
-          </div>
-        </div>
-        <div class="cover-panel">
-          <div class="cover-card">
-            <!-- Your logo -->
-            <img src="logo.png" alt="QB Diary logo" class="cover-logo" />
-
-            <form id="gateForm" class="gate" autocomplete="off" novalidate>
-              <label for="gateInput" class="gate-label"> Password Please </label>
-              <input id="gateInput" type="password" class="inp inp-lg" placeholder="Enter password…" inputmode="text" aria-describedby="gateHint" />
-              <button id="gateBtn" type="submit" class="btn btn-primary btn-lg pill">Unlock</button>
-              <p id="gateHint" class="gate-hint" aria-live="polite"></p>
-            </form>
-
-            <small class="cover-foot">You’ll be asked each time you open the app. Entries save locally to your device.</small>
-          </div>
-        </div>
-      </div>
+    <section id="cover" class="cover landing" aria-label="QB Diary Access">
+      <button id="logoTrigger" class="logo-trigger full" type="button" aria-label="Enter QB Diary modules">
+        <img src="images/logo1223.png" alt="M16 QB Diary badge" />
+      </button>
     </section>
 
     <!-- ===== APP (hidden until password is entered) ===== -->
@@ -100,68 +72,97 @@
       </div>
     </section>
 
-    <!-- PORTAL GRID -->
-    <main id="portals" class="portal-grid" aria-label="Portals">
-      <article class="portal-card" data-portal="rival-film">
-        <div class="card-head">
-          <h3>Rival & Film Study</h3>
-          <div class="status-wrap">
-            <span class="status-pill">Incomplete</span>
-            <span class="portal-dot" aria-hidden="true"></span>
+    <!-- PORTAL STACK -->
+    <section id="portals" class="modules-stack" aria-label="Portals">
+      <article class="portal-card module-row" data-portal="rival-film">
+        <header class="module-head">
+          <div class="module-head-left">
+            <span class="module-step">01</span>
+            <h3>Rival & Film Study</h3>
           </div>
+          <div class="module-head-right">
+            <span class="status-pill">Incomplete</span>
+            <span class="module-chevron" aria-hidden="true"></span>
+          </div>
+        </header>
+        <div class="module-body">
+          <p class="module-kicker">Know the opponent. Exploit tendencies.</p>
+          <p class="module-body-text">Define the opponent. Identify strengths, stress their weaknesses.</p>
+          <button class="btn-portal" type="button">Open module</button>
         </div>
-        <p class="portal-kicker">Know the opponent. Exploit tendencies.</p>
-        <button class="btn-portal" type="button">Open</button>
       </article>
 
-      <article class="portal-card" data-portal="mobility">
-        <div class="card-head">
-          <h3>Mobility & Warm-Up Flow</h3>
-          <div class="status-wrap">
-            <span class="status-pill">Incomplete</span>
-            <span class="portal-dot" aria-hidden="true"></span>
+      <article class="portal-card module-row" data-portal="mobility">
+        <header class="module-head">
+          <div class="module-head-left">
+            <span class="module-step">02</span>
+            <h3>Mobility & Warm-Up Flow</h3>
           </div>
+          <div class="module-head-right">
+            <span class="status-pill">Incomplete</span>
+            <span class="module-chevron" aria-hidden="true"></span>
+          </div>
+        </header>
+        <div class="module-body">
+          <p class="module-kicker">Prime shoulders, hips, and speed.</p>
+          <p class="module-body-text">Prime the shoulders, open the hips, and cue fast feet.</p>
+          <button class="btn-portal" type="button">Open module</button>
         </div>
-        <p class="portal-kicker">Prime shoulders, hips, and speed.</p>
-        <button class="btn-portal" type="button">Open</button>
       </article>
 
-      <article class="portal-card" data-portal="focus-throw">
-        <div class="card-head">
-          <h3>Mental Focus & Throwing</h3>
-          <div class="status-wrap">
-            <span class="status-pill">Incomplete</span>
-            <span class="portal-dot" aria-hidden="true"></span>
+      <article class="portal-card module-row" data-portal="focus-throw">
+        <header class="module-head">
+          <div class="module-head-left">
+            <span class="module-step">03</span>
+            <h3>Mental Focus & Throwing</h3>
           </div>
+          <div class="module-head-right">
+            <span class="status-pill">Incomplete</span>
+            <span class="module-chevron" aria-hidden="true"></span>
+          </div>
+        </header>
+        <div class="module-body">
+          <p class="module-kicker">Breathe. Visualize. Let it rip.</p>
+          <p class="module-body-text">Center your breath and sharpen your throwing progression.</p>
+          <button class="btn-portal" type="button">Open module</button>
         </div>
-        <p class="portal-kicker">Breathe. Visualize. Let it rip.</p>
-        <button class="btn-portal" type="button">Open</button>
       </article>
 
-      <article class="portal-card" data-portal="homework" id="homeworkPortal">
-        <div class="card-head">
-          <h3>Homework & Resources</h3>
-          <div class="status-wrap">
-            <span class="status-pill">Incomplete</span>
-            <span class="portal-dot" aria-hidden="true"></span>
+      <article class="portal-card module-row" data-portal="homework" id="homeworkPortal">
+        <header class="module-head">
+          <div class="module-head-left">
+            <span class="module-step">04</span>
+            <h3>Homework & Resources</h3>
           </div>
+          <div class="module-head-right">
+            <span class="status-pill">Incomplete</span>
+            <span class="module-chevron" aria-hidden="true"></span>
+          </div>
+        </header>
+        <div class="module-body">
+          <p class="module-body-text">Drop weekly assignments, PDFs, and teaching clips.</p>
+          <button class="btn-portal" type="button">Open module</button>
         </div>
-        <p class="portal-kicker"></p>
-        <button class="btn-portal" type="button">Open</button>
       </article>
 
-      <article class="portal-card" data-portal="coverage" id="coveragePortal">
-        <div class="card-head">
-          <h3>Coverage Recognition Help</h3>
-          <div class="status-wrap">
-            <span class="status-pill">Incomplete</span>
-            <span class="portal-dot" aria-hidden="true"></span>
+      <article class="portal-card module-row" data-portal="coverage" id="coveragePortal">
+        <header class="module-head">
+          <div class="module-head-left">
+            <span class="module-step">05</span>
+            <h3>Coverage Recognition Help</h3>
           </div>
+          <div class="module-head-right">
+            <span class="status-pill">Incomplete</span>
+            <span class="module-chevron" aria-hidden="true"></span>
+          </div>
+        </header>
+        <div class="module-body">
+          <p class="module-kicker">Know the shell. Win the read.</p>
+          <p class="module-body-text">Lock in the Top Gun coverage bullets and prep answers for every shell.</p>
+          <button class="btn-portal" type="button">Open module</button>
         </div>
-        <p class="portal-kicker">Know the shell. Win the read.</p>
-        <button class="btn-portal" type="button">Open</button>
       </article>
-    </main>
+    </section>
 
     <!-- OVERLAY -->
     <div id="overlay" class="overlay" aria-hidden="true">
@@ -301,6 +302,91 @@ The key isn’t just knowing their weakness, but knowing how to repeatedly stres
                 <li>Side ways (right leg in front) twisting torso throwing over hip</li>
                 <li>Left leg in front throwing over outside hip twisting torso</li>
                 <li>3 step drop spot throws</li>
+
+ Short-Answer Homework
+1. Explain in your own words what “leverage” means for a DB.
+Write 2–3 sentences explaining how inside vs. outside leverage affects what the QB should expect.
+
+2. Pre-snap Checklist
+List three things you should figure out about the DB before the ball is snapped.
+
+3. Why must a QB “read defenders, not routes”?
+Explain how this keeps you from being late or holding the ball too long.
+
+4. Eyes Tell Lies
+Explain how your eyes and body language can manipulate a defender. Give one example of how you would move a safety or corner using your eyes.
+
+5. Body Language of the DB
+Pick two of these DB cues and explain what they tell you:
+* square / flat feet
+* heavy on toes
+* weight leaning inside
+* drifting backward
+* tight press
+* outside shade or inside shade
+
+6. Manipulating Leverage Drill
+Describe the drill in your own words: How does the QB decide which route to call based on the DB’s leverage?
+
+7. Post-Snap Speed
+Why is “think fast but don’t rush” important for a QB reading leverage? Explain how this prevents mistakes.
+
+8. Hot Route Decision-Making
+Give an example of a situation where you would change to a hot route based on DB alignment or body language.
+
+9. Throwing Deep Balls Using Leverage
+Explain how reading leverage early helps you throw deep balls with more precision and timing.
+
+10. Whole Picture Vision
+Why must a young QB learn to “see the whole picture” pre- and post-snap?
+
+
+ Multiple-Choice Quiz 
+1. If a DB is lined up on the WR's outside shoulder, he has…
+A. Inside leverage B. Outside leverage C. No leverage D. Press leverage
+
+2. Which pre-snap clue helps a QB identify leverage?
+A. The WR’s stance B. How many steps the QB takes C. Which shoulder the DB is shading D. The play call from the sideline
+
+3. If the DB is inside leverage, the QB often wants to…
+A. Throw inside immediately B. Attack outside or throw a fade/out C. Call a run play D. Throw backside only
+
+4. Why should QBs “read defenders, not routes”?
+A. Because routes never change B. Because defenders can mess up timing by jamming WRs C. Because coaches say to D. Because it makes practice easier
+
+5. Which DB body language usually means he might be blitzing?
+A. Drifting backward B. Heavy on heels C. Weight leaning on inside foot / heavy on toes D. Hands on hips
+
+6. If a DB is pressing the WR tight at the line, the QB should typically call…
+A. A deep comeback B. Quick release: hitch, flat, or quick game C. A long-developing post-corner D. A double move only
+
+7. Pump fakes and shoulder fakes help the QB because…
+A. They remove both hands from the ball B. They move defenders without losing ball security C. They slow the QB’s drop D. They force every defender to blitz
+
+8. “Eyes tell lies” means…
+A. The QB should stare down the receiver B. The QB should look one way to move defenders, then throw opposite C. The QB should close his eyes when throwing D. The QB should never use pump fakes
+
+9. Which post-snap mindset helps eliminate errors?
+A. Think fast but don’t hurry B. Throw immediately after catching the snap C. Watch only the WR route D. Ignore leverage and trust the WR
+
+10. Recognizing DB leverage pre-snap helps the QB…
+A. Run the ball more B. Throw deep balls more accurately and on time C. Avoid using progressions D. Ignore safeties
+
+11. A drifting DB (backpedaling early) is most likely…
+A. Sitting on a short route B. Preparing for a blitz C. Getting ready to play deep D. Playing only the run
+
+12. Why should the QB keep both hands on the ball in the pocket?
+A. It looks better on camera B. It helps avoid fumbles when defenders swipe at the ball C. It helps WRs get open D. It makes the ball lighter
+
+13. When the QB understands leverage and DB alignment, he can…
+A. Throw blindly B. Make faster, more accurate decisions C. Look at the scoreboard more D. Ignore safeties
+
+14. Which scenario likely calls for a hot route?
+A. DB inside leverage and leaning inside like he may blitz B. DB giving 12 yards of cushion C. DB turning his back D. DB signaling to the safety
+
+15. Seeing the whole picture helps the QB because…
+A. It slows the game down B. It makes all defenders disappear C. It avoids the need for progressions D. It guarantees touchdowns
+
                 <li>3 and hitch spot throws</li>
                 <li>5 step (if needed) spot throws</li>
                 <li>Throw on the run (spot throws)</li>
@@ -343,6 +429,14 @@ The key isn’t just knowing their weakness, but knowing how to repeatedly stres
                     <p class="resource-desc">Walk through the second assignment on defensive coverages so you can quiz yourself mid-week.</p>
                   </div>
                   <a class="btn pill btn-outline" href="homework/homework%232.pdf" target="_blank" rel="noopener">Open PDF</a>
+                </article>
+                <article class="homework-resource-card">
+                  <div class="resource-body">
+                    <p class="resource-tag">PDF</p>
+                    <h4>NOV23.hw&amp;quiz — Leverage</h4>
+                    <p class="resource-desc">Short-answer prompts plus a 15-question leverage quiz packaged for the Nov 23 homework drop.</p>
+                  </div>
+                  <a class="btn pill btn-outline" href="homework/NOV23.hw&amp;quiz.pdf" target="_blank" rel="noopener">Open PDF</a>
                 </article>
               </div>
             </details>

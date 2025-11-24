@@ -1,35 +1,26 @@
 /* QB Diary — stable gate, accurate completion rules, per-portal reset, polished controls */
 (() => {
   const TOTAL_WEEKS = 18;
-  const PASSCODE = 'M16QB';
   const STORAGE_PREFIX = 'qb_diary_week_';
   const COMPLETE_PREFIX = 'qb_diary_complete_';
 
   // ===== COVER GATE =====
   const cover = document.getElementById('cover');
   const app = document.getElementById('app');
-  const gateForm = document.getElementById('gateForm');
-  const gateInput = document.getElementById('gateInput');
-  const gateHint = document.getElementById('gateHint');
+  const logoTrigger = document.getElementById('logoTrigger');
 
   function unlockApp(){
     app.classList.remove('locked');
     app.removeAttribute('aria-hidden');
     cover.style.display = 'none';
+    document.body.classList.remove('landing-only');
   }
-  gateForm.addEventListener('submit', (e)=>{
-    e.preventDefault();
-    const v = (gateInput.value || '').trim();
-    if (v === PASSCODE){
-      gateHint.textContent = '';
+  if (logoTrigger){
+    logoTrigger.addEventListener('click', ()=>{
       unlockApp();
       document.getElementById('nextWeek').focus();
-    } else {
-      gateHint.textContent = 'Incorrect password. Try again.';
-      gateInput.select();
-      gateInput.focus();
-    }
-  });
+    });
+  }
 
   // ===== GLOBAL ELEMENTS =====
   const weekBadge = document.getElementById('weekBadge');
@@ -70,6 +61,9 @@
   const homeworkVideoList = document.getElementById('homeworkVideoList');
   const homeworkVideosField = document.getElementById('homeworkVideosData');
   let lastFocusedElement = null;
+
+  const portalCardMap = {};
+  portalCards.forEach(card => { portalCardMap[card.dataset.portal] = card; });
 
   function openLightbox(img){
     if (!lightbox || !lightboxImg || !lightboxCaption) return;
@@ -446,10 +440,13 @@
   function updatePortalCards(){
     const data = JSON.parse(localStorage.getItem(keyFor()) || '{}');
     PORTAL_ORDER.forEach(id=>{
-      const card = document.querySelector(`.portal-card[data-portal="${id}"]`);
+      const card = portalCardMap[id];
       const complete = isPortalComplete(id, data);
-      card.classList.toggle('complete', !!complete);
-      card.querySelector('.status-pill').textContent = complete ? 'Complete' : 'Incomplete';
+      if (card){
+        card.classList.toggle('complete', !!complete);
+        const pill = card.querySelector('.status-pill');
+        if (pill) pill.textContent = complete ? 'Complete' : 'Incomplete';
+      }
     });
   }
 
