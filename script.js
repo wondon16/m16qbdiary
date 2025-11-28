@@ -8,18 +8,38 @@
   const cover = document.getElementById('cover');
   const app = document.getElementById('app');
   const logoTrigger = document.getElementById('logoTrigger');
+  const modulesShell = document.getElementById('modules');
+  const portalsSection = document.getElementById('portals');
+
+  const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function scrollToModules(){
+    const target = portalsSection || modulesShell;
+    if (!target) return;
+    const behavior = prefersReducedMotion() ? 'auto' : 'smooth';
+    requestAnimationFrame(()=> target.scrollIntoView({ behavior, block:'start' }));
+  }
 
   function unlockApp(){
+    if (!app || !cover) return;
+    if (!app.classList.contains('locked')){
+      scrollToModules();
+      return;
+    }
     app.classList.remove('locked');
     app.removeAttribute('aria-hidden');
     cover.style.display = 'none';
     document.body.classList.remove('landing-only');
+    if (window.matchMedia('(max-width: 768px)').matches) scrollToModules();
+    else if (nextWeekBtn) setTimeout(()=>nextWeekBtn.focus(), 0);
   }
   if (logoTrigger){
-    logoTrigger.addEventListener('click', ()=>{
+    const activateGate = evt=>{
+      if (evt.type === 'keydown' && evt.key !== 'Enter' && evt.key !== ' ') return;
+      evt.preventDefault();
       unlockApp();
-      document.getElementById('nextWeek').focus();
-    });
+    };
+    logoTrigger.addEventListener('click', activateGate);
+    logoTrigger.addEventListener('keydown', activateGate);
   }
 
   // ===== GLOBAL ELEMENTS =====
